@@ -194,6 +194,17 @@
     color: white;
     position: relative;
     overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
+      animation: rotate 30s linear infinite;
+    }
   }
 
   .decoration-content {
@@ -201,28 +212,15 @@
     padding: 0 40px;
     max-width: 500px;
     z-index: 1;
-  }
-
-  .decoration-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-  }
-
-  .decoration-content p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-  }
-
-  .login-decoration::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
-    animation: rotate 30s linear infinite;
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
   }
 
   @keyframes rotate {
@@ -241,10 +239,10 @@
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
-  }
 
-  .login-box:hover {
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+    &:hover {
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+    }
   }
 
   .login-header {
@@ -291,19 +289,20 @@
     margin-top: 30px;
   }
 
-  .custom-input :deep(.el-input__wrapper) {
-    padding: 12px 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
+  .custom-input {
+    :deep(.el-input__wrapper) {
+      padding: 12px 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
 
-  .custom-input :deep(.el-input__wrapper:hover) {
-    box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.3);
-  }
-
-  .custom-input :deep(.el-input__wrapper.is-focus) {
-    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    :deep(.el-input__wrapper:hover) {
+      box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.3);
+    }
+    :deep(.el-input__wrapper.is-focus) {
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
   }
 
   .form-options {
@@ -333,11 +332,11 @@
     background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
     border: none;
     transition: all 0.3s ease;
-  }
 
-  .login-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+    }
   }
 
   .login-footer {
