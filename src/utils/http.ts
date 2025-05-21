@@ -2,6 +2,12 @@ import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 
 export class Http {
   private instance: AxiosInstance;
+  private isRefreshing = false;
+  private requestsQueue: Array<{
+    config: any;
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
+  }> = [];
   constructor({ baseUrl = "http://localhost:3000", timeout = 10000 }: { baseUrl?: string; timeout?: number } = {}) {
     this.instance = this.createHttp({ baseUrl, timeout });
     this.requestInterceptors();
@@ -10,27 +16,100 @@ export class Http {
 
   // 请求拦截器
   private requestInterceptors() {
-    this.instance.interceptors.request.use(function (config) {
-      // 在发送请求之前做些什么
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = token.startsWith("Bearer ") ? token : "Bearer " + token;
+    this.instance.interceptors.request.use(
+      (config) => {
+        // 在发送请求之前做些什么
+        // 标识平台
         config.headers.platform = "web";
+        // 添加token
+        const token = localStorage.getItem("token");
+        if (token) {
+          config.headers.Authorization = token.startsWith("Bearer ") ? token : "Bearer " + token;
+        }
+        // 刷新token
+        const refresh_token = localStorage.getItem("refresh_token");
+        if (refresh_token) {
+          config.headers.refresh_token = refresh_token.startsWith("Bearer ")
+            ? refresh_token
+            : "Bearer " + refresh_token;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
       }
-      return config;
-    });
+    );
   }
 
   // 响应拦截器
   private responseInterceptors() {
     this.instance.interceptors.response.use(
-      function (response) {
+      (response) => {
         return response.data;
       },
-      function (error) {
-        if (error.response.status === 401) {
-          localStorage.removeItem("token");
+      async (error) => {
+        const originalRequest = error.config;
+
+        // 如果是401错误且不是刷新token的请求
+        if (
+          error.response?.status === 401 &&
+          !originalRequest._retry &&
+          !originalRequest.url.includes("/refresh/token")
+        ) {
+          if (this.isRefreshing) {
+            // 如果正在刷新token，将请求加入队列
+            return new Promise((resolve, reject) => {
+              this.requestsQueue.push({
+                config: originalRequest,
+                resolve,
+                reject,
+              });
+            });
+          }
+
+          this.isRefreshing = true;
+          originalRequest._retry = true;
+
+          try {
+            // 尝试刷新token
+            const response = await this.instance.get("/api/v1/admin/users/refresh/token");
+            const newToken = response.data.token;
+
+            // 更新localStorage中的token
+            localStorage.setItem("token", newToken);
+
+            // 更新当前请求的token
+            originalRequest.headers.Authorization = newToken.startsWith("Bearer ") ? newToken : "Bearer " + newToken;
+
+            // 重试队列中的所有请求
+            this.requestsQueue.forEach(({ config, resolve }) => {
+              config.headers.Authorization = newToken.startsWith("Bearer ") ? newToken : "Bearer " + newToken;
+              resolve(this.instance(config));
+            });
+
+            // 清空队列
+            this.requestsQueue = [];
+
+            // 重试当前请求
+            return this.instance(originalRequest);
+          } catch (refreshError) {
+            // 刷新token失败，清除token
+            localStorage.removeItem("token");
+
+            // 拒绝队列中的所有请求
+            this.requestsQueue.forEach(({ reject }) => {
+              reject(refreshError);
+            });
+
+            // 清空队列
+            this.requestsQueue = [];
+
+            return Promise.reject(refreshError);
+          } finally {
+            this.isRefreshing = false;
+          }
         }
+
         return Promise.reject(error);
       }
     );

@@ -1,14 +1,22 @@
-import './assets/main.css'
+import "./assets/main.css";
+import "element-plus/dist/index.css";
+import "element-plus/theme-chalk/dark/css-vars.css";
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import pinia from "@/stores/index";
 
-import App from './App.vue'
-import router from './router'
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import ElementPlus from "element-plus";
 
-const app = createApp(App)
+import App from "./App.vue";
+import router from "./router";
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(pinia);
+app.use(router);
+app.use(ElementPlus, {
+  locale: zhCn,
+});
+
+app.mount("#app");
