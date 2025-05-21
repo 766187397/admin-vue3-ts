@@ -8,7 +8,7 @@
               <el-icon class="logo-icon"><Monitor /></el-icon>
             </div>
           </div>
-          <h2 class="login-title">管理系统</h2>
+          <h2 class="login-title">{{ title }}</h2>
           <p class="login-subtitle">欢迎回来，请登录您的账号</p>
         </div>
 
@@ -39,13 +39,13 @@
       </div>
 
       <div class="login-footer">
-        <p>© {{ new Date().getFullYear() }} 管理系统 - 版权所有</p>
+        <p>© {{ new Date().getFullYear() }} {{ title }} - 版权所有</p>
       </div>
     </div>
 
     <div class="login-decoration">
       <div class="decoration-content">
-        <h1>欢迎使用管理系统</h1>
+        <h1>欢迎使用{{ title }}</h1>
         <p>高效、安全、专业的企业级管理平台</p>
       </div>
     </div>
@@ -66,6 +66,8 @@
   const loading = ref(false);
   const loginFormRef = ref<FormInstance>();
   const rememberMe = ref(false);
+
+  const title = ref("管理系统");
 
   // 登录表单数据
   const loginForm = reactive({
