@@ -57,7 +57,8 @@
   import { ElMessage, ElNotification, type FormInstance } from "element-plus";
   import { User, Lock, Monitor } from "@element-plus/icons-vue";
   import { useRouter, useRoute } from "vue-router";
-  import { http } from "@/utils/http";
+  import { login } from "@/api/login";
+  import type { LoginForm, LoginResponse } from "@/types/login";
   import { encrypt, decrypt } from "@/utils/crypto";
 
   const router = useRouter();
@@ -93,15 +94,16 @@
         try {
           loading.value = true;
 
-          const response: any = await http.post("/api/v1/admin/users/logIn", {
+          const loginData: LoginForm = {
             account: loginForm.account,
             password: loginForm.password,
-          });
+          };
+          const response: LoginResponse = await login(loginData);
 
           // 登录成功
           console.log("登录成功:", response);
 
-          let { token_type, access_token, refresh_token, userInfo } = response.data;
+          const { token_type, access_token, refresh_token, userInfo } = response.data;
           // 存储token
           if (response.data.access_token) {
             localStorage.setItem("token_type", token_type);
