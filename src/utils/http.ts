@@ -5,6 +5,7 @@ export class Http {
   constructor({ baseUrl = "http://localhost:3000", timeout = 10000 }: { baseUrl?: string; timeout?: number } = {}) {
     this.instance = this.createHttp({ baseUrl, timeout });
     this.requestInterceptors();
+    this.responseInterceptors();
   }
 
   // 请求拦截器
