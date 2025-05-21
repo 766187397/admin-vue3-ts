@@ -141,5 +141,5 @@ export class Http {
 }
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
-const timeout = import.meta.env.VITE_TIMEOUT;
+const timeout = Number(import.meta.env.VITE_TIMEOUT);
 export const http = new Http({ baseUrl, timeout });
