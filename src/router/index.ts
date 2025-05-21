@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import test from "@/views/test.vue";
 import Login from "@/views/Login.vue";
+import NotFound from "@/views/NotFound.vue";
 
 // 定义白名单数组
 // 前缀匹配白名单：以这些路径开头的路由不需要登录验证
@@ -28,6 +29,15 @@ const router = createRouter({
       path: "/test",
       name: "test",
       component: test,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "notFound",
+      component: NotFound,
+      meta: {
+        title: "404 Not Found",
+        requiresAuth: false,
+      },
     },
   ],
 });
