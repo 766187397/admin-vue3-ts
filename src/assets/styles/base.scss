@@ -1,0 +1,7 @@
+/* 基础样式 */
+@use "./element-theme.scss" as *;
+
+/* 导入Element Plus的基础样式 */
+@import "element-plus/dist/index.css";
+@import "element-plus/theme-chalk/dark/css-vars.css";
+

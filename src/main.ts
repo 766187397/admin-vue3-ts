@@ -1,7 +1,5 @@
 import "normalize.css";
-import "element-plus/dist/index.css";
-import "element-plus/theme-chalk/dark/css-vars.css";
-import "@/assets/styles/base.css";
+import "@/assets/styles/base.scss";
 
 import { createApp } from "vue";
 import pinia from "@/stores/index";

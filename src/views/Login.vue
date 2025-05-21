@@ -163,7 +163,7 @@
   getRememberMeStatus();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .login-container {
     display: flex;
     height: 100vh;
