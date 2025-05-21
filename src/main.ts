@@ -1,4 +1,5 @@
-import "./assets/main.css";
+import "normalize.css";
+import "@/assets/stypes/base.css";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 
