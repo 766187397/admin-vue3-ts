@@ -7,8 +7,10 @@
     "dev": "vite --mode dev",
     "start": "vite --open --mode dev",
     "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "build:test": "run-p type-check \"build-only:test {@}\" --",
     "build-only": "vite build",
+    "build-only:test": "vite build --mode test",
+    "preview": "vite preview",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix"
   },
