@@ -11,6 +11,8 @@ import App from "./App.vue";
 import router from "./router";
 
 const app = createApp(App);
+import registerElementPlusIcons from "./global/element-plus-icons";
+registerElementPlusIcons(app);
 
 app.use(pinia);
 app.use(router);
