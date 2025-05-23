@@ -3,6 +3,20 @@ import { useUserInfoStore } from "@/store";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 
+/** 使用type来定义请求配置 方便设置联合类型 */
+type HttpConfig = AxiosRequestConfig & {
+  headers?: {
+    /** 平台 */
+    platform?: string;
+    /** token */
+    Authorization?: string;
+    /** 刷新token */
+    refresh_token?: string;
+    /** 是否跳过全局错误处理 */
+    skipErrorHandler?: boolean;
+  };
+};
+
 export class Http {
   private instance: AxiosInstance;
   private isRefreshing = false;
@@ -144,20 +158,20 @@ export class Http {
     });
   }
 
-  public get<T>(url: string, params?: any, config?: AxiosRequestConfig): Promise<T> {
+  public get<T>(url: string, params?: any, config?: HttpConfig): Promise<T> {
     return this.instance.get(url, {
       params: params,
       ...config,
     });
   }
-  public post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public post<T>(url: string, data?: any, config?: HttpConfig): Promise<T> {
     return this.instance.post(url, data, config);
   }
 
-  public delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  public delete<T>(url: string, config?: HttpConfig): Promise<T> {
     return this.instance.delete(url, config);
   }
-  public patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  public patch<T>(url: string, data?: any, config?: HttpConfig): Promise<T> {
     return this.instance.patch(url, data, config);
   }
 }
