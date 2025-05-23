@@ -15,12 +15,3 @@ export interface LoginResponseData {
   refresh_token: string;
   userInfo: any;
 }
-
-/**
- * 完整登录响应接口
- */
-export interface LoginResponse {
-  code: number;
-  data: LoginResponseData;
-  message: string;
-}
