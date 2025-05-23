@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/store";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 
 export class Http {
   private instance: AxiosInstance;
@@ -35,6 +36,10 @@ export class Http {
           config.headers.refresh_token = refresh_token.startsWith("Bearer ")
             ? refresh_token
             : "Bearer " + refresh_token;
+        }
+        // 默认使用全局的错误处理
+        if (!config.headers.skipErrorHandler) {
+          config.headers.skipErrorHandler = false;
         }
         return config;
       },
@@ -114,10 +119,22 @@ export class Http {
             this.isRefreshing = false;
           }
         }
-
+        // 全局的错误处理
+        if (!error.config.headers.skipErrorHandler) {
+          this.handleError(error);
+        }
         return Promise.reject(error);
       }
     );
+  }
+
+  handleError(error: any) {
+    console.log("error", error);
+    ElMessage({
+      message: error.response?.data?.message || error.message || "未知错误",
+      type: "error",
+      duration: 5 * 1000,
+    });
   }
 
   private createHttp({ baseUrl, timeout }: { baseUrl: string; timeout: number }) {
