@@ -47,11 +47,13 @@ export const useUserInfoStore = defineStore(
     };
 
     /** 登录表单信息 */
-    let loginForm = ref<LoginForm | null>();
+    let loginForm = ref<string>("");
     /**  设置登录表单信息 */
-    const setLoginForm = (val: any) => {
-      loginForm.value = val;
+    const setLoginForm = (val: LoginForm) => {
+      loginForm.value = encrypt(JSON.stringify(val));
     };
+
+    const getLoginForm = (): LoginForm => JSON.parse(decrypt(loginForm.value));
 
     return {
       token_type,
@@ -66,31 +68,10 @@ export const useUserInfoStore = defineStore(
       setUserInfo,
       setRememberMe,
       setLoginForm,
+      getLoginForm,
     };
   },
   {
-    persist: [
-      {
-        storage: {
-          getItem(key) {
-            const value = localStorage.getItem(key);
-            if (value) {
-              if (key === "loginForm") {
-                return JSON.parse(decrypt(value));
-              }
-              return JSON.parse(value);
-            }
-            return "";
-          },
-          setItem(key, value) {
-            if (key === "loginForm") {
-              return localStorage.setItem(key, encrypt(JSON.stringify(value)));
-            }
-
-            return localStorage.setItem(key, JSON.stringify(value));
-          },
-        },
-      },
-    ],
+    persist: true,
   }
 );

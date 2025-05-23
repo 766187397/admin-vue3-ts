@@ -152,7 +152,7 @@
     const rememberMeStatus = userInfoStore.rememberMe;
     if (rememberMeStatus) {
       rememberMe.value = true;
-      const loginData = userInfoStore.loginForm;
+      const loginData = userInfoStore.getLoginForm();
       if (loginData) {
         const { account, password } = loginData;
         loginForm.account = account;
