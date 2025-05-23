@@ -57,16 +57,16 @@ export const useUserInfoStore = defineStore(
 
     return {
       token_type,
-      token,
-      refresh_token,
-      userInfo,
-      rememberMe,
-      loginForm,
       setTokenType,
+      token,
       setToken,
+      refresh_token,
       setRfreshToken,
+      userInfo,
       setUserInfo,
+      rememberMe,
       setRememberMe,
+      loginForm,
       setLoginForm,
       getLoginForm,
     };

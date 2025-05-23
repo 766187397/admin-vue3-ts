@@ -5,13 +5,15 @@
 </template>
 
 <script setup lang="ts">
-  import { type RoleRoutes } from "@/types/menu";
   import { ref, computed } from "vue";
   import { useRoute } from "vue-router";
   import MenuContent from "./MenuContent.vue";
+  import { useMenuStore } from "@/store";
+
+  const menuStore = useMenuStore();
 
   // 菜单是否折叠
-  const isCollapse = ref(false);
+  const isCollapse = menuStore.isCollapse;
 
   // 获取当前路由路径作为默认激活菜单
   const route = useRoute();
@@ -20,28 +22,7 @@
   });
 
   // 菜单数据
-  const menuList = ref<RoleRoutes[]>([
-    {
-      path: "/home",
-      name: "home",
-      component: "Home",
-      meta: {
-        title: "首页",
-        icon: "home",
-        externalLinks: true,
-      },
-    },
-    {
-      path: "/about",
-      name: "about",
-      component: "About",
-      meta: {
-        title: "关于",
-        icon: "about",
-        externalLinks: false,
-      },
-    },
-  ]);
+  const menuList = menuStore.menu;
 </script>
 
 <style lang="scss" scoped>

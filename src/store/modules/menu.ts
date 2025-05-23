@@ -2,40 +2,91 @@ import { getRoutes } from "@/api/menu";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { getRoutesParams, RoleRoutes } from "@/types/menu";
+import router from "@/router";
 
 // 定义 Store，使用函数，更适合Vue3，注意要使用ref并将需要的数据或函数返回出去
 export const useMenuStore = defineStore("menu", () => {
-  let menu = ref<any>([]);
-  let menuAll = ref<any>([]);
-  let menuFlatten = ref<any>([]);
-
+  // 菜单路由
+  let menu = ref<RoleRoutes[]>([]);
+  /**
+   * 使用接口获取路由菜单
+   * @param {getRoutesParams} params - 请求参数
+   */
   const getMenu = async (params: getRoutesParams) => {
     const res = await getRoutes(params);
-    menu.value = res.data;
+    menu.value = res.data as RoleRoutes[];
   };
+  // 全部路由
+  let menuAll = ref<RoleRoutes[]>([]);
+  /**
+   * 使用接口获取全部路由菜单
+   */
   const getMenuAll = async () => {
     const res = await getRoutes();
-    menuAll.value = res.data;
-
-    // 扁平化菜单数据
-    const flattenMenu = (items: any[], result: any[] = []) => {
-      items.forEach((item) => {
-        result.push(item);
-        if (item.children && item.children.length > 0) {
-          flattenMenu(item.children, result);
-          delete item.children;
-        }
-      });
-      return result;
-    };
-
+    menuAll.value = res.data as RoleRoutes[];
     menuFlatten.value = flattenMenu(res.data as RoleRoutes[]);
+    addRouters(res.data as RoleRoutes[]);
+  };
+
+  /**
+   * 移除路由（通常是登出时使用传入所有的动态路由）
+   * @param {RoleRoutes} routes 需要移除的路由
+   */
+  const removeRouters = (routes: RoleRoutes[]) => {
+    routes.forEach((route) => {
+      router.removeRoute(route.name as string);
+      if (route.children) {
+        removeRouters(route.children);
+      }
+    });
+  };
+
+  // 全部路由扁平化
+  let menuFlatten = ref<RoleRoutes[]>([]);
+
+  // 扁平化菜单数据
+  const flattenMenu = (items: any[], result: any[] = []) => {
+    items.forEach((item) => {
+      result.push(item);
+      if (item.children && item.children.length > 0) {
+        flattenMenu(item.children, result);
+        delete item.children;
+      }
+    });
+    return result;
+  };
+
+  // 是否折叠
+  let isCollapse = ref<boolean>(false);
+  /**
+   * 设置折叠状态
+   * @param {boolean} val
+   */
+  const setIsCollapse = (val: boolean) => {
+    isCollapse.value = val;
+  };
+
+  // 添加路由
+  const addRouters = (data: RoleRoutes[], fatherName: string = "layout") => {
+    data.forEach((item) => {
+      router.addRoute(fatherName, {
+        path: item.path,
+        name: item.name,
+        component: () => import(`@/views/${item.component}.vue`),
+        meta: item.meta,
+      });
+      if (item.children) {
+        addRouters(item.children, item.name);
+      }
+    });
   };
   return {
     menu,
-    menuAll,
-    menuFlatten,
     getMenu,
+    menuAll,
     getMenuAll,
+    menuFlatten,
+    isCollapse,
+    setIsCollapse,
   };
 });
