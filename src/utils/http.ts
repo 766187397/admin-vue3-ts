@@ -154,7 +154,7 @@ export class Http {
     return this.instance.post(url, data, config);
   }
 
-  public delete<T>(url: string, config?: any): Promise<T> {
+  public delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.delete(url, config);
   }
   public patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
