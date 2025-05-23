@@ -1,7 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/store";
 import { useRouter } from "vue-router";
-const router = useRouter();
 
 export class Http {
   private instance: AxiosInstance;
@@ -54,7 +53,7 @@ export class Http {
       async (error) => {
         const userInfoStore = useUserInfoStore();
         const originalRequest = error.config;
-
+        console.log("error.response?.status", error.response?.status);
         // 如果是401错误且不是刷新token的请求
         if (
           error.response?.status === 401 &&
@@ -78,7 +77,7 @@ export class Http {
           try {
             // 尝试刷新token
             const response = await this.instance.get("/api/v1/admin/users/refresh/token");
-            const newToken = response.data.token;
+            const newToken = response.data.access_token;
 
             // 更新token
             userInfoStore.setToken(newToken);
@@ -108,6 +107,8 @@ export class Http {
 
             // 清空队列
             this.requestsQueue = [];
+
+            const router = useRouter();
             router.push("/login");
             return Promise.reject(refreshError);
           } finally {
