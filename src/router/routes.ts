@@ -12,17 +12,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: "layout",
     },
-    redirect: "/test",
-    children: [
-      {
-        path: "test",
-        name: "test",
-        component: () => import("@/views/Test.vue"),
-        meta: {
-          title: "test",
-        },
-      },
-    ],
+    redirect: "/home",
+    children: [],
   },
   {
     path: "/login",
