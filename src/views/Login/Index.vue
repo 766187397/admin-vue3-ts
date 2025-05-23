@@ -58,7 +58,7 @@
   import { User, Lock, Monitor } from "@element-plus/icons-vue";
   import { useRouter, useRoute } from "vue-router";
   import { login } from "@/api/login";
-  import type { LoginForm, LoginResponse } from "@/types/login";
+  import type { LoginForm } from "@/types/login";
   import { useUserInfoStore } from "@/store";
 
   const userInfoStore = useUserInfoStore();
@@ -102,12 +102,12 @@
             account: loginForm.account,
             password: loginForm.password,
           };
-          const response: LoginResponse = await login(loginData);
+          const response = await login(loginData);
 
           // 登录成功
           const { token_type, access_token, refresh_token, userInfo } = response.data;
           // 存储token
-          if (response.data.access_token) {
+          if (access_token) {
             userInfoStore.setTokenType(token_type);
             userInfoStore.setToken(access_token);
             userInfoStore.setRfreshToken(refresh_token);

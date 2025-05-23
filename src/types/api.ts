@@ -1,9 +1,8 @@
 /** 接口统一处理的数据 */
 export interface Result<T> {
-  code?: number;
-  message?: string;
-  data?: T | null;
-  entities?: any;
+  code: number;
+  message: string;
+  data: T;
 }
 
 /** 分页返回data数据 */

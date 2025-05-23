@@ -53,7 +53,6 @@ export class Http {
       async (error) => {
         const userInfoStore = useUserInfoStore();
         const originalRequest = error.config;
-        console.log("error.response?.status", error.response?.status);
         // 如果是401错误且不是刷新token的请求
         if (
           error.response?.status === 401 &&

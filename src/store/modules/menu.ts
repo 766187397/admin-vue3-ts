@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { getRoutesParams, RoleRoutes } from "@/types/menu";
 import router from "@/router";
+import { deepClone } from "@/utils/tool";
 
 // 定义 Store，使用函数，更适合Vue3，注意要使用ref并将需要的数据或函数返回出去
 export const useMenuStore = defineStore("menu", () => {
@@ -14,7 +15,7 @@ export const useMenuStore = defineStore("menu", () => {
    */
   const getMenu = async (params: getRoutesParams) => {
     const res = await getRoutes(params);
-    menu.value = res.data as RoleRoutes[];
+    menu.value = res.data;
   };
   // 全部路由
   let menuAll = ref<RoleRoutes[]>([]);
@@ -23,9 +24,11 @@ export const useMenuStore = defineStore("menu", () => {
    */
   const getMenuAll = async () => {
     const res = await getRoutes();
-    menuAll.value = res.data as RoleRoutes[];
-    menuFlatten.value = flattenMenu(res.data as RoleRoutes[]);
-    addRouters(res.data as RoleRoutes[]);
+    menuAll.value = res.data;
+
+    // 菜单扁平化
+    menuFlatten.value = flattenMenu(deepClone(res.data));
+    addRouters(res.data);
   };
 
   /**
@@ -75,7 +78,7 @@ export const useMenuStore = defineStore("menu", () => {
         component: () => import(`@/views/${item.component}.vue`),
         meta: item.meta,
       });
-      if (item.children) {
+      if (item.children && item.children.length > 0) {
         addRouters(item.children, item.name);
       }
     });

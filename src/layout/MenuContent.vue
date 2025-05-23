@@ -29,14 +29,11 @@
 <script setup lang="ts">
   import { type RoleRoutes } from "@/types/menu";
   import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-  import { customIcons } from "@/assets/icon/test/iconList.ts";
   defineProps<{
     menuList: RoleRoutes[];
   }>();
-  console.log("customIcons", customIcons);
   const handleClick = (item: RoleRoutes) => {
     if (item.meta?.externalLinks) {
-      console.log("item", item);
       window.open(item.path, "_blank");
     }
   };

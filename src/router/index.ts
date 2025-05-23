@@ -15,8 +15,6 @@ const fullMatchWhitelist: string[] = ["/login", "/register", "/forget-password"]
 
 // 全局前置守卫，处理页面标题和登录验证
 router.beforeEach(async (to, from, next) => {
-  console.log("to", to);
-  console.log("from", from);
   if (to.meta?.externalLinks) {
     return next({ path: from.path });
   }
