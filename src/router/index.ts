@@ -9,9 +9,9 @@ const router = createRouter({
 
 // 定义白名单数组
 // 前缀匹配白名单：以这些路径开头的路由不需要登录验证
-const prefixWhitelist: string[] = ["/api", "/public"];
+const prefixWhitelist: string[] = [];
 // 全匹配白名单：这些路由完全匹配时不需要登录验证
-const fullMatchWhitelist: string[] = ["/login", "/register", "/forget-password"];
+const fullMatchWhitelist: string[] = ["/login", "/403", "/404"];
 
 // 全局前置守卫，处理页面标题和登录验证
 router.beforeEach(async (to, from, next) => {
@@ -26,8 +26,8 @@ router.beforeEach(async (to, from, next) => {
   const isInFullMatchWhitelist = fullMatchWhitelist.includes(to.path);
   const isInPrefixWhitelist = prefixWhitelist.some((prefix) => to.path.startsWith(prefix));
 
-  // 如果路由在白名单中，或者路由的meta信息明确标记不需要认证，则直接放行
-  if (isInFullMatchWhitelist || isInPrefixWhitelist || to.meta.requiresAuth === false) {
+  // 如果路由在白名单中，不需要认证，则直接放行
+  if (isInFullMatchWhitelist || isInPrefixWhitelist) {
     return next();
   }
 

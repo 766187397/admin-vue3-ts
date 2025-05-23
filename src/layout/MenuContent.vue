@@ -33,6 +33,7 @@
     menuList: RoleRoutes[];
   }>();
   const handleClick = (item: RoleRoutes) => {
+    console.log("item", item);
     if (item.meta?.externalLinks) {
       window.open(item.path, "_blank");
     }

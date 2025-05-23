@@ -11,17 +11,15 @@ const routes: RouteRecordRaw[] = [
     component: Layout,
     meta: {
       title: "layout",
-      requiresAuth: true,
     },
     redirect: "/test",
     children: [
       {
         path: "test",
         name: "test",
-        component: () => import("@/views/test.vue"),
+        component: () => import("@/views/Test.vue"),
         meta: {
           title: "test",
-          requiresAuth: true,
         },
       },
     ],
@@ -32,7 +30,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import("@/views/Login/Index.vue"),
     meta: {
       title: "登录",
-      requiresAuth: false,
     },
   },
   {
@@ -41,7 +38,6 @@ const routes: RouteRecordRaw[] = [
     component: NoPermission,
     meta: {
       title: "无权限",
-      requiresAuth: false,
     },
   },
   {
@@ -50,7 +46,6 @@ const routes: RouteRecordRaw[] = [
     component: NotFound,
     meta: {
       title: "404 Not Found",
-      requiresAuth: false,
     },
   },
 ];
