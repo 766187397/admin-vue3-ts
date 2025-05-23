@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 
 import test from "@/views/test.vue";
-import Login from "@/views/Login.vue";
+import Login from "@/views/Login/Index.vue";
 import NotFound from "@/views/error/404.vue";
 import NoPermission from "@/views/error/403.vue";
 import Layout from "@/layout/Index.vue";
