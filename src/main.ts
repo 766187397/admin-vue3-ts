@@ -2,7 +2,7 @@ import "normalize.css";
 import "@/assets/styles/base.scss";
 
 import { createApp } from "vue";
-import pinia from "@/stores/index";
+import pinia from "@/store/index";
 
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import ElementPlus from "element-plus";

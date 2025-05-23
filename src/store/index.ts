@@ -12,3 +12,4 @@ export default pinia;
 
 // 统一导出
 export * from "./modules/test";
+export * from "./modules/usetInfo";

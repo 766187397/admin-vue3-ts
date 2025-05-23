@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "./routes";
+import { useUserInfoStore } from "@/store";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
@@ -25,8 +27,9 @@ router.beforeEach((to, from, next) => {
     return next();
   }
 
-  // 检查用户是否已登录（这里假设使用localStorage存储token）
-  const token = localStorage.getItem("token");
+  const userInfoStore = useUserInfoStore();
+  // 检查用户是否已登录
+  const token = userInfoStore.token;
   if (token) {
     // 已登录，放行
     next();

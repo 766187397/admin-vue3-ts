@@ -1,4 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
+import { useUserInfoStore } from "@/store";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 export class Http {
   private instance: AxiosInstance;
@@ -18,16 +21,17 @@ export class Http {
   private requestInterceptors() {
     this.instance.interceptors.request.use(
       (config) => {
+        const userInfoStore = useUserInfoStore();
         // 在发送请求之前做些什么
         // 标识平台
         config.headers.platform = "web";
         // 添加token
-        const token = localStorage.getItem("token");
+        const token = userInfoStore.token;
         if (token) {
           config.headers.Authorization = token.startsWith("Bearer ") ? token : "Bearer " + token;
         }
         // 刷新token
-        const refresh_token = localStorage.getItem("refresh_token");
+        const refresh_token = userInfoStore.refresh_token;
         if (refresh_token) {
           config.headers.refresh_token = refresh_token.startsWith("Bearer ")
             ? refresh_token
@@ -48,6 +52,7 @@ export class Http {
         return response.data;
       },
       async (error) => {
+        const userInfoStore = useUserInfoStore();
         const originalRequest = error.config;
 
         // 如果是401错误且不是刷新token的请求
@@ -75,8 +80,8 @@ export class Http {
             const response = await this.instance.get("/api/v1/admin/users/refresh/token");
             const newToken = response.data.token;
 
-            // 更新localStorage中的token
-            localStorage.setItem("token", newToken);
+            // 更新token
+            userInfoStore.setToken(newToken);
 
             // 更新当前请求的token
             originalRequest.headers.Authorization = newToken.startsWith("Bearer ") ? newToken : "Bearer " + newToken;
@@ -93,8 +98,8 @@ export class Http {
             // 重试当前请求
             return this.instance(originalRequest);
           } catch (refreshError) {
-            // 刷新token失败，清除token
-            localStorage.removeItem("token");
+            // 刷新token失败
+            userInfoStore.setToken("");
 
             // 拒绝队列中的所有请求
             this.requestsQueue.forEach(({ reject }) => {
@@ -103,7 +108,7 @@ export class Http {
 
             // 清空队列
             this.requestsQueue = [];
-
+            router.push("/login");
             return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;
