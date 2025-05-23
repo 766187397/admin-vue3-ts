@@ -13,7 +13,7 @@
     </el-sub-menu>
 
     <!-- 无子菜单的情况 -->
-    <el-menu-item v-else :index="item.path" :disabled="item.meta?.disabled">
+    <el-menu-item v-else :index="item.path" :disabled="item.meta?.status === 0" @click="handleClick(item)">
       <el-icon v-if="item.meta?.icon">
         <component :is="item.meta.icon" />
       </el-icon>
@@ -23,19 +23,18 @@
 </template>
 
 <script setup lang="ts">
-  interface MenuItem {
-    path: string;
-    meta?: {
-      title?: string;
-      icon?: string;
-      disabled?: boolean;
-    };
-    children?: MenuItem[];
-  }
+  import { type RoleRoutes } from "@/types/menu";
 
   defineProps<{
-    menuList: MenuItem[];
+    menuList: RoleRoutes[];
   }>();
+
+  const handleClick = (item: RoleRoutes) => {
+    if (item.meta?.externalLinks) {
+      console.log('item', item)
+      window.open(item.path, "_blank");
+    }
+  };
 </script>
 
 <style scoped>

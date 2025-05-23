@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+  import { type RoleRoutes } from "@/types/menu";
   import { ref, computed } from "vue";
   import { useRoute } from "vue-router";
   import MenuContent from "./MenuContent.vue";
@@ -19,66 +20,25 @@
   });
 
   // 菜单数据
-  const menuList = ref([
+  const menuList = ref<RoleRoutes[]>([
     {
-      path: "/dashboard",
+      path: "/home",
+      name: "home",
+      component: "Home",
       meta: {
-        title: "仪表盘",
-        icon: "Odometer",
+        title: "首页",
+        icon: "home",
+        externalLinks: true,
       },
-    },
-    {
-      path: "/system",
-      meta: {
-        title: "系统管理",
-        icon: "Setting",
-      },
-      children: [
-        {
-          path: "/system/user",
-          meta: {
-            title: "用户管理",
-            icon: "User",
-          },
-        },
-        {
-          path: "/system/role",
-          meta: {
-            title: "角色管理",
-            icon: "UserFilled",
-          },
-        },
-        {
-          path: "/system/menu",
-          meta: {
-            title: "菜单管理菜单管理菜单管理",
-            icon: "Menu",
-          },
-          children: [
-            {
-              path: "/system/menu/list",
-              meta: {
-                title: "菜单列表",
-                icon: "List",
-              },
-            },
-            {
-              path: "/system/menu/create",
-              meta: {
-                title: "创建菜单",
-                icon: "Plus",
-              },
-            },
-          ],
-        },
-      ],
     },
     {
       path: "/about",
+      name: "about",
+      component: "About",
       meta: {
-        title: "关于系统",
-        icon: "InfoFilled",
-        disabled: true,
+        title: "关于",
+        icon: "about",
+        externalLinks: false,
       },
     },
   ]);
