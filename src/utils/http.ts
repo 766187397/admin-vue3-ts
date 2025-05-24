@@ -143,7 +143,6 @@ export class Http {
   }
 
   handleError(error: any) {
-    console.log("error", error);
     ElMessage({
       message: error.response?.data?.message || error.message || "未知错误",
       type: "error",

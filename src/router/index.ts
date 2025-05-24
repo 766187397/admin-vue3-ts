@@ -40,8 +40,10 @@ router.beforeEach(async (to, from, next) => {
     if (!menuStore.menuAll || menuStore.menuAll.length === 0) {
       await menuStore.getMenu({ type: "menu" });
       await menuStore.getMenuAll();
+      next({ path: to.path, replace: true });
+    } else {
+      next();
     }
-    next();
   } else {
     // 未登录，重定向到登录页面，并保存原目标路由用于登录后跳转
     next({

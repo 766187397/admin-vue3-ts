@@ -25,11 +25,10 @@ export const useMenuStore = defineStore("menu", () => {
   const getMenuAll = async () => {
     const res = await getRoutes();
     menuAll.value = res.data;
+    addRouters(res.data);
 
     // 菜单扁平化
     menuFlatten.value = flattenMenu(deepClone(res.data));
-    addRouters(res.data);
-    console.log("router.getRoutes()", router.getRoutes());
   };
 
   /**

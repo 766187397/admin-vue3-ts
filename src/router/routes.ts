@@ -13,16 +13,7 @@ const routes: RouteRecordRaw[] = [
       title: "layout",
     },
     redirect: "/home",
-    children: [
-      {
-        path: "/test",
-        name: "test",
-        component: () => import("@/views/Test.vue"),
-        meta: {
-          title: "测试",
-        },
-      },
-    ],
+    children: [],
   },
   {
     path: "/login",
@@ -40,14 +31,14 @@ const routes: RouteRecordRaw[] = [
       title: "无权限",
     },
   },
-  {
-    path: "/:pathMatch(.*)*",
-    name: "notFound",
-    component: NotFound,
-    meta: {
-      title: "404 Not Found",
-    },
-  },
+  // {
+  //   path: "/:pathMatch(.*)*",
+  //   name: "notFound",
+  //   component: NotFound,
+  //   meta: {
+  //     title: "404 Not Found",
+  //   },
+  // },
 ];
 
 export default routes;
