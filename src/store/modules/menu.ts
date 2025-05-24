@@ -71,12 +71,17 @@ export const useMenuStore = defineStore("menu", () => {
   };
 
   // 添加路由
+  const modules = import.meta.glob("@/views/**/*.vue");
   const addRouters = (data: RoleRoutes[], fatherName: string = "layout") => {
     data.forEach((item) => {
+      console.log("modules", modules);
+      const componentPath = `/src/views/${item.component}.vue`;
+      console.log("componentPath", componentPath);
+      console.log('modules[componentPath]', modules[componentPath])
       router.addRoute(fatherName, {
         path: item.path,
         name: item.name,
-        component: () => import(`../../views/${item.component}.vue`),
+        component: modules[componentPath],
         meta: item.meta,
       });
       if (item.children && item.children.length > 0) {
