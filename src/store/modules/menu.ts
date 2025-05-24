@@ -29,6 +29,7 @@ export const useMenuStore = defineStore("menu", () => {
     // 菜单扁平化
     menuFlatten.value = flattenMenu(deepClone(res.data));
     addRouters(res.data);
+    console.log("router.getRoutes()", router.getRoutes());
   };
 
   /**
@@ -75,7 +76,7 @@ export const useMenuStore = defineStore("menu", () => {
       router.addRoute(fatherName, {
         path: item.path,
         name: item.name,
-        component: () => import(`@/views/${item.component}.vue`),
+        component: () => import(`../../views/${item.component}.vue`),
         meta: item.meta,
       });
       if (item.children && item.children.length > 0) {
