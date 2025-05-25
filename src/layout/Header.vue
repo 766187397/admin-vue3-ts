@@ -13,6 +13,10 @@
       </div>
       <div class="right">
         <div class="r_item">
+          <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState"><FullScreen /></el-icon>
+          <el-icon size="20" @click="exitFullscreen" v-else><CopyDocument /></el-icon>
+        </div>
+        <div class="r_item">
           <el-dropdown>
             <span class="el-dropdown-link">
               <el-avatar shape="square" size="default" src="" />
@@ -35,21 +39,26 @@
 
 <script setup lang="ts">
   import { useRouter, useRoute } from "vue-router";
-  import { useMenuStore } from "@/store";
+  import { useMenuStore, usePublicStore } from "@/store";
   const router = useRouter();
   const rouet = useRoute();
+  const publicStore = usePublicStore();
   const menuStore = useMenuStore();
   const isCollapse = computed(() => {
     return menuStore.isCollapse;
   });
   const matched = rouet.matched;
-
+  // 控制折叠
   const handleCollapse = () => {
     menuStore.setIsCollapse(!isCollapse.value);
   };
+  // 退出登录
   const logout = () => {
     console.log("退出登录");
   };
+  const { enterFullScreen, exitFullscreen, getFullScreenState } = publicStore;
+  getFullScreenState();
+  const fullScreenState = computed(() => publicStore.fullScreen);
 </script>
 
 <style lang="scss" scoped>
@@ -75,9 +84,17 @@
       }
 
       .right {
-        :deep(.el-dropdown) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
+        .r_item {
           cursor: pointer;
         }
+        // :deep(.el-dropdown) {
+        //   cursor: pointer;
+        // }
       }
     }
   }
