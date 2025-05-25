@@ -1,10 +1,10 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside class="aside">
+      <el-aside class="aside" :style="{ width: isCollapse ? '64px' : '200px' }">
         <div class="sidebar_logo">
           <img class="logo" src="@/assets/images/logo.jpg" alt="logo" />
-          <h1 class="title">后台管理系统</h1>
+          <h1 class="title" v-if="!showTitle">后台管理系统</h1>
         </div>
         <Menu />
       </el-aside>
@@ -19,10 +19,33 @@
   import Menu from "./Menu.vue";
   import Header from "./Header.vue";
   import Main from "./Main.vue";
+  import { useMenuStore } from "@/store";
+
+  const menuStore = useMenuStore();
+  const showTitle = ref(false);
+
+  // 菜单是否折叠
+  const isCollapse = computed(() => menuStore.isCollapse);
+  watch(
+    isCollapse,
+    (val) => {
+      if (val) {
+        showTitle.value = val;
+      } else {
+        setTimeout(() => {
+          showTitle.value = val;
+        }, 300);
+      }
+    },
+    {
+      immediate: true,
+    }
+  );
 </script>
 <style lang="scss" scoped>
   .aside {
-    width: 200px;
+    transition: all 0.3s;
+    // width: 200px;
     height: 100vh;
     display: flex;
     flex-direction: column;

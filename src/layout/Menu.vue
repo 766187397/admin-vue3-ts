@@ -13,13 +13,11 @@
   const menuStore = useMenuStore();
 
   // 菜单是否折叠
-  const isCollapse = menuStore.isCollapse;
+  const isCollapse = computed(() => menuStore.isCollapse);
 
   // 获取当前路由路径作为默认激活菜单
   const route = useRoute();
-  const activeMenu = computed(() => {
-    return route.path;
-  });
+  const activeMenu = computed(() => route.path);
 
   // 菜单数据
   const menuList = menuStore.menu;
