@@ -13,16 +13,10 @@
 
   const router = useRouter();
 
-  const props = withDefaults(
-    defineProps<{
-      errorCode?: number | string;
-      errorMessage?: string;
-    }>(),
-    {
-      errorCode: 404,
-      errorMessage: "抱歉，您访问的页面不存在",
-    }
-  );
+  const { errorCode = 404, errorMessage = "抱歉，您访问的页面不存在" } = defineProps<{
+    errorCode?: number | string;
+    errorMessage?: string;
+  }>();
 
   const goHome = () => {
     router.push("/");
