@@ -11,13 +11,16 @@ export const useMenuStore = defineStore("menu", () => {
   // 路由菜单
   let menu = ref<RoleRoutes[]>([]);
   /**获取路由菜单 */
-  const getMenu = () => {
-    console.log("router.getRoutes()", router.getRoutes());
-    const routerList = router.getRoutes().find((item) => item.name == "layout")?.children as RouteRecordRaw[];
-    menu.value = handleRouter(routerList);
+  const getMenu = async () => {
+    const routerList =
+      router
+        .getRoutes()
+        .find((item) => item.name == "layout")
+        ?.children.filter((item) => item.meta?.type == "menu") || [];
+    menu.value = [...handleRouter(routerList), ...dynamicMenu.value];
   };
 
-  const handleRouter = (arr: RouteRecordRaw[]): RoleRoutes[] => {
+  const handleRouter = (arr: RouteRecordRaw[] | []): RoleRoutes[] => {
     return arr.map((item: any) => {
       if (item.children) {
         item.children = handleRouter(item.children);
