@@ -110,7 +110,6 @@ export const useMenuStore = defineStore("menu", () => {
         redirect: item.redirect || undefined,
         children: [],
       });
-      console.log("router.getRoutes()", router.getRoutes());
       if (item.children && item.children.length > 0) {
         addRouters(item.children, item.name);
       }
