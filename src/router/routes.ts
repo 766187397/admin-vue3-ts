@@ -1,7 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 
-import NotFound from "@/views/error/404.vue";
-import NoPermission from "@/views/error/403.vue";
+import Error from "@/views/error/Index.vue";
 import Layout from "@/layout/Index.vue";
 
 const routes: RouteRecordRaw[] = [
@@ -24,17 +23,18 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/403",
-    name: "noPermission",
-    component: NoPermission,
+    path: "/error/:errorCode/:errorMessage",
+    name: "notFound",
+    component: Error,
+    props: true,
     meta: {
-      title: "无权限",
+      title: "服务器网络异常",
     },
   },
   {
     path: "/:pathMatch(.*)*",
     name: "notFound",
-    component: NotFound,
+    component: Error,
     meta: {
       title: "404 Not Found",
     },
