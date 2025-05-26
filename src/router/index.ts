@@ -9,9 +9,9 @@ const router = createRouter({
 
 // 定义白名单数组
 // 前缀匹配白名单：以这些路径开头的路由不需要登录验证
-const prefixWhitelist: string[] = [];
+const prefixWhitelist: string[] = ["/error"];
 // 全匹配白名单：这些路由完全匹配时不需要登录验证
-const fullMatchWhitelist: string[] = ["/login", "/403", "/404"];
+const fullMatchWhitelist: string[] = ["/login"];
 
 // 全局前置守卫，处理页面标题和登录验证
 router.beforeEach(async (to, from, next) => {

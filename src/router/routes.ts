@@ -12,7 +12,16 @@ const routes: RouteRecordRaw[] = [
       title: "layout",
     },
     redirect: "/home",
-    children: [],
+    children: [
+      {
+        path: "/home",
+        name: "home",
+        component: () => import("@/views/home/Index.vue"),
+        meta: {
+          title: "首页",
+        },
+      },
+    ],
   },
   {
     path: "/login",
