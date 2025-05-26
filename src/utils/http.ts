@@ -25,7 +25,7 @@ export class Http {
     resolve: (value: any) => void;
     reject: (reason: any) => void;
   }> = [];
-  constructor({ baseUrl = "http://localhost:3000", timeout = 10000 }: { baseUrl?: string; timeout?: number } = {}) {
+  constructor({ baseUrl = "", timeout = 10000 }: { baseUrl?: string; timeout?: number } = {}) {
     this.instance = this.createHttp({ baseUrl, timeout });
     this.requestInterceptors();
     this.responseInterceptors();

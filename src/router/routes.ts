@@ -31,14 +31,14 @@ const routes: RouteRecordRaw[] = [
       title: "无权限",
     },
   },
-  // {
-  //   path: "/:pathMatch(.*)*",
-  //   name: "notFound",
-  //   component: NotFound,
-  //   meta: {
-  //     title: "404 Not Found",
-  //   },
-  // },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "notFound",
+    component: NotFound,
+    meta: {
+      title: "404 Not Found",
+    },
+  },
 ];
 
 export default routes;
