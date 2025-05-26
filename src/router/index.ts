@@ -26,26 +26,26 @@ router.beforeEach(async (to, from, next) => {
   const isInFullMatchWhitelist = fullMatchWhitelist.includes(to.path);
   const isInPrefixWhitelist = prefixWhitelist.some((prefix) => to.path.startsWith(prefix));
 
-  // 如果路由在白名单中，不需要认证，则直接放行
-  if (isInFullMatchWhitelist || isInPrefixWhitelist) {
-    return next();
-  }
-
   const userInfoStore = useUserInfoStore();
   const menuStore = useMenuStore();
   // 检查用户是否已登录
   const token = userInfoStore.token;
   if (token) {
     // 已登录
-    if (!menuStore.menuAll || menuStore.menuAll.length === 0) {
-      await menuStore.getMenu({ type: "menu" });
-      await menuStore.getMenuAll();
+    if (!menuStore.dynamicMenuAll || menuStore.dynamicMenuAll.length === 0) {
+      await menuStore.getDynamicMenu({ type: "menu" });
+      await menuStore.getDynamicMenuAll();
       next({ path: to.path, replace: true });
+      menuStore.getMenu();
     } else {
       next();
     }
   } else {
-    // 未登录，重定向到登录页面，并保存原目标路由用于登录后跳转
+    // 如果路由在白名单中，不需要认证，则直接放行
+    if (isInFullMatchWhitelist || isInPrefixWhitelist) {
+      return next();
+    }
+    // 未登录，不在白名单中，则重定向到登录页面，并保存原目标路由用于登录后跳转
     next({
       path: "/login",
       query: { redirect: to.fullPath },

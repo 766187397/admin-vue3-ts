@@ -6,12 +6,11 @@
 
 <script setup lang="ts">
   import { ref, computed } from "vue";
-  import { useRoute } from "vue-router";
+  import { useRoute, useRouter, type RouteRecordRaw } from "vue-router";
   import MenuContent from "./MenuContent.vue";
   import { useMenuStore } from "@/store";
 
   const menuStore = useMenuStore();
-
   // 菜单是否折叠
   const isCollapse = computed(() => menuStore.isCollapse);
 
@@ -20,7 +19,7 @@
   const activeMenu = computed(() => route.path);
 
   // 菜单数据
-  const menuList = menuStore.menu;
+  const menuList = computed(() => menuStore.menu);
 </script>
 
 <style lang="scss" scoped>

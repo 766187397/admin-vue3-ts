@@ -4,31 +4,59 @@ import { ref } from "vue";
 import type { getRoutesParams, RoleRoutes } from "@/types/menu";
 import router from "@/router";
 import { deepClone } from "@/utils/tool";
+import type { RouteRecordRaw } from "vue-router";
 
 // 定义 Store，使用函数，更适合Vue3，注意要使用ref并将需要的数据或函数返回出去
 export const useMenuStore = defineStore("menu", () => {
-  // 菜单路由
+  // 路由菜单
   let menu = ref<RoleRoutes[]>([]);
+  /**获取路由菜单 */
+  const getMenu = () => {
+    console.log("router.getRoutes()", router.getRoutes());
+    const routerList = router.getRoutes().find((item) => item.name == "layout")?.children as RouteRecordRaw[];
+    menu.value = handleRouter(routerList);
+  };
+
+  const handleRouter = (arr: RouteRecordRaw[]): RoleRoutes[] => {
+    return arr.map((item: any) => {
+      if (item.children) {
+        item.children = handleRouter(item.children);
+      }
+      return {
+        path: item.path,
+        name: item.name,
+        redirect: item.redirect,
+        meta: {
+          ...item.meta,
+        },
+        children: item.children,
+      };
+    });
+  };
+  // 动态菜单路由
+  let dynamicMenu = ref<RoleRoutes[]>([]);
   /**
    * 使用接口获取路由菜单
    * @param {getRoutesParams} params - 请求参数
    */
-  const getMenu = async (params: getRoutesParams) => {
+  const getDynamicMenu = async (params: getRoutesParams) => {
     const res = await getRoutes(params);
-    menu.value = res.data;
+    dynamicMenu.value = res.data;
   };
-  // 全部路由
-  let menuAll = ref<RoleRoutes[]>([]);
+  // 全部动态路由
+  let dynamicMenuAll = ref<RoleRoutes[]>([]);
   /**
    * 使用接口获取全部路由菜单
    */
-  const getMenuAll = async () => {
-    const res = await getRoutes();
-    menuAll.value = res.data;
-    addRouters(res.data);
-
-    // 菜单扁平化
-    menuFlatten.value = flattenMenu(deepClone(res.data));
+  const getDynamicMenuAll = async () => {
+    return new Promise(async (resolve) => {
+      const res = await getRoutes();
+      dynamicMenuAll.value = res.data;
+      addRouters(res.data);
+      // 菜单扁平化
+      menuFlatten.value = flattenMenu(deepClone(res.data));
+      resolve(undefined);
+    });
   };
 
   /**
@@ -79,7 +107,10 @@ export const useMenuStore = defineStore("menu", () => {
         name: item.name,
         component: modules[componentPath],
         meta: item.meta,
+        redirect: item.redirect || undefined,
+        children: [],
       });
+      console.log("router.getRoutes()", router.getRoutes());
       if (item.children && item.children.length > 0) {
         addRouters(item.children, item.name);
       }
@@ -88,8 +119,10 @@ export const useMenuStore = defineStore("menu", () => {
   return {
     menu,
     getMenu,
-    menuAll,
-    getMenuAll,
+    dynamicMenu,
+    getDynamicMenu,
+    dynamicMenuAll,
+    getDynamicMenuAll,
     menuFlatten,
     isCollapse,
     setIsCollapse,

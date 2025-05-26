@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/error/:errorCode/:errorMessage",
-    name: "notFound",
+    name: "error",
     component: Error,
     props: true,
     meta: {

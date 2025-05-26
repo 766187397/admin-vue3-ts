@@ -6,7 +6,7 @@ export interface getRoutesParams {
 export interface RoleRoutes {
   path: string;
   name: string;
-  component: string;
+  component?: string;
   redirect: string;
   meta: {
     title: string;
