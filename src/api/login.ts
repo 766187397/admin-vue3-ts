@@ -10,3 +10,8 @@ import type { Result } from "@/types/api";
 export const login = (data: LoginForm): Promise<Result<LoginResponseData>> => {
   return http.post("/api/v1/admin/users/logIn", data);
 };
+
+/** 退出登录 */
+export const logout = (): Promise<Result<null>> => {
+  return http.get("/api/v1/admin/users/logout");
+};

@@ -19,14 +19,15 @@
         <div class="r_item">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar shape="square" size="default" src="" />
+              <el-avatar v-if="userInfo.avatar" shape="square" size="default" :src="userInfo.avatar" />
+              <span v-else>{{ userInfo.nickName }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
               </el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+                <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -39,11 +40,14 @@
 
 <script setup lang="ts">
   import { useRouter, useRoute } from "vue-router";
-  import { useMenuStore, usePublicStore } from "@/store";
+  import { useUserInfoStore, useMenuStore, usePublicStore } from "@/store";
   const router = useRouter();
   const rouet = useRoute();
   const publicStore = usePublicStore();
   const menuStore = useMenuStore();
+  const userInfoStore = useUserInfoStore();
+
+  const userInfo = computed(() => userInfoStore.userInfo);
   const isCollapse = computed(() => {
     return menuStore.isCollapse;
   });
@@ -53,9 +57,7 @@
     menuStore.setIsCollapse(!isCollapse.value);
   };
   // 退出登录
-  const logout = () => {
-    console.log("退出登录");
-  };
+  const {handleLogout} = userInfoStore
   const { enterFullScreen, exitFullscreen, getFullScreenState } = publicStore;
   getFullScreenState();
   const fullScreenState = computed(() => publicStore.fullScreen);

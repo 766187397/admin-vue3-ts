@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { encrypt, decrypt } from "@/utils/crypto";
 import type { LoginForm } from "@/types/login";
+import { logout } from "@/api/login";
+import router from "@/router";
 
 // 定义 Store，使用函数，更适合Vue3，注意要使用ref并将需要的数据或函数返回出去
 export const useUserInfoStore = defineStore(
@@ -55,6 +57,16 @@ export const useUserInfoStore = defineStore(
 
     const getLoginForm = (): LoginForm => JSON.parse(decrypt(loginForm.value));
 
+    /** 处理退出登录 */
+    const handleLogout = async () => {
+      let res = await logout();
+      if (res.code === 200) {
+        setToken("");
+        setRfreshToken("");
+        setUserInfo({});
+        router.push("/login");
+      }
+    };
     return {
       token_type,
       setTokenType,
@@ -69,6 +81,7 @@ export const useUserInfoStore = defineStore(
       loginForm,
       setLoginForm,
       getLoginForm,
+      handleLogout,
     };
   },
   {
