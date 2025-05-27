@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="tags">
-      <Contextmenu>
+      <Contextmenu :eventList="eventList">
         <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">
           {{ tag.name }}
         </el-tag>
@@ -82,6 +82,15 @@
     { name: "Tag 4", type: "warning" },
     { name: "Tag 5", type: "danger" },
   ]);
+
+  const eventList = [
+    {
+      content: "关闭",
+      click() {
+        console.log("关闭");
+      },
+    },
+  ];
 </script>
 
 <style lang="scss" scoped>
