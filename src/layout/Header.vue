@@ -34,13 +34,20 @@
         </div>
       </div>
     </div>
-    <div class="tabs"></div>
+    <div class="tags">
+      <Contextmenu>
+        <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type">
+          {{ tag.name }}
+        </el-tag>
+      </Contextmenu>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { useRouter, useRoute } from "vue-router";
   import { useUserInfoStore, useMenuStore, usePublicStore } from "@/store";
+  import Contextmenu from "@/components/public/Contextmenu.vue";
   const router = useRouter();
   const rouet = useRoute();
   const publicStore = usePublicStore();
@@ -57,10 +64,24 @@
     menuStore.setIsCollapse(!isCollapse.value);
   };
   // 退出登录
-  const {handleLogout} = userInfoStore
+  const { handleLogout } = userInfoStore;
   const { enterFullScreen, exitFullscreen, getFullScreenState } = publicStore;
   getFullScreenState();
   const fullScreenState = computed(() => publicStore.fullScreen);
+
+  import type { TagProps } from "element-plus";
+
+  interface TagsItem {
+    name: string;
+    type: TagProps["type"];
+  }
+  const tags = ref<TagsItem[]>([
+    { name: "Tag 1", type: "primary" },
+    { name: "Tag 2", type: "success" },
+    { name: "Tag 3", type: "info" },
+    { name: "Tag 4", type: "warning" },
+    { name: "Tag 5", type: "danger" },
+  ]);
 </script>
 
 <style lang="scss" scoped>
@@ -98,6 +119,9 @@
         //   cursor: pointer;
         // }
       }
+    }
+    .tags {
+      margin-top: 20px;
     }
   }
 </style>

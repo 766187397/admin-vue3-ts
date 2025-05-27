@@ -69,4 +69,7 @@
       }
     }
   }
+  :deep(.el-header) {
+    height: auto;
+  }
 </style>
