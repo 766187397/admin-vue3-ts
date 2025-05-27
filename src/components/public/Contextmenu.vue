@@ -55,6 +55,11 @@
   onUnmounted(() => {
     document.removeEventListener("click", handleClickOutside);
   });
+
+  // 暴露方法给父组件使用
+  defineExpose({
+    handleClickOutside,
+  });
 </script>
 
 <style scoped>
