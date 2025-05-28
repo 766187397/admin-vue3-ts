@@ -1,0 +1,23 @@
+{
+  "id": "4935064",
+  "name": "后台管理",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "28941586",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e791",
+      "unicode_decimal": 59281
+    },
+    {
+      "icon_id": "6260310",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    }
+  ]
+}

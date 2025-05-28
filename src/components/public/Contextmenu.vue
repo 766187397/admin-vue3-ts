@@ -9,7 +9,7 @@
         v-for="(item, index) in eventList"
         :key="index"
         @click.prevent="handleClick(item)">
-        <i v-if="item.icon" :class="item.icon"></i>
+        <i class="contextmenu_icon" v-if="item.icon" :class="item.icon"></i>
         <div class="content" v-html="item.content"></div>
       </div>
     </div>
@@ -87,12 +87,16 @@
     height: 40px;
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     color: #2c2c2c;
     padding: 0 10px;
     box-sizing: border-box;
   }
   .contextmenu_list_item:hover {
     background-color: #f5f5f5;
+  }
+  .contextmenu_icon {
+    font-size: 12px;
+    margin-right: 10px;
   }
 </style>

@@ -106,7 +106,7 @@
   const defaultEventList: EventList[] = [
     {
       content: "关闭当前",
-
+      icon: "iconfont icon-shuaxin",
       click() {
         if (this.tag) {
           handleCloseTag(this.tag);
@@ -115,6 +115,7 @@
     },
     {
       content: "关闭其他",
+      icon: "iconfont icon-shuaxin",
       click() {
         if (this.tag) {
           tags.value = tags.value.filter((item) => item.path === this.tag?.path || item.path === "/home");
@@ -124,6 +125,7 @@
     },
     {
       content: "关闭所有",
+      icon: "iconfont icon-shuaxin",
       click() {
         tags.value = tags.value.filter((item) => item.path === "/home");
         router.push("/home");
@@ -131,6 +133,7 @@
     },
     {
       content: "刷新页面",
+      icon: "iconfont icon-guanbi",
       click() {
         router.go(0);
       },
