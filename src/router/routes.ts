@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/Test.vue"),
         meta: {
           type: "menu",
-          title: "test",
+          title: "测试",
         },
       },
     ],

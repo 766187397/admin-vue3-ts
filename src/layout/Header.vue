@@ -43,7 +43,8 @@
             :closable="tag.closable"
             :type="tag.type"
             @contextmenu.prevent="handleContextmenu($event, tag)"
-            @close="handleCloseTag(tag)">
+            @close="handleCloseTag(tag)"
+            @click="handleClickTags(tag)">
             {{ tag.name }}
           </el-tag>
         </div>
@@ -66,7 +67,8 @@
   const isCollapse = computed(() => {
     return menuStore.isCollapse;
   });
-  const matched = rouet.matched;
+  const matched = ref();
+  matched.value = rouet.matched.filter((item) => item.name !== "layout" && item.name !== "home");
   // 控制折叠
   const handleCollapse = () => {
     menuStore.setIsCollapse(!isCollapse.value);
@@ -144,6 +146,12 @@
   const eventList = toRef([...defaultEventList]);
 
   const contextmenu = ref<InstanceType<typeof Contextmenu>>();
+  /** 点击标签 */
+  const handleClickTags = (tag: TagsItem) => {
+    if (tag.path !== rouet.path) {
+      router.push(tag.path);
+    }
+  };
 
   /** 右键菜单 */
   const handleContextmenu = (event: MouseEvent, tag: TagsItem) => {
@@ -189,6 +197,8 @@
   /** 路由更新 */
   onBeforeRouteUpdate((to, from) => {
     handleTags(to);
+    console.log("to", to);
+    matched.value = to.matched.filter((item) => item.name !== "layout" && item.name !== "home");
   });
 </script>
 
@@ -234,6 +244,10 @@
         display: flex;
         align-items: center;
         gap: 10px;
+
+        :deep(.el-tag) {
+          cursor: pointer;
+        }
       }
     }
   }
