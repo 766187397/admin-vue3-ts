@@ -1,5 +1,6 @@
 <template>
-  <div class="contextmenu" @contextmenu.prevent="handleContextmenu">
+  <!--  @contextmenu.prevent="handleContextmenu" -->
+  <div class="contextmenu">
     <slot></slot>
 
     <div class="contextmenu_list" :style="{ top: top + 'px', left: left + 'px' }" v-show="show">
@@ -7,7 +8,7 @@
         class="contextmenu_list_item"
         v-for="(item, index) in eventList"
         :key="index"
-        @click.prevent="handleClick($event, item, index)">
+        @click.prevent="handleClick(item)">
         <i v-if="item.icon" :class="item.icon"></i>
         <div class="content" v-html="item.content"></div>
       </div>
@@ -20,6 +21,7 @@
     icon?: string;
     content: string;
     click: Function;
+    [key: string]: any;
   }
 
   const { eventList } = defineProps<{
@@ -36,8 +38,8 @@
   };
 
   /** 如果传入的函数返回的是true就不执行默认关闭 */
-  const handleClick = (event: MouseEvent, item: EventList, index: number) => {
-    const res = item.click(event, index);
+  const handleClick = (item: EventList) => {
+    const res = item.click();
     if (res) {
       return;
     }
@@ -59,6 +61,7 @@
   // 暴露方法给父组件使用
   defineExpose({
     handleClickOutside,
+    handleContextmenu,
   });
 </script>
 
@@ -71,13 +74,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 150px;
+    min-width: 100px;
     height: auto;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    padding: 5px 0;
-    box-sizing: border-box;
+    overflow: hidden;
   }
   .contextmenu_list_item {
     cursor: pointer;
