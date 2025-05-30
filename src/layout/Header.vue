@@ -197,7 +197,6 @@
   /** 路由更新 */
   onBeforeRouteUpdate((to, from) => {
     handleTags(to);
-    console.log("to", to);
     matched.value = to.matched.filter((item) => item.name !== "layout" && item.name !== "home");
   });
 </script>

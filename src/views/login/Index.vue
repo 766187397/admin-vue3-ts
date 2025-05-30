@@ -94,55 +94,50 @@
     if (!loginFormRef.value) return;
 
     await loginFormRef.value.validate(async (valid, fields) => {
-      if (valid) {
-        try {
-          loading.value = true;
+      if (!valid) return;
+      try {
+        loading.value = true;
 
-          const loginData: LoginForm = {
-            account: loginForm.account,
-            password: loginForm.password,
-          };
-          const response = await login(loginData);
+        const loginData: LoginForm = {
+          account: loginForm.account,
+          password: loginForm.password,
+        };
+        const response = await login(loginData);
 
-          // 登录成功
-          const { token_type, access_token, refresh_token, userInfo } = response.data;
-          // 存储token
-          if (access_token) {
-            userInfoStore.setTokenType(token_type);
-            userInfoStore.setToken(access_token);
-            userInfoStore.setRfreshToken(refresh_token);
-            userInfoStore.setUserInfo(userInfo);
+        // 登录成功
+        const { token_type, access_token, refresh_token, userInfo } = response.data;
+        // 存储token
+        if (access_token) {
+          userInfoStore.setTokenType(token_type);
+          userInfoStore.setToken(access_token);
+          userInfoStore.setRfreshToken(refresh_token);
+          userInfoStore.setUserInfo(userInfo);
 
-            // 如果选择了"记住我"，可以设置token的过期时间更长
-            if (rememberMe.value) {
-              userInfoStore.setLoginForm(loginData);
-              userInfoStore.setRememberMe(true);
-            }
+          // 如果选择了"记住我"，可以设置token的过期时间更长
+          if (rememberMe.value) {
+            userInfoStore.setLoginForm(loginData);
+            userInfoStore.setRememberMe(true);
           }
-
-          ElNotification({
-            title: "登录成功",
-            message: "欢迎回来，" + loginForm.account,
-            type: "success",
-          });
-
-          // 如果有重定向参数，则跳转到该页面，否则跳转到首页
-          const redirectPath = (route.query.redirect as string) || "/";
-          router.push(redirectPath);
-        } catch (error: any) {
-          // 登录失败
-          console.error("登录失败:", error);
-
-          ElMessage({
-            message: error.message || "登录失败，请检查账号和密码",
-            type: "error",
-            duration: 3000,
-          });
-        } finally {
-          loading.value = false;
         }
-      } else {
-        console.log("表单验证失败", fields);
+
+        ElNotification({
+          title: "登录成功",
+          message: "欢迎回来，" + loginForm.account,
+          type: "success",
+        });
+
+        // 如果有重定向参数，则跳转到该页面，否则跳转到首页
+        const redirectPath = (route.query.redirect as string) || "/";
+        router.push(redirectPath);
+      } catch (error: any) {
+        // 登录失败
+        ElMessage({
+          message: error.message || "登录失败，请检查账号和密码",
+          type: "error",
+          duration: 3000,
+        });
+      } finally {
+        loading.value = false;
       }
     });
   };

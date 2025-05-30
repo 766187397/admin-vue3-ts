@@ -127,8 +127,6 @@ export class Http {
             this.requestsQueue = [];
 
             router.push("/login");
-
-            console.log("跳转登录页面");
             return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;
