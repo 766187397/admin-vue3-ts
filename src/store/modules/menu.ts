@@ -1,7 +1,7 @@
-import { getRoutes } from "@/api/menu";
+import { getRoutesByRole } from "@/api/menu";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { getRoutesParams, RoleRoutes } from "@/types/menu";
+import type { getRoutesByRoleParams, RoleRoutes } from "@/types/menu";
 import router from "@/router";
 import { deepClone } from "@/utils/tool";
 import type { RouteRecordRaw } from "vue-router";
@@ -40,10 +40,10 @@ export const useMenuStore = defineStore("menu", () => {
   let dynamicMenu = ref<RoleRoutes[]>([]);
   /**
    * 使用接口获取路由菜单
-   * @param {getRoutesParams} params - 请求参数
+   * @param {getRoutesByRoleParams} params - 请求参数
    */
-  const getDynamicMenu = async (params: getRoutesParams) => {
-    const res = await getRoutes(params);
+  const getDynamicMenu = async (params: getRoutesByRoleParams) => {
+    const res = await getRoutesByRole(params);
     dynamicMenu.value = res.data;
   };
   // 全部动态路由
@@ -53,7 +53,7 @@ export const useMenuStore = defineStore("menu", () => {
    */
   const getDynamicMenuAll = async () => {
     return new Promise(async (resolve) => {
-      const res = await getRoutes();
+      const res = await getRoutesByRole();
       dynamicMenuAll.value = res.data;
       addRouters(res.data);
       // 菜单扁平化
