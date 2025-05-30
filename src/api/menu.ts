@@ -5,6 +5,7 @@ import type {
   getRoutesByRoleParams,
   RoleRoutes,
   RouterInfo,
+  RoutesList,
 } from "@/types/menu";
 import { http } from "@/utils/http";
 
@@ -14,8 +15,8 @@ export const createRoute = async (data: createRoutesParams): Promise<Result<Role
 };
 
 /** 查询所有路由 */
-export const getRoutesAll = async (params?: getRoutesAllParams): Promise<Result<RouterInfo[]>> => {
-  return await http.get<Result<RouterInfo[]>>("/api/v1/admin/routes/all", params);
+export const getRoutesAll = async (params?: getRoutesAllParams): Promise<Result<RoutesList[]>> => {
+  return await http.get<Result<RoutesList[]>>("/api/v1/admin/routes/all", params);
 };
 
 /** 查询路由详情 */

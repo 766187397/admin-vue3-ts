@@ -43,11 +43,12 @@
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
-        <el-form ref="formRef" :model="form" label-width="auto">
+        <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="上级路由：">
                 <el-cascader
+                  v-model="form.parentId"
                   :options="tableData"
                   :props="{ value: 'id', label: 'title', checkStrictly: true }"
                   filterable
@@ -128,8 +129,8 @@
 
 <script setup lang="ts">
   import { createRoute, getRoutesAll, getRoutesDetail, updateRoutes } from "@/api/menu";
-  import type { createRoutesParams, RouterInfo } from "@/types/menu";
-  import { ElMessage } from "element-plus";
+  import type { createRoutesParams, RouterInfo, RoutesList } from "@/types/menu";
+  import { ElMessage, type FormRules } from "element-plus";
 
   // 加载中动画
   const loading = ref(false);
@@ -145,7 +146,7 @@
   });
 
   // 表格数据
-  const tableData = ref<RouterInfo[]>([]);
+  const tableData = ref<RoutesList[]>([]);
 
   // 查询表格数据
   const getTableData = async () => {
@@ -162,6 +163,15 @@
 
   // 表单数据
   const form = ref<RouterInfo | createRoutesParams>();
+
+  // 表单校验
+  const rules = reactive<FormRules<RouterInfo>>({
+    type: [{ required: true, message: "请选择路由类型", trigger: ["blur", "change"] }],
+    name: [{ required: true, message: "请输入路由名称", trigger: ["blur", "change"] }],
+    title: [{ required: true, message: "请输入路由显示名称", trigger: ["blur", "change"] }],
+    path: [{ required: true, message: "请输入前端路由路径", trigger: ["blur", "change"] }],
+  });
+
   // 查询详情
   const getInfo = async (id: string) => {
     try {

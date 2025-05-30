@@ -73,8 +73,9 @@ export interface getRoutesByRoleParams {
   type: string;
 }
 
-/** 常规返回结果 */
+/** 详情返回 */
 export interface RouterInfo {
+  parentId?: number;
   id: number;
   sort: number;
   status: number;
@@ -90,4 +91,9 @@ export interface RouterInfo {
   externalLinks: boolean;
   redirect: string;
   platform?: string;
+}
+
+/** 列表返回 */
+export interface RoutesList extends RouterInfo {
+  children?: RoleRoutes[];
 }
