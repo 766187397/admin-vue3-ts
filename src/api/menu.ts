@@ -2,7 +2,8 @@ import type { Result } from "@/types/api";
 import type { createRoutesParams, getRoutesAllParams, getRoutesByRoleParams, RoleRoutes } from "@/types/menu";
 import { http } from "@/utils/http";
 
-export const addRoute = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
+/** 创建路由 */
+export const createRoute = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
   return await http.post<Result<RoleRoutes>>("/api/v1/admin/routes/create", data);
 };
 
