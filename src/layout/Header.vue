@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useRouter, useRoute, type RouteRecordRaw } from "vue-router";
+  import { useRouter, useRoute } from "vue-router";
   import { useUserInfoStore, useMenuStore, usePublicStore } from "@/store";
   import Contextmenu from "@/components/public/Contextmenu.vue";
   const router = useRouter();
@@ -145,7 +145,7 @@
   // 右键菜单
   const eventList = toRef([...defaultEventList]);
 
-  const contextmenu = ref<InstanceType<typeof Contextmenu>>();
+  const contextmenu = useTemplateRef<typeof Contextmenu>("contextmenu");
   /** 点击标签 */
   const handleClickTags = (tag: TagsItem) => {
     if (tag.path !== rouet.path) {
