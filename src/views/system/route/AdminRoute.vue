@@ -1,19 +1,26 @@
 <template>
   <div class="admin_route" v-loading="loading">
-    <el-form :model="query" label-width="auto">
-      <el-row :gutter="20">
-        <el-col :span="4">
-          <el-form-item label="平台：">
-            <el-input v-model="query.platform" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-form-item label="类型：">
-            <el-input v-model="query.type" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+    <div class="query_form">
+      <el-form :model="query" label-width="auto">
+        <el-row :gutter="20">
+          <el-col :span="4">
+            <el-form-item label="平台：">
+              <el-input v-model="query.platform" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="类型：">
+              <el-input v-model="query.type" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="4">
+            <el-button type="primary" size="small" plain @click="handleAdd">添加</el-button>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
 
     <el-table :data="tableData" row-key="id" default-expand-all>
       <el-table-column prop="title" label="名称" align="left" />
@@ -27,14 +34,14 @@
       <el-table-column prop="component" label="组件" align="center" />
       <el-table-column label="操作" align="center" fixed="right" width="300">
         <template v-slot="scope">
-          <el-button type="primary" size="small" @click="getInfo(scope.row.id)">编辑</el-button>
-          <el-button type="primary" size="small" @click="getInfo(scope.row.id)">编辑</el-button>
-          <el-button type="danger" size="small" @click="getInfo(scope.row.id)">编辑</el-button>
+          <el-button type="primary" size="small" @click="getInfo(scope.row.id)" plain>编辑</el-button>
+          <el-button type="primary" size="small" @click="getInfo(scope.row.id)" plain>编辑</el-button>
+          <el-button type="danger" size="small" @click="getInfo(scope.row.id)" plain>编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" :title="title" width="800" :before-close="handleClose">
+    <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
         <el-form ref="formRef" :model="form" label-width="auto">
           <el-row :gutter="20">
@@ -154,7 +161,7 @@
   getTableData();
 
   // 表单数据
-  const form = ref<RouterInfo>();
+  const form = ref<RouterInfo | createRoutesParams>();
   // 查询详情
   const getInfo = async (id: string) => {
     try {
@@ -175,8 +182,25 @@
     dialogVisible.value = false;
   };
 
-  const formRef = useTemplateRef("formRef");
+  const handleAdd = () => {
+    dialogVisible.value = true;
+    title.value = "添加";
+    form.value = {
+      platform: "admin",
+      type: "menu",
+      title: "",
+      name: "",
+      path: "",
+      component: "",
+      icon: "",
+      externalLinks: false,
+      redirect: "",
+      sort: 1,
+      meta: "",
+    };
+  };
 
+  const formRef = useTemplateRef("formRef");
   // 提交
   const submit = () => {
     formRef.value?.validate(async (valid) => {
@@ -184,7 +208,7 @@
       try {
         buttonLoading.value = true;
         let res;
-        if (form.value?.id) {
+        if ("id" in form.value!) {
           // 编辑
           res = await updateRoutes(form.value?.id, form.value as createRoutesParams);
         } else {

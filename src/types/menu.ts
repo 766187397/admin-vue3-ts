@@ -89,4 +89,5 @@ export interface RouterInfo {
   icon: string;
   externalLinks: boolean;
   redirect: string;
+  platform?: string;
 }

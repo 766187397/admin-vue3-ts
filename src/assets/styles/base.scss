@@ -9,3 +9,13 @@
 :focus-visible {
   outline: none;
 }
+
+.query_form {
+  padding-bottom: 30px;
+
+  .el-form-item {
+    .el-form-item__label {
+      font-weight: 700;
+    }
+  }
+}
