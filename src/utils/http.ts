@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { useUserInfoStore } from "@/store";
-import { useRouter } from "vue-router";
+import router from "@/router/index";
 import { ElMessage } from "element-plus";
 
 /** 使用type来定义请求配置 方便设置联合类型 */
@@ -126,8 +126,9 @@ export class Http {
             // 清空队列
             this.requestsQueue = [];
 
-            const router = useRouter();
             router.push("/login");
+
+            console.log("跳转登录页面");
             return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;
