@@ -42,13 +42,13 @@ export interface createRoutesParams {
 
 /** 查询所有路由参数 */
 export interface getRoutesAllParams {
-  sort: string;
-  status: string;
-  time: string;
-  platform: string;
-  type: string;
-  name: string;
-  title: string;
+  sort?: string;
+  status?: string;
+  time?: string;
+  platform?: string;
+  type?: string;
+  name?: string;
+  title?: string;
 }
 
 /** 接口通过角色获取路由 */
@@ -71,4 +71,22 @@ export interface RoleRoutes {
 /** 通过角色查询路由参数 */
 export interface getRoutesByRoleParams {
   type: string;
+}
+
+/** 常规返回结果 */
+export interface RouterInfo {
+  id: number;
+  sort: number;
+  status: number;
+  createdAt: string;
+  updatedAt: string;
+  type: string;
+  name: string;
+  title: string;
+  path: string;
+  component: string;
+  meta: string;
+  icon: string;
+  externalLinks: boolean;
+  redirect: string;
 }
