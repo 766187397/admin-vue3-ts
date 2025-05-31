@@ -38,6 +38,10 @@ export const usePublicStore = defineStore("public", () => {
         fullScreen.value = true;
       });
   };
+
+
+
+
   return {
     fullScreen,
     getFullScreenState,
