@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "./routes";
 import { useUserInfoStore, useMenuStore } from "@/store";
+import initData from "./initData";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,8 @@ router.beforeEach(async (to, from, next) => {
   // 检查用户是否已登录
   const token = userInfoStore.token;
   if (token) {
+    // 获取初始的数据
+    initData();
     // 已登录
     if (!menuStore.dynamicMenuAll || menuStore.dynamicMenuAll.length === 0) {
       await menuStore.getDynamicMenu({ type: "menu" });
