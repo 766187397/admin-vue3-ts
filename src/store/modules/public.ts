@@ -39,13 +39,30 @@ export const usePublicStore = defineStore("public", () => {
       });
   };
 
+  /** 平台类型列表 */
+  const platformList = ref();
 
+  /** 设置平台类型列表 */
+  const setPlatformList = (list: any) => {
+    platformList.value = list;
+  };
 
+  /** 公共状态 */
+  const publicStateList = ref();
+
+  /** 设置公共状态 */
+  const setPublicStateList = (state: any) => {
+    publicStateList.value = state;
+  };
 
   return {
     fullScreen,
     getFullScreenState,
     enterFullScreen,
     exitFullscreen,
+    platformList,
+    setPlatformList,
+    publicStateList,
+    setPublicStateList,
   };
 });
