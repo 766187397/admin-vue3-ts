@@ -129,7 +129,7 @@
 
 <script setup lang="ts">
   import { createRoute, getRoutesAll, getRoutesDetail, updateRoutes } from "@/api/menu";
-  import type { createRoutesParams, RouterInfo, RoutesList } from "@/types/menu";
+  import type { createRoutesParams, RouterInfoList } from "@/types/menu";
   import { ElMessage, type FormRules } from "element-plus";
 
   // 加载中动画
@@ -146,7 +146,7 @@
   });
 
   // 表格数据
-  const tableData = ref<RoutesList[]>([]);
+  const tableData = ref<RouterInfoList[]>([]);
 
   // 查询表格数据
   const getTableData = async () => {
@@ -162,10 +162,10 @@
   getTableData();
 
   // 表单数据
-  const form = ref<RouterInfo | createRoutesParams>();
+  const form = ref<RouterInfoList | createRoutesParams>();
 
   // 表单校验
-  const rules = reactive<FormRules<RouterInfo>>({
+  const rules = reactive<FormRules<RouterInfoList>>({
     type: [{ required: true, message: "请选择路由类型", trigger: ["blur", "change"] }],
     name: [{ required: true, message: "请输入路由名称", trigger: ["blur", "change"] }],
     title: [{ required: true, message: "请输入路由显示名称", trigger: ["blur", "change"] }],

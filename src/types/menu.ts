@@ -74,9 +74,9 @@ export interface getRoutesByRoleParams {
 }
 
 /** 详情返回 */
-export interface RouterInfo {
-  parentId?: number;
+interface RouterInfo {
   id: number;
+  uuid: string;
   sort: number;
   status: number;
   createdAt: string;
@@ -90,10 +90,11 @@ export interface RouterInfo {
   icon: string;
   externalLinks: boolean;
   redirect: string;
-  platform?: string;
+  parentId: number;
 }
 
-/** 列表返回 */
-export interface RoutesList extends RouterInfo {
-  children?: RoleRoutes[];
+/** 路由详情 抽离 防止循环引用 */
+export interface RouterInfoList extends RouterInfo {
+  children?: RouterInfo[];
+  parent?: RouterInfo;
 }
