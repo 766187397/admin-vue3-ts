@@ -246,7 +246,6 @@
     try {
       loading.value = true;
       dialogVisible.value = true;
-
       const typeObj = {
         getDetail: async function () {
           let res = await getRoutesDetail(id as string);
