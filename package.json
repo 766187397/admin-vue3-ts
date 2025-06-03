@@ -25,6 +25,9 @@
   },
   "devDependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@iconify-json/ci": "^1.2.2",
+    "@iconify-json/fa": "^1.2.1",
+    "@iconify-json/wi": "^1.2.1",
     "@tsconfig/node22": "^22.0.1",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.14.0",

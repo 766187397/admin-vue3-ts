@@ -92,7 +92,11 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="图标：">
-                <el-input v-model="form.icon" placeholder="请输入图标(element组件/进入的图标class)" />
+                <el-input v-model="form.icon" placeholder="请输入图标(element组件/进入的图标class)">
+                  <template #append>
+                    <el-button icon="Tools" />
+                  </template>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">

@@ -7,12 +7,15 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const cipherText: typeof import('~icons/ci/pher-text')['default']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const effectScope: typeof import('vue')['effectScope']
+  const false: typeof import('~icons/fa/lse')['default']
+  const fatherName: typeof import('~icons/fa/ther-name')['default']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
@@ -67,6 +70,7 @@ declare global {
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
   const watchSyncEffect: typeof import('vue')['watchSyncEffect']
+  const window: typeof import('~icons/wi/ndow')['default']
 }
 // for type re-export
 declare global {
