@@ -92,11 +92,30 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="图标：">
-                <el-input v-model="form.icon" placeholder="请输入图标(element组件/进入的图标class)">
+                <!-- <el-input v-model="form.icon" placeholder="请输入图标(element组件/进入的图标class)">
                   <template #append>
                     <el-button icon="Tools" />
                   </template>
-                </el-input>
+                </el-input> -->
+                <el-select
+                  v-model="form.icon"
+                  placeholder="请输入图标(element组件/进入的图标class)"
+                  clearable
+                  filterable>
+                  <el-option-group v-for="group in componentAndIcons" :key="group.label" :label="group.label">
+                    <el-option v-for="item in group.options" :key="item" :label="item" :value="item">
+                      <div class="icon_list">
+                        <span class="left">{{ item }}</span>
+                        <span class="right">
+                          <el-icon v-if="elementPlusIcons.includes(item)">
+                            <component :is="item" />
+                          </el-icon>
+                          <i v-else class="customize_icon" :class="item"></i>
+                        </span>
+                      </div>
+                    </el-option>
+                  </el-option-group>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -144,9 +163,22 @@
   import { usePublicStore } from "@/store";
   import { typeValue } from "@/utils/tool";
   import type { getDictionaryItemAllResult, typeObj } from "@/types/public";
-
+  import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+  import { baseIconsList } from "@/assets/icon/index";
   const publicStore = usePublicStore();
 
+  const elementPlusIcons = Object.keys(ElementPlusIconsVue);
+
+  const componentAndIcons = reactive<any>([
+    {
+      label: "Element Plus Icons",
+      options: [...elementPlusIcons],
+    },
+    {
+      label: "Customize Icons",
+      options: [...baseIconsList],
+    },
+  ]);
   // 加载中动画
   const loading = ref(false);
   const buttonLoading = ref(false);
@@ -289,10 +321,9 @@
     });
   };
 
+  /** 删除 */
   const handleDel = (id: string | number) => {
     ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
-      // confirmButtonText: "确定",
-      // cancelButtonText: "取消",
       type: "error",
     }).then(async () => {
       let res = await delRoutes(id);
@@ -304,4 +335,10 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .icon_list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+</style>
