@@ -5,15 +5,15 @@
         <el-row :gutter="20">
           <el-col :span="4">
             <el-form-item label="平台：">
-              <el-select v-model="query.platform" placeholder="请选择平台">
+              <el-select v-model="query.platform" placeholder="请选择平台" @change="getTableData">
                 <el-option v-for="item in platformList" :key="item.id" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <!-- <el-col :span="4">
             <el-button type="primary" @click="getTableData">查询</el-button>
             <el-button @click="resetQuery">重置</el-button>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="20">
           <el-col :span="4">
@@ -242,7 +242,7 @@
   });
 
   // 查询详情
-  const handleForm = async (type: typeObj, id?: string) => {
+  const handleForm = async (type: typeObj, id?: string | number) => {
     try {
       loading.value = true;
       dialogVisible.value = true;
@@ -264,15 +264,15 @@
             component: "",
             meta: "",
             icon: "",
-            parentId: id,
+            parentId: id as number,
             externalLinks: false,
             redirect: "",
-            platform: "",
             type: "",
             name: "",
             title: "",
             path: "",
-          };
+            platform: query.value.platform,
+          } as createRoutesParams;
         },
         detail: async function () {
           await typeObj.getDetail();
