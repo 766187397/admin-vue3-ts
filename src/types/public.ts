@@ -19,3 +19,6 @@ export interface getDictionaryItemAllResult {
   value: string;
   description: string;
 }
+
+/** 自定义弹窗类型 */
+export type typeObj = "edit" | "add" | "detail";

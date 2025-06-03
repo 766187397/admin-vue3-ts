@@ -16,7 +16,7 @@ export interface createRoutesParams {
   icon?: string;
 
   /*父级路由id */
-  parentId?: number;
+  parentId?: string | number;
 
   /*是否为外链 */
   externalLinks?: boolean;

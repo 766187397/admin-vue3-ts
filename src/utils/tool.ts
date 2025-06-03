@@ -114,3 +114,16 @@ export function deepCloneOverall<T>(value: T, hash: WeakMap<object, any> = new W
 
   return newValue as unknown as T;
 }
+
+/**
+ * 数据字典回显公用函数
+ * @param {any[]} arr 字典项列表
+ * @param {string} value 对比值
+ * @returns {string} 字典项名称
+ */
+export function typeValue(arr?: any[], value?: string): string {
+  if (value && arr) {
+    return arr.find((item) => item.value === value)?.label || "";
+  }
+  return value || "";
+}

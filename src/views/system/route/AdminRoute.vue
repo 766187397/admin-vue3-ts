@@ -5,18 +5,19 @@
         <el-row :gutter="20">
           <el-col :span="4">
             <el-form-item label="平台：">
-              <el-input v-model="query.platform" />
+              <el-select v-model="query.platform" placeholder="请选择平台">
+                <el-option v-for="item in platformList" :key="item.id" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="类型：">
-              <el-input v-model="query.type" />
-            </el-form-item>
+            <el-button type="primary" @click="getTableData">查询</el-button>
+            <el-button @click="resetQuery">重置</el-button>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="4">
-            <el-button type="primary" size="small" plain @click="handleAdd">添加</el-button>
+            <el-button type="primary" size="small" plain @click="handleForm('add')">添加</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -26,7 +27,11 @@
       <el-table-column prop="title" label="名称" align="left" />
       <el-table-column prop="name" label="路由名称" align="center" />
       <el-table-column prop="icon" label="图标" align="center" />
-      <el-table-column prop="type" label="类型" align="center" />
+      <el-table-column prop="type" label="类型" align="center">
+        <template v-slot="scope">
+          <span>{{ typeValue(typeList, scope.row.type) }}</span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="createdAt" label="创建时间" align="center" /> -->
       <el-table-column prop="externalLinks" label="是否为外链" align="center" />
       <el-table-column prop="path" label="路由" align="center" />
@@ -34,9 +39,9 @@
       <el-table-column prop="component" label="组件" align="center" />
       <el-table-column label="操作" align="center" fixed="right" width="300">
         <template v-slot="scope">
-          <el-button type="primary" size="small" @click="getInfo(scope.row.id)" plain>编辑</el-button>
-          <el-button type="primary" size="small" @click="getInfo(scope.row.id)" plain>编辑</el-button>
-          <el-button type="danger" size="small" @click="getInfo(scope.row.id)" plain>编辑</el-button>
+          <el-button type="primary" size="small" plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
+          <el-button type="primary" size="small" plain @click="handleForm('add', scope.row.id)">新增</el-button>
+          <el-button type="danger" size="small" plain @click="handleDel(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -128,9 +133,15 @@
 </template>
 
 <script setup lang="ts">
-  import { createRoute, getRoutesAll, getRoutesDetail, updateRoutes } from "@/api/menu";
+  import { createRoute, delRoutes, getRoutesAll, getRoutesDetail, updateRoutes } from "@/api/menu";
   import type { createRoutesParams, RouterInfoList } from "@/types/menu";
-  import { ElMessage, type FormRules } from "element-plus";
+  import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
+  import { getDictionaryItemAll } from "@/api/public";
+  import { usePublicStore } from "@/store";
+  import { typeValue } from "@/utils/tool";
+  import type { getDictionaryItemAllResult, typeObj } from "@/types/public";
+
+  const publicStore = usePublicStore();
 
   // 加载中动画
   const loading = ref(false);
@@ -145,6 +156,25 @@
     type: "",
   });
 
+  // 查询重置
+  const resetQuery = () => {
+    query.value = {
+      platform: "admin",
+      type: "",
+    };
+  };
+
+  // 平台platform
+  const platformList = computed(() => publicStore.platformList);
+
+  // 查询类型
+  const typeList = ref<getDictionaryItemAllResult[]>();
+  const getDictionaryItemAllAsync = async () => {
+    let res = await getDictionaryItemAll({ type: "routeType" });
+    typeList.value = res.data;
+  };
+  getDictionaryItemAllAsync();
+
   // 表格数据
   const tableData = ref<RouterInfoList[]>([]);
 
@@ -152,7 +182,10 @@
   const getTableData = async () => {
     try {
       loading.value = true;
-      let res = await getRoutesAll(query.value);
+      const data = {
+        ...query.value,
+      };
+      let res = await getRoutesAll(data);
       tableData.value = res.data;
     } catch (error) {
     } finally {
@@ -173,14 +206,47 @@
   });
 
   // 查询详情
-  const getInfo = async (id: string) => {
+  const handleForm = async (type: typeObj, id?: string) => {
     try {
       loading.value = true;
-      let res = await getRoutesDetail(id);
-      form.value = res.data;
       dialogVisible.value = true;
-      title.value = "编辑";
-    } catch (error) {
+
+      const typeObj = {
+        getDetail: async function () {
+          let res = await getRoutesDetail(id as string);
+          form.value = res.data;
+        },
+        edit: async function () {
+          await typeObj.getDetail();
+          title.value = "编辑";
+        },
+        add: async function () {
+          title.value = "新增";
+          form.value = {
+            sort: 0,
+            status: 1,
+            component: "",
+            meta: "",
+            icon: "",
+            parentId: id,
+            externalLinks: false,
+            redirect: "",
+            platform: "",
+            type: "",
+            name: "",
+            title: "",
+            path: "",
+          };
+        },
+        detail: async function () {
+          await typeObj.getDetail();
+          title.value = "详情";
+        },
+      };
+      // 直接调用不影响this的指向，否则使用bind(this)
+      // const fn = typeObj[type];
+      // await fn.bind(typeObj)();
+      await typeObj[type]();
     } finally {
       loading.value = false;
     }
@@ -190,24 +256,6 @@
   const handleClose = () => {
     form.value = undefined;
     dialogVisible.value = false;
-  };
-
-  const handleAdd = () => {
-    dialogVisible.value = true;
-    title.value = "添加";
-    form.value = {
-      platform: "admin",
-      type: "menu",
-      title: "",
-      name: "",
-      path: "",
-      component: "",
-      icon: "",
-      externalLinks: false,
-      redirect: "",
-      sort: 1,
-      meta: "",
-    };
   };
 
   const formRef = useTemplateRef("formRef");
@@ -234,6 +282,20 @@
       } finally {
         buttonLoading.value = false;
       }
+    });
+  };
+
+  const handleDel = (id: string | number) => {
+    ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
+      // confirmButtonText: "确定",
+      // cancelButtonText: "取消",
+      type: "error",
+    }).then(async () => {
+      let res = await delRoutes(id);
+      getTableData();
+      ElMessage.success({
+        message: res?.message || "操作成功",
+      });
     });
   };
 </script>
