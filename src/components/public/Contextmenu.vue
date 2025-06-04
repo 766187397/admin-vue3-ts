@@ -74,6 +74,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 9999;
     min-width: 100px;
     height: auto;
     background-color: #fff;
