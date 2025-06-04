@@ -11,6 +11,7 @@ pinia.use(persist);
 export default pinia;
 
 // 统一导出
+export * from "./modules/elConfig";
 export * from "./modules/test";
 export * from "./modules/usetInfo";
 export * from "./modules/menu";

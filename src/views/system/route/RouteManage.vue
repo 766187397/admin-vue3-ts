@@ -17,7 +17,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="4">
-            <el-button type="primary" size="small" plain @click="handleForm('add')">添加</el-button>
+            <el-button type="primary" plain @click="handleForm('add')">添加</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -39,9 +39,9 @@
       <el-table-column prop="component" label="组件" align="center" />
       <el-table-column label="操作" align="center" fixed="right" width="300">
         <template v-slot="scope">
-          <el-button type="primary" size="small" plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
-          <el-button type="primary" size="small" plain @click="handleForm('add', scope.row.id)">新增</el-button>
-          <el-button type="danger" size="small" plain @click="handleDel(scope.row.id)">删除</el-button>
+          <el-button type="primary" plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
+          <el-button type="primary" plain @click="handleForm('add', scope.row.id)">新增</el-button>
+          <el-button type="danger" plain @click="handleDel(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
