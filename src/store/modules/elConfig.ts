@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 /** 全局的配置 */
 export const useElConfigStore = defineStore(
-  "locale",
+  "ElConfig",
   () => {
     const config = ref({
       size: "small",
