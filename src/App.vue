@@ -1,14 +1,15 @@
 <script setup lang="ts">
   import { RouterView } from "vue-router";
-  import { useLocaleStore } from "@/store/index.ts";
-  const localeStore = useLocaleStore();
-  const { config } = localeStore;
+  import Loading from "@/components/public/Loading.vue";
 </script>
 
 <template>
-  <el-config-provider v-bind="config">
-    <RouterView />
-  </el-config-provider>
+  <RouterView v-slot="{ Component }">
+    <template v-if="Component">
+      <component :is="Component" />
+    </template>
+    <Loading v-else />
+  </RouterView>
 </template>
 
 <style scoped></style>

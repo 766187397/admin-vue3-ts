@@ -1,11 +1,22 @@
 <template>
   <div class="main">
-    <RouterView />
+    <el-config-provider v-bind="config">
+      <RouterView v-slot="{ Component }">
+        <template v-if="Component">
+          <component :is="Component" />
+        </template>
+        <div v-else><Loading /></div>
+      </RouterView>
+    </el-config-provider>
   </div>
 </template>
 
 <script setup lang="ts">
   import { RouterView } from "vue-router";
+  import Loading from "@/components/public/Loading.vue";
+  import { useElConfigStore } from "@/store/index.ts";
+  const elConfigStore = useElConfigStore();
+  const { config } = elConfigStore;
 </script>
 
 <style scoped></style>
