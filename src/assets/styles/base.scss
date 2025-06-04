@@ -25,3 +25,16 @@
     }
   }
 }
+
+.el-main {
+  background-color: #f8f8f8;
+
+  .main {
+    background-color: #fff;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+}
