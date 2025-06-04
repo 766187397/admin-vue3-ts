@@ -70,6 +70,7 @@ export class Http {
         return response.data;
       },
       async (error) => {
+        console.log("error", error);
         const userInfoStore = useUserInfoStore();
         const originalRequest = error.config;
         // 如果是401错误且不是刷新token的请求
@@ -132,8 +133,12 @@ export class Http {
             this.isRefreshing = false;
           }
         }
+        if (error.code === "ERR_NETWORK") {
+          console.log("网络异常！");
+          router.push("/error/500/网络异常，请稍后尝试！");
+        }
         // 全局的错误处理
-        if (!error.config.headers.skipErrorHandler) {
+        else if (!error.config.headers.skipErrorHandler) {
           this.handleError(error);
         }
         return Promise.reject(error);

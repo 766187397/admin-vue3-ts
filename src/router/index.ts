@@ -31,7 +31,10 @@ router.beforeEach(async (to, from, next) => {
   const menuStore = useMenuStore();
   // 检查用户是否已登录
   const token = userInfoStore.token;
-  if (token) {
+  // 错误页面无需任何请求直接方向
+  if (to.path.startsWith("/error")) {
+    next();
+  } else if (token) {
     // 获取初始的数据
     initData();
     // 已登录
@@ -46,7 +49,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // 如果路由在白名单中，不需要认证，则直接放行
     if (isInFullMatchWhitelist || isInPrefixWhitelist) {
-      return next();
+      next();
     }
     // 未登录，不在白名单中，则重定向到登录页面，并保存原目标路由用于登录后跳转
     next({
