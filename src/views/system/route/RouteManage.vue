@@ -25,23 +25,26 @@
 
     <el-table :data="tableData" row-key="id" default-expand-all>
       <el-table-column prop="title" label="名称" align="left" />
-      <el-table-column prop="name" label="路由名称" align="center" />
-      <el-table-column prop="icon" label="图标" align="center" />
-      <el-table-column prop="type" label="类型" align="center">
+      <el-table-column prop="name" label="路由名称" align="center" width="100" />
+      <el-table-column prop="icon" label="图标" align="center" width="200" />
+      <el-table-column prop="type" label="类型" align="center" width="100">
         <template v-slot="scope">
           <span>{{ typeValue(typeList, scope.row.type) }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="createdAt" label="创建时间" align="center" /> -->
-      <el-table-column prop="externalLinks" label="是否为外链" align="center" />
+      <el-table-column prop="externalLinks" label="是否为外链" align="center" width="100" />
       <el-table-column prop="path" label="路由" align="center" />
-      <el-table-column prop="redirect" label="重定向" align="center" />
+      <el-table-column prop="redirect" label="重定向" align="center">
+        <template v-slot="scope">
+          <el-link type="primary" target="_blank" :href="scope.row.redirect">{{ scope.row.redirect }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column prop="component" label="组件" align="center" />
       <el-table-column label="操作" align="center" fixed="right" width="300">
         <template v-slot="scope">
-          <el-button type="primary" plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
-          <el-button type="primary" plain @click="handleForm('add', scope.row.id)">新增</el-button>
-          <el-button type="danger" plain @click="handleDel(scope.row.id)">删除</el-button>
+          <el-button type="primary" text plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
+          <el-button type="primary" text plain @click="handleForm('add', scope.row.id)">新增</el-button>
+          <el-button type="danger" text plain @click="handleDel(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -92,11 +95,6 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="图标：">
-                <!-- <el-input v-model="form.icon" placeholder="请输入图标(element组件/进入的图标class)">
-                  <template #append>
-                    <el-button icon="Tools" />
-                  </template>
-                </el-input> -->
                 <el-select
                   v-model="form.icon"
                   placeholder="请输入图标(element组件/进入的图标class)"
@@ -339,5 +337,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  :deep(.el-link) {
+    width: 100%;
+    .el-link__inner {
+      width: 100%;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 </style>
