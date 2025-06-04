@@ -72,6 +72,9 @@
               <el-option label="较小" value="small" />
             </el-select>
           </el-form-item>
+          <el-form-item label="主题：">
+            <el-color-picker v-model="config.themeColor" @change="handleThemeChange" />
+          </el-form-item>
         </el-form>
       </template>
       <template #footer>
@@ -94,6 +97,8 @@
   const menuStore = useMenuStore();
   const userInfoStore = useUserInfoStore();
   const elConfigStore = useElConfigStore();
+
+  const { changeThemeColor } = elConfigStore;
   // 获取用户信息
   const userInfo = computed(() => userInfoStore.userInfo);
   // 偏好设置开关
@@ -104,11 +109,15 @@
     restored = { ...elConfigStore.config };
   };
   const handleCancel = () => {
-    ElMessageBox.confirm("取消会将丢失已修改的设置", "提示")
-      .then(() => {
-        drawer.value = false;
-        elConfigStore.setConfig(restored);
-      })
+    ElMessageBox.confirm("取消会将丢失已修改的设置", "提示").then(() => {
+      drawer.value = false;
+      elConfigStore.setConfig(restored);
+      changeThemeColor(restored.themeColor);
+    });
+  };
+  // 设置主题颜色
+  const handleThemeChange = (color: string) => {
+    changeThemeColor(color);
   };
   // 菜单是否折叠
   const isCollapse = computed(() => {
