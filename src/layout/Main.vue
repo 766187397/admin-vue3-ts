@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <el-config-provider v-bind="config">
+    <el-config-provider :size="config.size">
       <RouterView v-slot="{ Component }">
         <template v-if="Component">
           <component :is="Component" />
