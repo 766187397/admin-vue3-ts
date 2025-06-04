@@ -13,6 +13,14 @@
       </div>
       <div class="right">
         <div class="r_item">
+          <el-switch
+            v-model="theme"
+            style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
+            active-action-icon="Moon"
+            inactive-action-icon="Sunny"
+            @click="handleAnimation($event)" />
+        </div>
+        <div class="r_item">
           <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState"><FullScreen /></el-icon>
           <el-icon size="20" @click="exitFullscreen" v-else><CopyDocument /></el-icon>
         </div>
@@ -75,9 +83,12 @@
   };
   // 退出登录
   const { handleLogout } = userInfoStore;
-  const { enterFullScreen, exitFullscreen, getFullScreenState } = publicStore;
+  const { enterFullScreen, exitFullscreen, getFullScreenState, handleAnimation } = publicStore;
   getFullScreenState();
   const fullScreenState = computed(() => publicStore.fullScreen);
+
+  // 主题
+  const theme = computed(() => publicStore.theme);
 
   import type { TagProps } from "element-plus";
 
@@ -231,10 +242,13 @@
 
         .r_item {
           cursor: pointer;
+
+          :deep(.el-switch) {
+            .el-icon {
+              color: #000;
+            }
+          }
         }
-        // :deep(.el-dropdown) {
-        //   cursor: pointer;
-        // }
       }
     }
     .tags {

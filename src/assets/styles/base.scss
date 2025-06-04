@@ -5,6 +5,23 @@
 @import "element-plus/dist/index.css";
 @import "element-plus/theme-chalk/dark/css-vars.css";
 
+:root {
+  /* 默认亮主题 */
+  --bg-color: #fff;
+  background-color: var(--bg-color);
+}
+
+:root.dark {
+  /* 暗主题 */
+  --bg-color: #000;
+}
+
+::view-transition-new(root),
+::view-transition-old(root) {
+  /* 关闭默认动画 */
+  animation: none;
+}
+
 #app {
   width: 100vw;
   height: 100vh;
@@ -41,5 +58,14 @@
     box-sizing: border-box;
     border-radius: 10px;
     overflow: hidden;
+  }
+}
+
+.dark {
+  .el-main {
+    background-color: #1f1f1f;
+    .main {
+      background-color: #2f2f2f;
+    }
   }
 }
