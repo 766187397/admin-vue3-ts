@@ -7,6 +7,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const ElMessageBox: typeof import('element-plus/es')['ElMessageBox']
   const cipherText: typeof import('~icons/ci/pher-text')['default']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']

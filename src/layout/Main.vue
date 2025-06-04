@@ -16,7 +16,7 @@
   import Loading from "@/components/public/Loading.vue";
   import { useElConfigStore } from "@/store/index.ts";
   const elConfigStore = useElConfigStore();
-  const { config } = elConfigStore;
+  const config = computed(() => elConfigStore.config);
 </script>
 
 <style scoped></style>

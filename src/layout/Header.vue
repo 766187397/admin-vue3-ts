@@ -13,6 +13,9 @@
       </div>
       <div class="right">
         <div class="r_item">
+          <el-icon @click="drawer = true"><Setting /></el-icon>
+        </div>
+        <div class="r_item">
           <el-switch
             v-model="theme"
             style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
@@ -58,20 +61,56 @@
         </div>
       </Contextmenu>
     </div>
+    <!--  :before-close="handleClose" -->
+    <el-drawer v-model="drawer" title="偏好设置" direction="rtl" size="380px" @open="handleOpen">
+      <template #default>
+        <el-form :model="config" label-width="auto">
+          <el-form-item label="组件尺寸：">
+            <el-select v-model="config.size" placeholder="设置组件尺寸">
+              <el-option label="较大" value="large" />
+              <el-option label="正常" value="default" />
+              <el-option label="较小" value="small" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </template>
+      <template #footer>
+        <div style="flex: auto">
+          <el-button @click="handleCancel">取消</el-button>
+          <el-button type="primary" @click="drawer = false">确认</el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
   import { useRouter, useRoute } from "vue-router";
-  import { useUserInfoStore, useMenuStore, usePublicStore } from "@/store";
+  import { useUserInfoStore, useMenuStore, usePublicStore, useElConfigStore } from "@/store";
   import Contextmenu from "@/components/public/Contextmenu.vue";
   const router = useRouter();
   const rouet = useRoute();
   const publicStore = usePublicStore();
   const menuStore = useMenuStore();
   const userInfoStore = useUserInfoStore();
-
+  const elConfigStore = useElConfigStore();
+  // 获取用户信息
   const userInfo = computed(() => userInfoStore.userInfo);
+  // 偏好设置开关
+  const drawer = ref<boolean>(false);
+  let restored = {};
+  const config = computed(() => elConfigStore.config);
+  const handleOpen = () => {
+    restored = { ...elConfigStore.config };
+  };
+  const handleCancel = () => {
+    ElMessageBox.confirm("取消会将丢失已修改的设置", "提示")
+      .then(() => {
+        drawer.value = false;
+        elConfigStore.setConfig(restored);
+      })
+  };
+  // 菜单是否折叠
   const isCollapse = computed(() => {
     return menuStore.isCollapse;
   });
