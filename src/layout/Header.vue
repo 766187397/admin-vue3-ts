@@ -61,7 +61,7 @@
         </div>
       </Contextmenu>
     </div>
-    <Drawer :drawer="drawer" />
+    <Drawer v-model:drawer="drawer" />
   </div>
 </template>
 

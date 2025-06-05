@@ -38,8 +38,6 @@
     type: Boolean,
   });
 
-  // 偏好设置开关
-  // const drawer = ref<boolean>(false);
   let restored: any = {};
   const config = computed(() => elConfigStore.config);
   // 开启
