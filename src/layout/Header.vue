@@ -273,16 +273,5 @@
         }
       }
     }
-    :deep(.el-drawer) {
-      .el-drawer__header {
-        margin-bottom: 0;
-      }
-
-      .drawer_title {
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 1.5em;
-      }
-    }
   }
 </style>
