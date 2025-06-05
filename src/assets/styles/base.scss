@@ -58,6 +58,19 @@
     box-sizing: border-box;
     border-radius: 10px;
     overflow: hidden;
+
+    .page {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .el-table {
+        flex: auto;
+      }
+      .el-table--fit .el-table__inner-wrapper::before {
+        display: none;
+      }
+    }
   }
 }
 

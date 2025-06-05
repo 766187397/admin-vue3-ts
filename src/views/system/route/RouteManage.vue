@@ -1,5 +1,5 @@
 <template>
-  <div class="admin_route" v-loading="loading">
+  <div class="page" v-loading="loading">
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
