@@ -42,7 +42,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="左侧菜单宽度：">
-          <el-input-number v-model="config.menuWidth" :min="0">
+          <el-input-number v-model="config.menuWidth" :min="200" :step="10" :max="500">
             <template #suffix>
               <span>px</span>
             </template>
