@@ -16,7 +16,7 @@ export const useElConfigStore = defineStore(
     /** 默认值 */
     const defaultConfig: DefaultConfig = {
       /** 组件尺寸 */
-      size: "small",
+      size: "default",
       /** 主题色 */
       themeColor: "#409eff",
 
