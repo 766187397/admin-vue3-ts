@@ -5,7 +5,7 @@
         <template v-if="Component">
           <component :is="Component" />
         </template>
-        <div v-else><Loading /></div>
+        <Loading v-else />
       </RouterView>
     </el-config-provider>
   </div>

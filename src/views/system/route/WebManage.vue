@@ -4,19 +4,6 @@
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
           <el-col :span="4">
-            <el-form-item label="平台：">
-              <el-select v-model="query.platform" placeholder="请选择平台" @change="getTableData">
-                <el-option v-for="item in platformList" :key="item.id" :label="item.label" :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <!-- <el-col :span="4">
-            <el-button type="primary" @click="getTableData">查询</el-button>
-            <el-button @click="resetQuery">重置</el-button>
-          </el-col> -->
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="4">
             <el-button type="primary" plain @click="handleForm('add')">添加</el-button>
           </el-col>
         </el-row>
@@ -158,12 +145,10 @@
   import type { createRoutesParams, RouterInfoList } from "@/types/menu";
   import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
-  import { usePublicStore } from "@/store";
   import { typeValue } from "@/utils/tool";
   import type { getDictionaryItemAllResult, typeObj } from "@/types/public";
   import * as ElementPlusIconsVue from "@element-plus/icons-vue";
   import { baseIconsList } from "@/assets/icon/index";
-  const publicStore = usePublicStore();
 
   const elementPlusIcons = Object.keys(ElementPlusIconsVue);
 
@@ -186,20 +171,9 @@
   const title = ref("");
   // 查询条件
   const query = ref({
-    platform: "admin",
+    platform: "web",
     type: "",
   });
-
-  // 查询重置
-  const resetQuery = () => {
-    query.value = {
-      platform: "admin",
-      type: "",
-    };
-  };
-
-  // 平台platform
-  const platformList = computed(() => publicStore.platformList);
 
   // 查询类型
   const typeList = ref<getDictionaryItemAllResult[]>();
