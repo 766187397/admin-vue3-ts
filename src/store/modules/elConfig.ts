@@ -112,7 +112,6 @@ export const useElConfigStore = defineStore(
         document.documentElement.classList.toggle("dark");
       });
 
-      // document.startViewTransition 的 ready 返回一个 Promise
       transition.ready.then(() => {
         // 获取鼠标的坐标
         const { clientX, clientY } = e;
