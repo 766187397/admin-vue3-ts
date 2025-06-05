@@ -9,7 +9,7 @@
         <div class="color_list">
           <div
             class="color_item"
-            :style="{ background: item.color }"
+            :style="{ background: item.color, cursor: config.darkTheme ? 'not-allowed' : 'pointer' }"
             v-for="(item, index) in colorList"
             :key="index"
             @click="handleThemeChange(item.color)">
@@ -17,7 +17,21 @@
           </div>
         </div>
         <el-form-item label="自定义主题：">
-          <el-color-picker v-model="config.themeColor" @change="handleThemeChange" />
+          <el-color-picker v-model="config.themeColor" @change="handleThemeChange" :disabled="config.darkTheme" />
+        </el-form-item>
+        <el-form-item label="暗色主题：">
+          <el-switch
+            v-model="config.darkTheme"
+            style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
+            active-action-icon="Moon"
+            inactive-action-icon="Sunny"
+            @click="handleAnimation($event)" />
+        </el-form-item>
+        <el-form-item label="侧边菜单深色模式：">
+          <el-switch v-model="config.menuDarkTheme" :disabled="config.darkTheme" />
+        </el-form-item>
+        <el-form-item label="顶部深色模式：">
+          <el-switch v-model="config.topTheme" :disabled="config.darkTheme" />
         </el-form-item>
         <div class="drawer_title">组件</div>
         <el-form-item label="组件尺寸：">
@@ -41,7 +55,7 @@
 <script setup lang="ts">
   import { useElConfigStore } from "@/store";
   const elConfigStore = useElConfigStore();
-  const { changeThemeColor } = elConfigStore;
+  const { changeThemeColor, handleAnimation } = elConfigStore;
   // 设置缓存颜色
   changeThemeColor(elConfigStore.config.themeColor);
   let drawer = defineModel("drawer", {

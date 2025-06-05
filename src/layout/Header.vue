@@ -17,7 +17,7 @@
         </div>
         <div class="r_item">
           <el-switch
-            v-model="theme"
+            v-model="config.darkTheme"
             style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
             active-action-icon="Moon"
             inactive-action-icon="Sunny"
@@ -67,14 +67,18 @@
 
 <script setup lang="ts">
   import { useRouter, useRoute } from "vue-router";
-  import { useUserInfoStore, useMenuStore, usePublicStore } from "@/store";
+  import { useUserInfoStore, useMenuStore, usePublicStore, useElConfigStore } from "@/store";
   import Contextmenu from "@/components/public/Contextmenu.vue";
   import Drawer from "@/components/layout/Drawer.vue";
+
   const router = useRouter();
   const rouet = useRoute();
   const publicStore = usePublicStore();
   const menuStore = useMenuStore();
   const userInfoStore = useUserInfoStore();
+  const elConfigStore = useElConfigStore();
+
+  const { handleAnimation } = elConfigStore;
 
   // 获取用户信息
   const userInfo = computed(() => userInfoStore.userInfo);
@@ -93,12 +97,12 @@
   };
   // 退出登录
   const { handleLogout } = userInfoStore;
-  const { enterFullScreen, exitFullscreen, getFullScreenState, handleAnimation } = publicStore;
+  const { enterFullScreen, exitFullscreen, getFullScreenState } = publicStore;
   getFullScreenState();
   const fullScreenState = computed(() => publicStore.fullScreen);
 
   // 主题
-  const theme = computed(() => publicStore.theme);
+  const config = computed(() => elConfigStore.config);
 
   import type { TagProps } from "element-plus";
 

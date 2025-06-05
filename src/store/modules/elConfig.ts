@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 
 interface DefaultConfig {
-  size: string;
+  size: "" | "default" | "small" | "large";
   themeColor: string;
+  menuDarkTheme: boolean;
+  topTheme: boolean;
+  darkTheme: boolean;
 }
 
 /** 全局的配置 */
@@ -11,8 +14,18 @@ export const useElConfigStore = defineStore(
   () => {
     /** 默认值 */
     const defaultConfig: DefaultConfig = {
+      /** 组件尺寸 */
       size: "small",
+      /** 主题色 */
       themeColor: "#409eff",
+
+      /** 菜单栏深色主题 */
+      menuDarkTheme: false,
+      /** 顶部主题 */
+      topTheme: false,
+
+      /** 暗色主题 */
+      darkTheme: false,
     };
 
     /** 组件全局配置 */
@@ -73,6 +86,11 @@ export const useElConfigStore = defineStore(
 
     /** 修改主题颜色 */
     const changeThemeColor = (val: string) => {
+      // 如果是暗色主题则禁止
+      if (config.value.darkTheme) {
+        return;
+      }
+
       // 计算主题颜色变化
       document.documentElement.style.setProperty("--el-color-primary", val);
       for (let i = 1; i < 10; i++) {
@@ -80,14 +98,52 @@ export const useElConfigStore = defineStore(
         document.documentElement.style.setProperty(`--el-color-dark-light-${i}`, `${getDarkColor(val, i / 10)}`);
       }
       config.value.themeColor = val;
+      if (val) {
+        config.value.menuDarkTheme = false;
+        config.value.topTheme = false;
+      }
     };
 
+    /** 切换主题动画 */
+    const handleAnimation = (e: MouseEvent) => {
+      // 执行切换主题的操作
+      const transition = document.startViewTransition(() => {
+        // 动画过渡切换主题色
+        document.documentElement.classList.toggle("dark");
+      });
+
+      // document.startViewTransition 的 ready 返回一个 Promise
+      transition.ready.then(() => {
+        // 获取鼠标的坐标
+        const { clientX, clientY } = e;
+
+        // 计算最大半径
+        const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY));
+
+        // 圆形动画扩散开始
+        const animation = document.documentElement.animate(
+          {
+            clipPath: [`circle(0% at ${clientX}px ${clientY}px)`, `circle(${radius}px at ${clientX}px ${clientY}px)`],
+          },
+          // 设置时间，已经目标伪元素
+          {
+            duration: 500,
+            pseudoElement: "::view-transition-new(root)",
+          }
+        );
+
+        animation.onfinish = () => {
+          // config.value.darkTheme = !config.value.darkTheme;
+        };
+      });
+    };
     return {
       defaultConfig,
       config,
       setConfig,
       restoreDefault,
       changeThemeColor,
+      handleAnimation,
     };
   },
   {

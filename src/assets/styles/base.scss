@@ -61,11 +61,49 @@
   }
 }
 
+// 暗主题样式
 .dark {
   .el-main {
-    background-color: #1f1f1f;
+    background-color: #000;
     .main {
-      background-color: #2f2f2f;
+      background-color: #000;
     }
+  }
+}
+
+// 菜单深色主题样式
+.darkTheme {
+  .sidebar_logo {
+    background-color: #1e293b;
+
+    .title {
+      color: #fff;
+    }
+  }
+
+  .el-menu {
+    --el-menu-bg-color: #1e293b;
+    --el-menu-text-color: #ffffff;
+    --el-menu-active-color: #409eff;
+  }
+}
+
+// Top深色主题样式
+.el-header.darkTheme {
+  background-color: #1e293b;
+  color: #fff;
+
+  .el-dropdown,
+  .is-link {
+    --el-text-color-regular: #fff;
+  }
+  .el-breadcrumb__inner.is-link,
+  .el-breadcrumb__inner a {
+    --el-text-color-regular: #fff;
+    --el-text-color-primary: #fff;
+  }
+  .el-breadcrumb__inner {
+    --el-text-color-regular: #fff;
+    --el-text-color-primary: #fff;
   }
 }

@@ -1,15 +1,18 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside class="aside" :style="{ width: isCollapse ? '64px' : '200px' }">
-        <div class="sidebar_logo">
+      <el-aside
+        class="aside"
+        :class="{ darkTheme: config.menuDarkTheme }"
+        :style="{ width: isCollapse ? '64px' : '200px' }">
+        <RouterLink to="/" class="sidebar_logo">
           <img class="logo" src="@/assets/images/logo.jpg" alt="logo" />
           <h1 class="title" v-if="!showTitle">后台管理系统</h1>
-        </div>
+        </RouterLink>
         <Menu />
       </el-aside>
       <el-container>
-        <el-header><Header /></el-header>
+        <el-header :class="{ darkTheme: config.topTheme }"><Header /></el-header>
         <el-main><Main /></el-main>
       </el-container>
     </el-container>
@@ -20,6 +23,10 @@
   import Header from "./Header.vue";
   import Main from "./Main.vue";
   import { useMenuStore } from "@/store";
+  import { useElConfigStore } from "@/store/index";
+
+  const elConfigStore = useElConfigStore();
+  const config = computed(() => elConfigStore.config);
 
   const menuStore = useMenuStore();
   const showTitle = ref(false);
@@ -50,8 +57,10 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
 
     .sidebar_logo {
+      cursor: pointer;
       width: 100%;
       display: flex;
       align-items: center;
@@ -59,6 +68,9 @@
       gap: 10px;
       padding: 10px;
       box-sizing: border-box;
+      color: #000;
+      text-decoration: none;
+      transition: all 0.3s;
 
       .logo {
         width: 32px;

@@ -40,42 +40,6 @@ export const usePublicStore = defineStore("public", () => {
       });
   };
 
-  const theme = ref<boolean>(false);
-
-  /** 切换主题动画 */
-  const handleAnimation = (e: MouseEvent) => {
-    // 执行切换主题的操作
-    const transition = document.startViewTransition(() => {
-      // 动画过渡切换主题色
-      document.documentElement.classList.toggle("dark");
-    });
-
-    // document.startViewTransition 的 ready 返回一个 Promise
-    transition.ready.then(() => {
-      // 获取鼠标的坐标
-      const { clientX, clientY } = e;
-
-      // 计算最大半径
-      const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY));
-
-      // 圆形动画扩散开始
-      const animation = document.documentElement.animate(
-        {
-          clipPath: [`circle(0% at ${clientX}px ${clientY}px)`, `circle(${radius}px at ${clientX}px ${clientY}px)`],
-        },
-        // 设置时间，已经目标伪元素
-        {
-          duration: 500,
-          pseudoElement: "::view-transition-new(root)",
-        }
-      );
-
-      animation.onfinish = () => {
-        theme.value = !theme.value;
-      };
-    });
-  };
-
   /** 平台类型列表 */
   const platformList = ref<getDictionaryItemAllResult[]>();
 
@@ -97,8 +61,6 @@ export const usePublicStore = defineStore("public", () => {
     getFullScreenState,
     enterFullScreen,
     exitFullscreen,
-    theme,
-    handleAnimation,
     platformList,
     setPlatformList,
     publicStateList,
