@@ -1,39 +1,38 @@
 # admin-vue3-ts
 
-This template should help get you started developing with Vue 3 in Vite.
+> vue3+ts开发的后台管理系统
 
-## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## Type Support for `.vue` Imports in TS
+## 环境
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+> 设置了开发环境和生成环境的.env
 
-## Customize configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Project Setup
+## 项目设置
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 编译和热重载开发
+
+> 默认的都是开发环境，有需要可以手动修改
 
 ```sh
 npm run dev
+
+npm run start
 ```
 
-### Type-Check, Compile and Minify for Production
+### 打包
+
+> 默认是生产环境
 
 ```sh
 npm run build
+
+npm run build:dev
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
