@@ -1,11 +1,16 @@
 import { defineStore } from "pinia";
 
+interface DefaultConfig {
+  size: string;
+  themeColor: string;
+}
+
 /** 全局的配置 */
 export const useElConfigStore = defineStore(
   "ElConfig",
   () => {
     /** 默认值 */
-    const defaultConfig = {
+    const defaultConfig: DefaultConfig = {
       size: "small",
       themeColor: "#409eff",
     };

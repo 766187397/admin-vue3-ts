@@ -61,64 +61,26 @@
         </div>
       </Contextmenu>
     </div>
-    <!--  :before-close="handleClose" -->
-    <el-drawer v-model="drawer" title="偏好设置" direction="rtl" size="380px" @open="handleOpen">
-      <template #default>
-        <el-form :model="config" label-width="auto">
-          <el-form-item label="组件尺寸：">
-            <el-select v-model="config.size" placeholder="设置组件尺寸">
-              <el-option label="较大" value="large" />
-              <el-option label="正常" value="default" />
-              <el-option label="较小" value="small" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="主题：">
-            <el-color-picker v-model="config.themeColor" @change="handleThemeChange" />
-          </el-form-item>
-        </el-form>
-      </template>
-      <template #footer>
-        <div style="flex: auto">
-          <el-button @click="handleCancel">取消</el-button>
-          <el-button type="primary" @click="drawer = false">确认</el-button>
-        </div>
-      </template>
-    </el-drawer>
+    <Drawer :drawer="drawer" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { useRouter, useRoute } from "vue-router";
-  import { useUserInfoStore, useMenuStore, usePublicStore, useElConfigStore } from "@/store";
+  import { useUserInfoStore, useMenuStore, usePublicStore } from "@/store";
   import Contextmenu from "@/components/public/Contextmenu.vue";
+  import Drawer from "@/components/layout/Drawer.vue";
   const router = useRouter();
   const rouet = useRoute();
   const publicStore = usePublicStore();
   const menuStore = useMenuStore();
   const userInfoStore = useUserInfoStore();
-  const elConfigStore = useElConfigStore();
 
-  const { changeThemeColor } = elConfigStore;
   // 获取用户信息
   const userInfo = computed(() => userInfoStore.userInfo);
   // 偏好设置开关
   const drawer = ref<boolean>(false);
-  let restored = {};
-  const config = computed(() => elConfigStore.config);
-  const handleOpen = () => {
-    restored = { ...elConfigStore.config };
-  };
-  const handleCancel = () => {
-    ElMessageBox.confirm("取消会将丢失已修改的设置", "提示").then(() => {
-      drawer.value = false;
-      elConfigStore.setConfig(restored);
-      changeThemeColor(restored.themeColor);
-    });
-  };
-  // 设置主题颜色
-  const handleThemeChange = (color: string) => {
-    changeThemeColor(color);
-  };
+
   // 菜单是否折叠
   const isCollapse = computed(() => {
     return menuStore.isCollapse;
@@ -309,6 +271,17 @@
         :deep(.el-tag) {
           cursor: pointer;
         }
+      }
+    }
+    :deep(.el-drawer) {
+      .el-drawer__header {
+        margin-bottom: 0;
+      }
+
+      .drawer_title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.5em;
       }
     }
   }
