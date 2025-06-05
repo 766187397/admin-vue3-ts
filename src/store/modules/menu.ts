@@ -59,6 +59,8 @@ export const useMenuStore = defineStore("menu", () => {
       // 菜单扁平化
       menuFlatten.value = flattenMenu(deepClone(res.data));
       resolve(undefined);
+
+      console.log("router.getRoutes()", router.getRoutes());
     });
   };
 
@@ -111,11 +113,11 @@ export const useMenuStore = defineStore("menu", () => {
         component: modules[componentPath],
         meta: item.meta,
         redirect: item.redirect || undefined,
-        children: [],
+        children: (item.children || []) as RouteRecordRaw[],
       });
-      if (item.children && item.children.length > 0) {
-        addRouters(item.children, item.name);
-      }
+      // if (item.children && item.children.length > 0) {
+      //   addRouters(item.children, item.name);
+      // }
     });
   };
   return {
