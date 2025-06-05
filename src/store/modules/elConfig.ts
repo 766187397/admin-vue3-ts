@@ -6,6 +6,7 @@ interface DefaultConfig {
   menuDarkTheme: boolean;
   topTheme: boolean;
   darkTheme: boolean;
+  menuWidth: number;
 }
 
 /** 全局的配置 */
@@ -26,6 +27,9 @@ export const useElConfigStore = defineStore(
 
       /** 暗色主题 */
       darkTheme: false,
+
+      /** 菜单宽度 */
+      menuWidth: 200,
     };
 
     /** 组件全局配置 */

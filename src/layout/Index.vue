@@ -4,7 +4,7 @@
       <el-aside
         class="aside"
         :class="{ darkTheme: config.menuDarkTheme }"
-        :style="{ width: isCollapse ? '64px' : '200px' }">
+        :style="{ width: isCollapse ? '64px' : config.menuWidth + 'px' }">
         <RouterLink to="/" class="sidebar_logo">
           <img class="logo" src="@/assets/images/logo.jpg" alt="logo" />
           <h1 class="title" v-if="!showTitle">后台管理系统</h1>
@@ -22,8 +22,7 @@
   import Menu from "./Menu.vue";
   import Header from "./Header.vue";
   import Main from "./Main.vue";
-  import { useMenuStore } from "@/store";
-  import { useElConfigStore } from "@/store/index";
+  import { useMenuStore, useElConfigStore } from "@/store";
 
   const elConfigStore = useElConfigStore();
   const config = computed(() => elConfigStore.config);
@@ -52,7 +51,6 @@
 <style lang="scss" scoped>
   .aside {
     transition: all 0.3s;
-    // width: 200px;
     height: 100vh;
     display: flex;
     flex-direction: column;

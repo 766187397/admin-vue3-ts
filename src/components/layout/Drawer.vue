@@ -41,6 +41,13 @@
             <el-option label="较小" value="small" />
           </el-select>
         </el-form-item>
+        <el-form-item label="左侧菜单宽度：">
+          <el-input-number v-model="config.menuWidth" :min="0">
+            <template #suffix>
+              <span>px</span>
+            </template>
+          </el-input-number>
+        </el-form-item>
       </el-form>
     </template>
     <template #footer>
