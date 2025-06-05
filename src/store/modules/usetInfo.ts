@@ -5,6 +5,8 @@ import type { LoginForm } from "@/types/login";
 import { logout } from "@/api/login";
 import router from "@/router";
 
+import { useElConfigStore } from "./elConfig";
+
 // 定义 Store，使用函数，更适合Vue3，注意要使用ref并将需要的数据或函数返回出去
 export const useUserInfoStore = defineStore(
   "userInfo",
@@ -61,9 +63,17 @@ export const useUserInfoStore = defineStore(
     const handleLogout = async () => {
       let res = await logout();
       if (res.code === 200) {
+        const elConfigStore = useElConfigStore();
+        const { restoreDefault, changeThemeColor } = elConfigStore;
+        // 清除token
         setToken("");
         setRfreshToken("");
+        // 清除用户信息
         setUserInfo({});
+        // 恢复默认配置
+        restoreDefault();
+        // 恢复默认颜色
+        changeThemeColor(elConfigStore.defaultConfig.themeColor);
         router.push("/login");
       }
     };

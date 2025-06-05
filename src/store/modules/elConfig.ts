@@ -83,6 +83,7 @@ export const useElConfigStore = defineStore(
     };
 
     return {
+      defaultConfig,
       config,
       setConfig,
       restoreDefault,
