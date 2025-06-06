@@ -6,5 +6,5 @@ import { http } from "@/utils/http";
 export const getDictionaryItemAll = async (
   params: getDictionaryItemAllParams
 ): Promise<Result<getDictionaryItemAllResult[]>> => {
-  return await http.get<Result<getDictionaryItemAllResult[]>>("/api/v1/admin/dictionaryItem/all", params);
+  return await http.get("/api/v1/admin/dictionaryItem/all", params);
 };
