@@ -59,7 +59,7 @@ export const useMenuStore = defineStore("menu", () => {
       // 菜单扁平化
       menuFlatten.value = flattenMenu(deepClone(res.data));
       resolve(undefined);
-      // console.log("router.getRoutes()", router.getRoutes());
+      console.log("router.getRoutes()", router.getRoutes());
     });
   };
 
