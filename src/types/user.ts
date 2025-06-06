@@ -33,22 +33,23 @@ export interface UsersCreateParams {
 
 /** 不分页查询用户 */
 export interface UsersQuery {
-  sort: string;
-  status: string;
-  time: string;
-  account: string;
-  nickName: string;
-  email: string;
-  phone: string;
+  sort?: string;
+  status?: string;
+  time?: string;
+  account?: string;
+  nickName?: string;
+  email?: string;
+  phone?: string;
 }
 
 /** 分页查询用户 */
 export interface UsersQueryParams extends UsersQuery {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
 }
 
-/** 返回信息 */
+
+/** 返回用户信息 */
 export interface UserResponseData {
   id: number;
   sort: number;

@@ -1,6 +1,6 @@
 import { http } from "@/utils/http";
 import type { UsersCreateParams, UserResponseData, UsersQuery, UsersQueryParams } from "@/types/user";
-import type { Result } from "@/types/api";
+import type { PageApiResult, Result } from "@/types/api";
 
 /** 创建用户 */
 export const createUser = (data: UsersCreateParams): Promise<Result<UserResponseData>> => {
@@ -13,7 +13,7 @@ export const getUsers = (data: UsersQuery): Promise<Result<UserResponseData[]>> 
 };
 
 /** 分页查询用户 */
-export const getUsersPage = (data: UsersQueryParams): Promise<Result<UserResponseData[]>> => {
+export const getUsersPage = (data: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
   return http.get("/api/v1/admin/users/page", data);
 };
 
