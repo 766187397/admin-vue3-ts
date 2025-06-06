@@ -12,7 +12,7 @@
 
     <el-table :data="tableData" row-key="id" default-expand-all>
       <el-table-column prop="title" label="名称" align="left" />
-      <el-table-column prop="name" label="路由名称" align="center" width="100" />
+      <el-table-column prop="name" label="路由名称" align="center" width="200" />
       <el-table-column prop="icon" label="图标" align="center" width="200" />
       <el-table-column prop="type" label="类型" align="center" width="100">
         <template v-slot="scope">
@@ -20,7 +20,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="externalLinks" label="是否为外链" align="center" width="100" />
-      <el-table-column prop="path" label="路由" align="center" />
+      <el-table-column prop="path" label="路由" align="center">
+        <template v-slot="scope">
+          <el-link type="primary" target="_blank" :href="scope.row.path">{{ scope.row.path }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column prop="redirect" label="重定向" align="center">
         <template v-slot="scope">
           <el-link type="primary" target="_blank" :href="scope.row.redirect">{{ scope.row.redirect }}</el-link>
