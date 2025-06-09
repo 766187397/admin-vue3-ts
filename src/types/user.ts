@@ -46,8 +46,8 @@ export interface UsersQuery {
 export interface UsersQueryParams extends UsersQuery {
   page?: number;
   pageSize?: number;
+  total?: number;
 }
-
 
 /** 返回用户信息 */
 export interface UserResponseData {

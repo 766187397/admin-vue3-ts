@@ -67,7 +67,7 @@
       </el-table>
     </div>
 
-    <div class="footer">
+    <!-- <div class="footer">
       <el-pagination
         v-model:current-page="query.page"
         v-model:page-size="query.pageSize"
@@ -76,12 +76,20 @@
         :total="query.total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange" />
-    </div>
+    </div> -->
+
+    <Pagination
+      v-model:pageSize="query.pageSize"
+      v-model:page="query.page"
+      v-model:total="query.total"
+      @size-change="getTableData(true)"
+      @current-change="getTableData(false)" />
   </div>
 </template>
 
 <script setup lang="ts">
   import { getUsersPage } from "@/api/user";
+  import Pagination from "@/components/el/Pagination.vue";
   import type { UserResponseData, UsersQueryParams } from "@/types/user";
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -91,7 +99,7 @@
   const loading = ref(false);
   const defaultQuery = {
     page: 1,
-    pageSize: 10,
+    pageSize: 1,
     total: 0,
     account: "",
     nickName: "",
@@ -121,18 +129,6 @@
     loading.value = false;
   };
   getTableData();
-
-  /** 每页数量改变 */
-  const handleSizeChange = (val: number) => {
-    query.value.pageSize = val;
-    getTableData(true);
-  };
-
-  /** 页码改变 */
-  const handleCurrentChange = (val: number) => {
-    query.value.page = val;
-    getTableData();
-  };
 </script>
 
 <style lang="scss" scoped></style>
