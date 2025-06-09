@@ -1,4 +1,4 @@
-import type { getDictionaryItemAllResult } from "@/types/public";
+import type { getDictionaryItemAllResult } from "@/types/dictionary";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 

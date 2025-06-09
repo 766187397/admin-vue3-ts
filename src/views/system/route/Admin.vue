@@ -150,7 +150,7 @@
   import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
   import { typeValue } from "@/utils/tool";
-  import type { getDictionaryItemAllResult, typeObj } from "@/types/public";
+  import type { getDictionaryItemAllResult, typeObj } from "@/types/dictionary";
   import * as ElementPlusIconsVue from "@element-plus/icons-vue";
   import { baseIconsList } from "@/assets/icon/index";
 

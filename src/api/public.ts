@@ -1,5 +1,5 @@
 import type { Result } from "@/types/api";
-import type { getDictionaryItemAllParams, getDictionaryItemAllResult } from "@/types/public";
+import type { getDictionaryItemAllParams, getDictionaryItemAllResult } from "@/types/dictionary";
 import { http } from "@/utils/http";
 
 /** 查询字典项 */
