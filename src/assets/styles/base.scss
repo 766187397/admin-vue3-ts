@@ -78,6 +78,12 @@
   }
 }
 
+.footer {
+  .el-pagination {
+    justify-content: flex-end;
+  }
+}
+
 // 暗主题样式
 .dark {
   .el-main {

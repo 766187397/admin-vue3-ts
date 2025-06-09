@@ -67,7 +67,16 @@
       </el-table>
     </div>
 
-    <div class="footer"></div>
+    <div class="footer">
+      <el-pagination
+        v-model:current-page="query.page"
+        v-model:page-size="query.pageSize"
+        :page-sizes="[10, 20, 50, 100, 200]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="query.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
+    </div>
   </div>
 </template>
 
@@ -83,6 +92,7 @@
   const defaultQuery = {
     page: 1,
     pageSize: 10,
+    total: 0,
     account: "",
     nickName: "",
     email: "",
@@ -106,10 +116,23 @@
     loading.value = true;
     let data = { ...query.value };
     const res = await getUsersPage(data);
+    query.value.total = res.data.total;
     tableData.value = res.data.data;
     loading.value = false;
   };
   getTableData();
+
+  /** 每页数量改变 */
+  const handleSizeChange = (val: number) => {
+    query.value.pageSize = val;
+    getTableData(true);
+  };
+
+  /** 页码改变 */
+  const handleCurrentChange = (val: number) => {
+    query.value.page = val;
+    getTableData();
+  };
 </script>
 
 <style lang="scss" scoped></style>
