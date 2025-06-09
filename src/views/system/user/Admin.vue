@@ -67,17 +67,6 @@
       </el-table>
     </div>
 
-    <!-- <div class="footer">
-      <el-pagination
-        v-model:current-page="query.page"
-        v-model:page-size="query.pageSize"
-        :page-sizes="[10, 20, 50, 100, 200]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="query.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
-    </div> -->
-
     <Pagination
       v-model:pageSize="query.pageSize"
       v-model:page="query.page"
