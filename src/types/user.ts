@@ -1,3 +1,5 @@
+import type { PageQueryParams } from "./public";
+
 /** 创建用户 */
 export interface UsersCreateParams {
   /*排序 */
@@ -43,11 +45,7 @@ export interface UsersQuery {
 }
 
 /** 分页查询用户 */
-export interface UsersQueryParams extends UsersQuery {
-  page?: number;
-  pageSize?: number;
-  total?: number;
-}
+export type UsersQueryParams = UsersQuery & PageQueryParams;
 
 /** 返回用户信息 */
 export interface UserResponseData {
