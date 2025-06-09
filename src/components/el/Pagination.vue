@@ -12,11 +12,6 @@
 </template>
 
 <script setup lang="ts">
-  interface PaginationModel {
-    page: number;
-    pageSize: number;
-    total: number;
-  }
   interface PaginationProps {
     pageSizes?: [];
     layout?: string;
@@ -29,16 +24,21 @@
   let { pageSizes = [10, 20, 50, 100, 200], layout = "total, sizes, prev, pager, next, jumper" } =
     defineProps<PaginationProps>();
 
-  const emit = defineEmits(["update:page", "update:pageSize"]);
+  const emit = defineEmits<{
+    (e: "size-change", val: number): void;
+    (e: "current-change", val: number): void;
+  }>();
 
+  // 每页显示条数改变
   const handleSizeChange = (val: number) => {
     pageSize.value = val;
-    emit("update:pageSize", val);
+    emit("size-change", val);
   };
 
+  // 页码改变
   const handleCurrentChange = (val: number) => {
     page.value = val;
-    emit("update:page", val);
+    emit("current-change", val);
   };
 </script>
 
