@@ -1,44 +1,43 @@
 <template>
   <div class="page" v-loading="loading">
-    <div class="query_form">
-      <el-form :model="query" label-width="auto">
-        <el-row :gutter="20">
-          <el-col :span="4">
+    <div class="table">
+      <div class="table_menu">
+        <el-row :gutter="20" justify="end">
+          <el-col :span="1">
             <el-button type="primary" plain @click="handleForm('add')">添加</el-button>
           </el-col>
         </el-row>
-      </el-form>
+      </div>
+      <el-table :data="tableData" row-key="id" default-expand-all>
+        <el-table-column prop="title" label="名称" align="left" />
+        <el-table-column prop="name" label="路由名称" align="center" width="200" />
+        <el-table-column prop="icon" label="图标" align="center" width="200" />
+        <el-table-column prop="type" label="类型" align="center" width="100">
+          <template v-slot="scope">
+            <span>{{ typeValue(typeList, scope.row.type) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="externalLinks" label="是否为外链" align="center" width="100" />
+        <el-table-column prop="path" label="路由" align="center">
+          <template v-slot="scope">
+            <el-link type="primary" target="_blank" :href="scope.row.path">{{ scope.row.path }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="redirect" label="重定向" align="center">
+          <template v-slot="scope">
+            <el-link type="primary" target="_blank" :href="scope.row.redirect">{{ scope.row.redirect }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="component" label="组件" align="center" />
+        <el-table-column label="操作" align="center" fixed="right" width="300">
+          <template v-slot="scope">
+            <el-button type="primary" text plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
+            <el-button type="primary" text plain @click="handleForm('add', scope.row.id)">新增</el-button>
+            <el-button type="danger" text plain @click="handleDel(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-
-    <el-table :data="tableData" row-key="id" default-expand-all>
-      <el-table-column prop="title" label="名称" align="left" />
-      <el-table-column prop="name" label="路由名称" align="center" width="200" />
-      <el-table-column prop="icon" label="图标" align="center" width="200" />
-      <el-table-column prop="type" label="类型" align="center" width="100">
-        <template v-slot="scope">
-          <span>{{ typeValue(typeList, scope.row.type) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="externalLinks" label="是否为外链" align="center" width="100" />
-      <el-table-column prop="path" label="路由" align="center">
-        <template v-slot="scope">
-          <el-link type="primary" target="_blank" :href="scope.row.path">{{ scope.row.path }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column prop="redirect" label="重定向" align="center">
-        <template v-slot="scope">
-          <el-link type="primary" target="_blank" :href="scope.row.redirect">{{ scope.row.redirect }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column prop="component" label="组件" align="center" />
-      <el-table-column label="操作" align="center" fixed="right" width="300">
-        <template v-slot="scope">
-          <el-button type="primary" text plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
-          <el-button type="primary" text plain @click="handleForm('add', scope.row.id)">新增</el-button>
-          <el-button type="danger" text plain @click="handleDel(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
