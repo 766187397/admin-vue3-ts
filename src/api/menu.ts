@@ -8,21 +8,7 @@ import type {
 } from "@/types/menu";
 import { http } from "@/utils/http";
 
-/** 创建路由 */
-export const createRoute = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
-  return await http.post("/api/v1/admin/routes/create", data);
-};
-
-/** 查询所有路由 */
-export const getRoutesAllAdmin = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
-  return await http.get("/api/v1/admin/routes/all/admin", params);
-};
-
-/** 查询所有路由 */
-export const getRoutesAllWeb = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
-  return await http.get("/api/v1/admin/routes/all/web", params);
-};
-
+//#region public 不区分平台
 /** 查询路由详情 */
 export const getRoutesDetail = async (id: string): Promise<Result<RouterInfoList>> => {
   return await http.get(`/api/v1/admin/routes/info/${id}`);
@@ -42,3 +28,27 @@ export const delRoutes = async (id: string | number): Promise<Result<null>> => {
 export const getRoutesByRole = async (params?: getRoutesByRoleParams): Promise<Result<RoleRoutes[]>> => {
   return await http.get("/api/v1/admin/routes/by/role", params);
 };
+//#endregion
+
+//#region admin接口
+/** 创建路由  */
+export const createRouteAdmin = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
+  return await http.post("/api/v1/admin/routes/create/admin", data);
+};
+
+/** 查询所有路由 */
+export const getRoutesAllAdmin = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
+  return await http.get("/api/v1/admin/routes/all/admin", params);
+};
+//#endregion
+
+//#region web接口
+/** 创建路由  */
+export const createRouteWeb = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
+  return await http.post("/api/v1/admin/routes/create/web", data);
+};
+/** 查询所有路由 */
+export const getRoutesAllWeb = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
+  return await http.get("/api/v1/admin/routes/all/web", params);
+};
+//#endregion

@@ -144,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-  import { createRoute, delRoutes, getRoutesAllAdmin, getRoutesDetail, updateRoutes } from "@/api/menu";
+  import { createRouteAdmin, delRoutes, getRoutesAllAdmin, getRoutesDetail, updateRoutes } from "@/api/menu";
   import type { createRoutesParams, RouterInfoList } from "@/types/menu";
   import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
@@ -174,7 +174,6 @@
   const title = ref("");
   // 查询条件
   const query = ref({
-    platform: "admin",
     type: "",
   });
 
@@ -245,7 +244,6 @@
             name: "",
             title: "",
             path: "",
-            platform: query.value.platform,
           } as createRoutesParams;
         },
         detail: async function () {
@@ -281,7 +279,7 @@
           res = await updateRoutes(form.value?.id, form.value as createRoutesParams);
         } else {
           // 新增
-          res = await createRoute(form.value as createRoutesParams);
+          res = await createRouteAdmin(form.value as createRoutesParams);
         }
         dialogVisible.value = false;
         ElMessage.success({
