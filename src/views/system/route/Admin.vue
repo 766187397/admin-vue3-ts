@@ -225,10 +225,6 @@
           let res = await getRoutesDetail(id as string);
           form.value = res.data;
         },
-        edit: async function () {
-          await typeObj.getDetail();
-          title.value = "编辑";
-        },
         add: async function () {
           title.value = "新增";
           form.value = {
@@ -245,6 +241,10 @@
             title: "",
             path: "",
           } as createRoutesParams;
+        },
+        edit: async function () {
+          await typeObj.getDetail();
+          title.value = "编辑";
         },
         detail: async function () {
           await typeObj.getDetail();
