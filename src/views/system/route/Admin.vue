@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-  import { createRoute, delRoutes, getRoutesAll, getRoutesDetail, updateRoutes } from "@/api/menu";
+  import { createRoute, delRoutes, getRoutesAllAdmin, getRoutesDetail, updateRoutes } from "@/api/menu";
   import type { createRoutesParams, RouterInfoList } from "@/types/menu";
   import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
@@ -197,7 +197,7 @@
       const data = {
         ...query.value,
       };
-      let res = await getRoutesAll(data);
+      let res = await getRoutesAllAdmin(data);
       tableData.value = res.data;
     } catch (error) {
     } finally {

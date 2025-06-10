@@ -14,8 +14,13 @@ export const createRoute = async (data: createRoutesParams): Promise<Result<Role
 };
 
 /** 查询所有路由 */
-export const getRoutesAll = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
-  return await http.get("/api/v1/admin/routes/all", params);
+export const getRoutesAllAdmin = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
+  return await http.get("/api/v1/admin/routes/all/admin", params);
+};
+
+/** 查询所有路由 */
+export const getRoutesAllWeb = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
+  return await http.get("/api/v1/admin/routes/all/web", params);
 };
 
 /** 查询路由详情 */
