@@ -5,10 +5,12 @@
 
 <template>
   <RouterView v-slot="{ Component }">
-    <template v-if="Component">
+    <Suspense>
       <component :is="Component" />
-    </template>
-    <Loading v-else />
+      <template #fallback>
+        <Loading />
+      </template>
+    </Suspense>
   </RouterView>
 </template>
 

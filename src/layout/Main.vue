@@ -2,10 +2,12 @@
   <div class="main">
     <el-config-provider :size="config.size">
       <RouterView v-slot="{ Component }">
-        <template v-if="Component">
+        <Suspense>
           <component :is="Component" />
-        </template>
-        <Loading v-else />
+          <template #fallback>
+            <Loading />
+          </template>
+        </Suspense>
       </RouterView>
     </el-config-provider>
   </div>
