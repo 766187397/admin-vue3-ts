@@ -3,7 +3,9 @@
     <el-config-provider :size="config.size">
       <RouterView v-slot="{ Component }">
         <Suspense>
-          <component :is="Component" />
+          <template #default>
+            <component :is="Component" />
+          </template>
           <template #fallback>
             <Loading />
           </template>

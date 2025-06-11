@@ -6,7 +6,12 @@
 <template>
   <RouterView v-slot="{ Component }">
     <Suspense>
-      <component :is="Component" />
+      <template #default>
+        <!-- 套壳防止弹窗警告：<Suspense> slots expect a single root node. at <RouterView > at <App> -->
+        <div class="app">
+          <component :is="Component" />
+        </div>
+      </template>
       <template #fallback>
         <Loading />
       </template>
