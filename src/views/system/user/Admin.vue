@@ -55,7 +55,9 @@
         <el-table-column prop="nickName" label="昵称" align="center" />
         <el-table-column prop="email" label="邮箱" align="center" />
         <el-table-column prop="phone" label="手机号" align="center" />
-        <el-table-column prop="sex" label="性别" align="center" />
+        <el-table-column prop="sex" label="性别" align="center">
+          <template v-slot="scope"> {{ displayValue(sexOptions, scope.row.sex) }} </template>
+        </el-table-column>
         <el-table-column prop="avatar" label="头像" align="center">
           <template v-slot="scope">
             <el-image
@@ -152,12 +154,13 @@
 
 <script setup lang="ts">
   import PictureUpload from "@/components/el/PictureUpload.vue";
+  import Pagination from "@/components/el/Pagination.vue";
+  import { ElMessage } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
   import { getUserInfo, updateUser, deleteUser, getUsersPageAdmin, createUserAdmin } from "@/api/user";
-  import Pagination from "@/components/el/Pagination.vue";
+  import { displayValue } from "@/hooks/dictionary";
   import type { HandleRowType } from "@/types/public";
   import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
-  import { ElMessage } from "element-plus";
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
