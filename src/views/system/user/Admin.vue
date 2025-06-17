@@ -93,17 +93,17 @@
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="账号：">
+              <el-form-item label="账号：" prop="account">
                 <el-input v-model="form.account" placeholder="请输入账号" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="密码：">
+              <el-form-item label="密码：" prop="password">
                 <el-input v-model="form.password" type="password" show-password placeholder="请输入密码"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="昵称：">
+              <el-form-item label="昵称：" prop="nickName">
                 <el-input v-model="form.nickName" placeholder="请输入昵称" clearable></el-input>
               </el-form-item>
             </el-col>
@@ -178,7 +178,7 @@
   // 默认查询条件
   const defaultQuery = {
     page: 1,
-    pageSize: 1,
+    pageSize: 10,
     account: "",
     nickName: "",
     email: "",
@@ -228,7 +228,11 @@
 
   // 表单数据
   const form = ref<UsersCreateParams | UsersUpdateParams | UserResponseData>();
-  const rules = ref();
+  const rules = ref({
+    account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+    password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+    nickName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+  });
 
   // 关闭弹窗
   const handleClose = () => {
@@ -249,11 +253,13 @@
         },
         edit: async function () {
           dialogVisible.value = true;
+          rules.value.password = [{ required: false, message: "请输入密码", trigger: "blur" }];
           await fns.getDetail();
           title.value = "编辑";
         },
         add: async function () {
           dialogVisible.value = true;
+          rules.value.password = [{ required: true, message: "请输入密码", trigger: "blur" }];
           title.value = "新增";
           form.value = {
             sort: 1,
