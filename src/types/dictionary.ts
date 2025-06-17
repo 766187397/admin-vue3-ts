@@ -1,5 +1,5 @@
 /** 无分页查询字典项 */
-export interface getDictionaryItemAllParams {
+export interface GetDictionaryItemAllParams {
   sort?: string;
   status?: string;
   time?: string;
@@ -9,7 +9,7 @@ export interface getDictionaryItemAllParams {
 }
 
 /** 无分页查询字典项返回结果 */
-export interface getDictionaryItemAllResult {
+export interface GetDictionaryItemAllResult {
   id: string;
   sort: number;
   status: number;
@@ -19,6 +19,3 @@ export interface getDictionaryItemAllResult {
   value: string;
   description: string;
 }
-
-/** 自定义弹窗类型 */
-export type typeObj = "edit" | "add" | "detail";

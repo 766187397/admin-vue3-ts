@@ -1,8 +1,8 @@
 import type { Result } from "@/types/api";
 import type {
-  createRoutesParams,
-  getRoutesAllParams,
-  getRoutesByRoleParams,
+  CreateRoutesParams,
+  GetRoutesAllParams,
+  GetRoutesByRoleParams,
   RoleRoutes,
   RouterInfoList,
 } from "@/types/menu";
@@ -15,7 +15,7 @@ export const getRoutesDetail = async (id: string): Promise<Result<RouterInfoList
 };
 
 /** 修改路由 */
-export const updateRoutes = async (id: string | number, data: createRoutesParams): Promise<Result<null>> => {
+export const updateRoutes = async (id: string | number, data: CreateRoutesParams): Promise<Result<null>> => {
   return await http.patch(`/api/v1/admin/routes/update/${id}`, data);
 };
 
@@ -25,30 +25,30 @@ export const delRoutes = async (id: string | number): Promise<Result<null>> => {
 };
 
 /** 根据用户绑定的角色获取路由列表 */
-export const getRoutesByRole = async (params?: getRoutesByRoleParams): Promise<Result<RoleRoutes[]>> => {
+export const getRoutesByRole = async (params?: GetRoutesByRoleParams): Promise<Result<RoleRoutes[]>> => {
   return await http.get("/api/v1/admin/routes/by/role", params);
 };
 //#endregion
 
 //#region admin接口
 /** 创建路由  */
-export const createRouteAdmin = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
+export const createRouteAdmin = async (data: CreateRoutesParams): Promise<Result<RoleRoutes>> => {
   return await http.post("/api/v1/admin/routes/create/admin", data);
 };
 
 /** 查询所有路由 */
-export const getRoutesAllAdmin = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
+export const getRoutesAllAdmin = async (params?: GetRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
   return await http.get("/api/v1/admin/routes/all/admin", params);
 };
 //#endregion
 
 //#region web接口
 /** 创建路由  */
-export const createRouteWeb = async (data: createRoutesParams): Promise<Result<RoleRoutes>> => {
+export const createRouteWeb = async (data: CreateRoutesParams): Promise<Result<RoleRoutes>> => {
   return await http.post("/api/v1/admin/routes/create/web", data);
 };
 /** 查询所有路由 */
-export const getRoutesAllWeb = async (params?: getRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
+export const getRoutesAllWeb = async (params?: GetRoutesAllParams): Promise<Result<RouterInfoList[]>> => {
   return await http.get("/api/v1/admin/routes/all/web", params);
 };
 //#endregion

@@ -4,3 +4,6 @@ export interface PageQueryParams {
   pageSize?: number;
   total?: number;
 }
+
+/** 自定义弹窗类型 */
+export type HandleRowType = "edit" | "add" | "detail";

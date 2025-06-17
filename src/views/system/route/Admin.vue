@@ -145,13 +145,14 @@
 
 <script setup lang="ts">
   import { createRouteAdmin, delRoutes, getRoutesAllAdmin, getRoutesDetail, updateRoutes } from "@/api/menu";
-  import type { createRoutesParams, RouterInfoList } from "@/types/menu";
+  import type { CreateRoutesParams, RouterInfoList } from "@/types/menu";
   import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
   import { typeValue } from "@/utils/tool";
-  import type { getDictionaryItemAllResult, typeObj } from "@/types/dictionary";
+  import type { GetDictionaryItemAllResult } from "@/types/dictionary";
   import * as ElementPlusIconsVue from "@element-plus/icons-vue";
   import { baseIconsList } from "@/assets/icon/index";
+import type { HandleRowType } from "@/types/public";
 
   const elementPlusIcons = Object.keys(ElementPlusIconsVue);
 
@@ -178,7 +179,7 @@
   });
 
   // 查询类型
-  const typeList = ref<getDictionaryItemAllResult[]>();
+  const typeList = ref<GetDictionaryItemAllResult[]>();
   const getDictionaryItemAllAsync = async () => {
     let res = await getDictionaryItemAll({ type: "routeType" });
     typeList.value = res.data;
@@ -205,7 +206,7 @@
   getTableData();
 
   // 表单数据
-  const form = ref<RouterInfoList | createRoutesParams>();
+  const form = ref<RouterInfoList | CreateRoutesParams>();
 
   // 表单校验
   const rules = reactive<FormRules<RouterInfoList>>({
@@ -216,11 +217,11 @@
   });
 
   // 查询详情
-  const handleForm = async (type: typeObj, id?: string) => {
+  const handleForm = async (type: HandleRowType, id?: string) => {
     try {
       loading.value = true;
       dialogVisible.value = true;
-      const typeObj = {
+      const fns = {
         getDetail: async function () {
           let res = await getRoutesDetail(id as string);
           form.value = res.data;
@@ -240,21 +241,21 @@
             name: "",
             title: "",
             path: "",
-          } as createRoutesParams;
+          } as CreateRoutesParams;
         },
         edit: async function () {
-          await typeObj.getDetail();
+          await fns.getDetail();
           title.value = "编辑";
         },
         detail: async function () {
-          await typeObj.getDetail();
+          await fns.getDetail();
           title.value = "详情";
         },
       };
       // 直接调用不影响this的指向，否则使用bind(this)
-      // const fn = typeObj[type];
-      // await fn.bind(typeObj)();
-      await typeObj[type]();
+      // const fn = fns[type];
+      // await fn.bind(fns)();
+      await fns[type]();
     } finally {
       loading.value = false;
     }
@@ -283,10 +284,10 @@
         let res;
         if ("id" in form.value!) {
           // 编辑
-          res = await updateRoutes(form.value?.id, form.value as createRoutesParams);
+          res = await updateRoutes(form.value?.id, form.value as CreateRoutesParams);
         } else {
           // 新增
-          res = await createRouteAdmin(form.value as createRoutesParams);
+          res = await createRouteAdmin(form.value as CreateRoutesParams);
         }
         dialogVisible.value = false;
         ElMessage.success({

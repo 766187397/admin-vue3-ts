@@ -1,7 +1,7 @@
 import { getRoutesByRole } from "@/api/menu";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { getRoutesByRoleParams, RoleRoutes } from "@/types/menu";
+import type { GetRoutesByRoleParams, RoleRoutes } from "@/types/menu";
 import router from "@/router";
 import { deepClone } from "@/utils/tool";
 import type { RouteRecordRaw } from "vue-router";
@@ -40,9 +40,9 @@ export const useMenuStore = defineStore("menu", () => {
   let dynamicMenu = ref<RoleRoutes[]>([]);
   /**
    * 使用接口获取路由菜单
-   * @param {getRoutesByRoleParams} params - 请求参数
+   * @param {GetRoutesByRoleParams} params - 请求参数
    */
-  const getDynamicMenu = async (params: getRoutesByRoleParams) => {
+  const getDynamicMenu = async (params: GetRoutesByRoleParams) => {
     const res = await getRoutesByRole(params);
     dynamicMenu.value = res.data;
   };

@@ -4,7 +4,7 @@
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
           <el-col :span="1">
-            <el-button type="primary" plain @click="handleForm('add')">添加</el-button>
+            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
         </el-row>
       </div>
@@ -31,8 +31,8 @@
         <el-table-column prop="component" label="组件" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
-            <el-button type="primary" text plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
-            <el-button type="primary" text plain @click="handleForm('add', scope.row.id)">新增</el-button>
+            <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
+            <el-button type="primary" text plain @click="handleRow('add', scope.row.id)">新增</el-button>
             <el-button type="danger" text plain @click="handleDel(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -145,13 +145,14 @@
 
 <script setup lang="ts">
   import { createRouteWeb, delRoutes, getRoutesAllWeb, getRoutesDetail, updateRoutes } from "@/api/menu";
-  import type { createRoutesParams, RouterInfoList } from "@/types/menu";
+  import type { CreateRoutesParams, RouterInfoList } from "@/types/menu";
   import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
   import { typeValue } from "@/utils/tool";
-  import type { getDictionaryItemAllResult, typeObj } from "@/types/dictionary";
+  import type { GetDictionaryItemAllResult } from "@/types/dictionary";
   import * as ElementPlusIconsVue from "@element-plus/icons-vue";
   import { baseIconsList } from "@/assets/icon/index";
+  import type { HandleRowType } from "@/types/public";
 
   const elementPlusIcons = Object.keys(ElementPlusIconsVue);
 
@@ -178,7 +179,7 @@
   });
 
   // 查询类型
-  const typeList = ref<getDictionaryItemAllResult[]>();
+  const typeList = ref<GetDictionaryItemAllResult[]>();
   const getDictionaryItemAllAsync = async () => {
     let res = await getDictionaryItemAll({ type: "routeType" });
     typeList.value = res.data;
@@ -205,7 +206,7 @@
   getTableData();
 
   // 表单数据
-  const form = ref<RouterInfoList | createRoutesParams>();
+  const form = ref<RouterInfoList | CreateRoutesParams>();
 
   // 表单校验
   const rules = reactive<FormRules<RouterInfoList>>({
@@ -215,18 +216,18 @@
     path: [{ required: true, message: "请输入前端路由路径", trigger: ["blur", "change"] }],
   });
 
-  // 查询详情
-  const handleForm = async (type: typeObj, id?: string) => {
+  // 行操作
+  const handleRow = async (type: HandleRowType, id?: string) => {
     try {
       loading.value = true;
       dialogVisible.value = true;
-      const typeObj = {
+      const fns = {
         getDetail: async function () {
           let res = await getRoutesDetail(id as string);
           form.value = res.data;
         },
         edit: async function () {
-          await typeObj.getDetail();
+          await fns.getDetail();
           title.value = "编辑";
         },
         add: async function () {
@@ -244,17 +245,17 @@
             name: "",
             title: "",
             path: "",
-          } as createRoutesParams;
+          } as CreateRoutesParams;
         },
         detail: async function () {
-          await typeObj.getDetail();
+          await fns.getDetail();
           title.value = "详情";
         },
       };
       // 直接调用不影响this的指向，否则使用bind(this)
-      // const fn = typeObj[type];
-      // await fn.bind(typeObj)();
-      await typeObj[type]();
+      // const fn = fns[type];
+      // await fn.bind(fns)();
+      await fns[type]();
     } finally {
       loading.value = false;
     }
@@ -274,6 +275,7 @@
   };
 
   const formRef = useTemplateRef("formRef");
+
   // 提交
   const submit = () => {
     formRef.value?.validate(async (valid) => {
@@ -283,10 +285,10 @@
         let res;
         if ("id" in form.value!) {
           // 编辑
-          res = await updateRoutes(form.value?.id, form.value as createRoutesParams);
+          res = await updateRoutes(form.value?.id, form.value as CreateRoutesParams);
         } else {
           // 新增
-          res = await createRouteWeb(form.value as createRoutesParams);
+          res = await createRouteWeb(form.value as CreateRoutesParams);
         }
         dialogVisible.value = false;
         ElMessage.success({

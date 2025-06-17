@@ -59,7 +59,7 @@
         <el-table-column prop="avatar" label="头像" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
-            <el-button type="primary" text plain>编辑</el-button>
+            <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
             <el-button type="primary" text plain>新增</el-button>
             <el-button type="danger" text plain>删除</el-button>
           </template>
@@ -73,19 +73,47 @@
       v-model:total="query.total"
       @size-change="getTableData(true)"
       @current-change="getTableData(false)" />
+
+    <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
+      <div class="dialog" v-if="form">
+        <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="上级路由："> </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="danger" @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="submit">确认</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { getUsersPage } from "@/api/user";
+  import { getUserInfo, getUsersPageAdmin } from "@/api/user";
   import Pagination from "@/components/el/Pagination.vue";
+  import type { HandleRowType } from "@/types/public";
   import type { UserResponseData, UsersQueryParams } from "@/types/user";
+  import { ElMessage } from "element-plus";
   const now = new Date();
   const defaultTime: [Date, Date] = [
     new Date(now.getFullYear(), now.getMonth(), now.getDate()),
     new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
   ];
+
+  // 加载中动画
   const loading = ref(false);
+  const buttonLoading = ref(false);
+  // 弹窗状态
+  const dialogVisible = ref(false);
+  // 弹窗名称
+  const title = ref("");
+  // 默认查询条件
   const defaultQuery = {
     page: 1,
     pageSize: 1,
@@ -95,6 +123,7 @@
     email: "",
     phone: "",
   };
+  // 查询条件
   const query = ref<UsersQueryParams>({
     ...defaultQuery,
   });
@@ -102,7 +131,7 @@
   const handleReset = () => {
     query.value = { ...defaultQuery };
   };
-
+  /** 数据 */
   const tableData = ref<UserResponseData[]>();
 
   /** 查询数据 */
@@ -112,12 +141,76 @@
     }
     loading.value = true;
     let data = { ...query.value };
-    const res = await getUsersPage(data);
+    const res = await getUsersPageAdmin(data);
     query.value.total = res.data.total;
     tableData.value = res.data.data;
     loading.value = false;
   };
   getTableData();
+
+  // 表单数据
+  const form = ref();
+  const rules = ref();
+
+  // 关闭弹窗
+  const handleClose = () => {
+    form.value = undefined;
+    dialogVisible.value = false;
+  };
+
+  const formRef = useTemplateRef("formRef");
+
+  /** 提交 */
+  const submit = () => {
+    formRef.value?.validate(async (valid) => {
+      if (!valid) return;
+      try {
+        buttonLoading.value = true;
+        let res;
+        // 调用接口
+        dialogVisible.value = false;
+        ElMessage.success({
+          // message: res?.message || "操作成功",
+        });
+        getTableData();
+      } catch (error) {
+      } finally {
+        buttonLoading.value = false;
+      }
+    });
+  };
+
+  // 行操作
+  const handleRow = async (type: HandleRowType, id?: string) => {
+    try {
+      loading.value = true;
+      dialogVisible.value = true;
+      const fns = {
+        getDetail: async function () {
+          let res = await getUserInfo(id as string);
+          form.value = res.data;
+        },
+        edit: async function () {
+          await fns.getDetail();
+          title.value = "编辑";
+        },
+        add: async function () {
+          title.value = "新增";
+          form.value = {};
+        },
+        detail: async function () {
+          await fns.getDetail();
+          title.value = "详情";
+        },
+      };
+      // 直接调用不影响this的指向，否则使用bind(this)
+      // const fn = fns[type];
+      // await fn.bind(fns)();
+      await fns[type]();
+    } finally {
+      loading.value = false;
+    }
+  };
 </script>
 
 <style lang="scss" scoped></style>

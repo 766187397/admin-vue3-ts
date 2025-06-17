@@ -1,4 +1,4 @@
-import type { getDictionaryItemAllResult } from "@/types/dictionary";
+import type { GetDictionaryItemAllResult } from "@/types/dictionary";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -41,18 +41,18 @@ export const usePublicStore = defineStore("public", () => {
   };
 
   /** 平台类型列表 */
-  const platformList = ref<getDictionaryItemAllResult[]>();
+  const platformList = ref<GetDictionaryItemAllResult[]>();
 
   /** 设置平台类型列表 */
-  const setPlatformList = (list: getDictionaryItemAllResult[]) => {
+  const setPlatformList = (list: GetDictionaryItemAllResult[]) => {
     platformList.value = list;
   };
 
   /** 公共状态 */
-  const publicStateList = ref<getDictionaryItemAllResult[]>();
+  const publicStateList = ref<GetDictionaryItemAllResult[]>();
 
   /** 设置公共状态 */
-  const setPublicStateList = (state: getDictionaryItemAllResult[]) => {
+  const setPublicStateList = (state: GetDictionaryItemAllResult[]) => {
     publicStateList.value = state;
   };
 

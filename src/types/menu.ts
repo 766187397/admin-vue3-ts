@@ -1,5 +1,5 @@
 /** 创建路由参数 */
-export interface createRoutesParams {
+export interface CreateRoutesParams {
   /*排序 */
   sort?: number;
 
@@ -41,7 +41,7 @@ export interface createRoutesParams {
 }
 
 /** 查询所有路由参数 */
-export interface getRoutesAllParams {
+export interface GetRoutesAllParams {
   sort?: string;
   status?: string;
   time?: string;
@@ -69,7 +69,7 @@ export interface RoleRoutes {
 }
 
 /** 通过角色查询路由参数 */
-export interface getRoutesByRoleParams {
+export interface GetRoutesByRoleParams {
   type: string;
 }
 
