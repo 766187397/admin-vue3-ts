@@ -46,7 +46,7 @@
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
           <el-col :span="1">
-            <el-button type="primary" plain>添加</el-button>
+            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
         </el-row>
       </div>
@@ -60,8 +60,7 @@
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
-            <el-button type="primary" text plain @click="handleRow('add')">新增</el-button>
-            <el-button type="danger" text plain>删除</el-button>
+            <el-button type="danger" text plain @click="handleRow('delete', scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -70,7 +69,7 @@
     <Pagination
       v-model:pageSize="query.pageSize"
       v-model:page="query.page"
-      v-model:total="query.total"
+      v-model:total="total"
       @size-change="getTableData(true)"
       @current-change="getTableData(false)" />
 
@@ -79,7 +78,51 @@
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="上级路由："> </el-form-item>
+              <el-form-item label="账号：">
+                <el-input v-model="form.account" placeholder="请输入账号" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="密码：">
+                <el-input v-model="form.password" type="password" show-password placeholder="请输入密码"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="昵称：">
+                <el-input v-model="form.nickName" placeholder="请输入昵称" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="邮箱：">
+                <el-input v-model="form.email" type="email" placeholder="请输入邮箱" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="手机号：">
+                <el-input v-model="form.phone" placeholder="请输入手机号" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="性别：">
+                <el-select v-model="form.sex" placeholder="请选择性别">
+                  <el-option v-for="item in sexOptions" :key="item.id" :label="item.label" :value="item.value" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="头像：">
+                <el-input v-model="form.avatar"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="状态：">
+                <el-input v-model="form.status"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="排序：">
+                <el-input v-model="form.sort"></el-input>
+              </el-form-item>
             </el-col>
           </el-row>
         </el-form>
@@ -95,11 +138,13 @@
 </template>
 
 <script setup lang="ts">
-  import { getUserInfo, getUsersPageAdmin } from "@/api/user";
+  import { getDictionaryItemAll } from "@/api/public";
+  import { getUserInfo, updateUser, deleteUser, getUsersPageAdmin, createUserAdmin } from "@/api/user";
   import Pagination from "@/components/el/Pagination.vue";
   import type { HandleRowType } from "@/types/public";
-  import type { UserResponseData, UsersCreateParams, UsersQueryParams } from "@/types/user";
+  import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
   import { ElMessage } from "element-plus";
+
   const now = new Date();
   const defaultTime: [Date, Date] = [
     new Date(now.getFullYear(), now.getMonth(), now.getDate()),
@@ -117,12 +162,13 @@
   const defaultQuery = {
     page: 1,
     pageSize: 1,
-    total: 0,
     account: "",
     nickName: "",
     email: "",
     phone: "",
   };
+  // 总条数
+  const total = ref(0);
   // 查询条件
   const query = ref<UsersQueryParams>({
     ...defaultQuery,
@@ -131,6 +177,14 @@
   const handleReset = () => {
     query.value = { ...defaultQuery };
   };
+
+  const sexOptions = ref();
+  const getUserSex = async () => {
+    let res = await getDictionaryItemAll({ type: "userSex" });
+    sexOptions.value = res.data;
+  };
+  getUserSex();
+
   /** 数据 */
   const tableData = ref<UserResponseData[]>();
 
@@ -149,7 +203,7 @@
   getTableData();
 
   // 表单数据
-  const form = ref<UserResponseData | UsersCreateParams>();
+  const form = ref<UsersCreateParams | UsersUpdateParams | UserResponseData>();
   const rules = ref();
 
   // 关闭弹窗
@@ -160,41 +214,22 @@
 
   const formRef = useTemplateRef("formRef");
 
-  /** 提交 */
-  const submit = () => {
-    formRef.value?.validate(async (valid) => {
-      if (!valid) return;
-      try {
-        buttonLoading.value = true;
-        let res;
-        // 调用接口
-        dialogVisible.value = false;
-        ElMessage.success({
-          // message: res?.message || "操作成功",
-        });
-        getTableData();
-      } catch (error) {
-      } finally {
-        buttonLoading.value = false;
-      }
-    });
-  };
-
-  // 行操作
+  /** 行操作 */
   const handleRow = async (type: HandleRowType, id?: string) => {
     try {
       loading.value = true;
-      dialogVisible.value = true;
       const fns = {
         getDetail: async function () {
           let res = await getUserInfo(id as string);
           form.value = res.data;
         },
         edit: async function () {
+          dialogVisible.value = true;
           await fns.getDetail();
           title.value = "编辑";
         },
         add: async function () {
+          dialogVisible.value = true;
           title.value = "新增";
           form.value = {
             sort: 1,
@@ -207,11 +242,23 @@
             account: "",
             nickName: "",
             password: "",
-          } as UsersCreateParams;
+          };
         },
         detail: async function () {
+          dialogVisible.value = true;
           await fns.getDetail();
           title.value = "详情";
+        },
+        delete: async function () {
+          ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
+            type: "error",
+          }).then(async () => {
+            let res = await deleteUser(id as string);
+            getTableData();
+            ElMessage.success({
+              message: res?.message || "操作成功",
+            });
+          });
         },
       };
       // 直接调用不影响this的指向，否则使用bind(this)
@@ -221,6 +268,33 @@
     } finally {
       loading.value = false;
     }
+  };
+
+  /** 提交 */
+  const submit = () => {
+    formRef.value?.validate(async (valid) => {
+      if (!valid) return;
+      try {
+        buttonLoading.value = true;
+        let res;
+        // 调用接口
+        if ("id" in form.value!) {
+          // 编辑
+          res = await updateUser(form.value?.id, form.value as UsersUpdateParams);
+        } else {
+          // 新增
+          res = await createUserAdmin(form.value as UsersCreateParams);
+        }
+        dialogVisible.value = false;
+        ElMessage.success({
+          message: res?.message || "操作成功",
+        });
+        getTableData();
+      } catch (error) {
+      } finally {
+        buttonLoading.value = false;
+      }
+    });
   };
 </script>
 

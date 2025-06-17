@@ -4,7 +4,7 @@
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
           <el-col :span="1">
-            <el-button type="primary" plain @click="handleForm('add')">添加</el-button>
+            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
         </el-row>
       </div>
@@ -31,9 +31,9 @@
         <el-table-column prop="component" label="组件" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
-            <el-button type="primary" text plain @click="handleForm('edit', scope.row.id)">编辑</el-button>
-            <el-button type="primary" text plain @click="handleForm('add', scope.row.id)">新增</el-button>
-            <el-button type="danger" text plain @click="handleDel(scope.row.id)">删除</el-button>
+            <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
+            <el-button type="primary" text plain @click="handleRow('add', scope.row.id)">新增</el-button>
+            <el-button type="danger" text plain @click="handleRow('delete', scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -152,7 +152,7 @@
   import type { GetDictionaryItemAllResult } from "@/types/dictionary";
   import * as ElementPlusIconsVue from "@element-plus/icons-vue";
   import { baseIconsList } from "@/assets/icon/index";
-import type { HandleRowType } from "@/types/public";
+  import type { HandleRowType } from "@/types/public";
 
   const elementPlusIcons = Object.keys(ElementPlusIconsVue);
 
@@ -217,16 +217,16 @@ import type { HandleRowType } from "@/types/public";
   });
 
   // 查询详情
-  const handleForm = async (type: HandleRowType, id?: string) => {
+  const handleRow = async (type: HandleRowType, id?: string) => {
     try {
       loading.value = true;
-      dialogVisible.value = true;
       const fns = {
         getDetail: async function () {
           let res = await getRoutesDetail(id as string);
           form.value = res.data;
         },
         add: async function () {
+          dialogVisible.value = true;
           title.value = "新增";
           form.value = {
             sort: 0,
@@ -244,12 +244,25 @@ import type { HandleRowType } from "@/types/public";
           } as CreateRoutesParams;
         },
         edit: async function () {
+          dialogVisible.value = true;
           await fns.getDetail();
           title.value = "编辑";
         },
         detail: async function () {
+          dialogVisible.value = true;
           await fns.getDetail();
           title.value = "详情";
+        },
+        delete: async function () {
+          ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
+            type: "error",
+          }).then(async () => {
+            let res = await delRoutes(id as string);
+            getTableData();
+            ElMessage.success({
+              message: res?.message || "操作成功",
+            });
+          });
         },
       };
       // 直接调用不影响this的指向，否则使用bind(this)
@@ -298,19 +311,6 @@ import type { HandleRowType } from "@/types/public";
       } finally {
         buttonLoading.value = false;
       }
-    });
-  };
-
-  /** 删除 */
-  const handleDel = (id: string) => {
-    ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
-      type: "error",
-    }).then(async () => {
-      let res = await delRoutes(id);
-      getTableData();
-      ElMessage.success({
-        message: res?.message || "操作成功",
-      });
     });
   };
 </script>

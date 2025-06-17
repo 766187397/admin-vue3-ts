@@ -6,4 +6,4 @@ export interface PageQueryParams {
 }
 
 /** 自定义弹窗类型 */
-export type HandleRowType = "edit" | "add" | "detail";
+export type HandleRowType = "edit" | "add" | "detail" | "delete";

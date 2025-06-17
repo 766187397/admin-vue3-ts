@@ -1,5 +1,11 @@
 import { http } from "@/utils/http";
-import type { UsersCreateParams, UserResponseData, UsersQuery, UsersQueryParams } from "@/types/user";
+import type {
+  UsersCreateParams,
+  UserResponseData,
+  UsersQuery,
+  UsersQueryParams,
+  UsersUpdateParams,
+} from "@/types/user";
 import type { PageApiResult, Result } from "@/types/api";
 
 //#region public 不区分平台
@@ -9,7 +15,7 @@ export const getUserInfo = (id: string): Promise<Result<UserResponseData>> => {
 };
 
 /** 更新用户 */
-export const updateUser = (id: string, data: UsersCreateParams): Promise<Result<null>> => {
+export const updateUser = (id: string, data: UsersUpdateParams): Promise<Result<null>> => {
   return http.patch(`/api/v1/admin/users/update/${id}`, data);
 };
 
