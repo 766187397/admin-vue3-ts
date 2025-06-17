@@ -2,7 +2,6 @@
   <el-upload
     class="avatar-uploader"
     drag
-    with-credentials
     :headers="headers"
     :action="action"
     :show-file-list="false"
@@ -16,6 +15,11 @@
 
 <script setup lang="ts">
   import { useUserInfoStore } from "@/store";
+  import { ElMessage } from "element-plus";
+  const { maxSize = 5 } = defineProps<{
+    maxSize?: number;
+  }>();
+
   const action = import.meta.env.VITE_BASE_URL + "/api/v1/upload/file";
   const userInfoStore = useUserInfoStore();
   const token = userInfoStore.token;
@@ -26,13 +30,32 @@
   const imageUrl = ref("");
 
   /** 上传前 */
-  const beforeAvatarUpload = (file: any) => {};
+  const beforeAvatarUpload = (file: any) => {
+    console.log("上传前file", file);
+    const mb = file.size / 1024 / 1024;
+    if (mb > maxSize) {
+      ElMessage.error("上传图片大小不能超过" + maxSize + "MB!");
+      return false;
+    }
+    if (file.type.indexOf("image") == -1) {
+      ElMessage.error("上传图片格式不正确!");
+      return false;
+    }
+  };
+
+  const emit = defineEmits(["updateSuccess", "updateError"]);
 
   /** 上传成功 */
-  const handleAvatarSuccess = (ref: any, file: any) => {};
+  const handleAvatarSuccess = (ref: any, file: any) => {
+    emit("updateSuccess", ref, file);
+  };
 
   /** 上传失败 */
-  const handleAvatarError = (err: any, file: any) => {};
+  const handleAvatarError = (err: any, file: any) => {
+    const res = JSON.parse(err.message);
+    ElMessage.error(res.message);
+    emit("updateError", err, file);
+  };
 </script>
 
 <style lang="scss" scoped>
