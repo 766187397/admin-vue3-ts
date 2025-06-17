@@ -60,7 +60,7 @@
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
-            <el-button type="primary" text plain>新增</el-button>
+            <el-button type="primary" text plain @click="handleRow('add')">新增</el-button>
             <el-button type="danger" text plain>删除</el-button>
           </template>
         </el-table-column>
@@ -98,7 +98,7 @@
   import { getUserInfo, getUsersPageAdmin } from "@/api/user";
   import Pagination from "@/components/el/Pagination.vue";
   import type { HandleRowType } from "@/types/public";
-  import type { UserResponseData, UsersQueryParams } from "@/types/user";
+  import type { UserResponseData, UsersCreateParams, UsersQueryParams } from "@/types/user";
   import { ElMessage } from "element-plus";
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -149,7 +149,7 @@
   getTableData();
 
   // 表单数据
-  const form = ref();
+  const form = ref<UserResponseData | UsersCreateParams>();
   const rules = ref();
 
   // 关闭弹窗
@@ -196,7 +196,18 @@
         },
         add: async function () {
           title.value = "新增";
-          form.value = {};
+          form.value = {
+            sort: 1,
+            status: 1,
+            email: "",
+            phone: "",
+            sex: "0",
+            avatar: "",
+            roleIds: [],
+            account: "",
+            nickName: "",
+            password: "",
+          } as UsersCreateParams;
         },
         detail: async function () {
           await fns.getDetail();
