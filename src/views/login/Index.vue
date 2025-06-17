@@ -130,12 +130,6 @@
         const redirectPath = (route.query.redirect as string) || "/";
         router.push(redirectPath);
       } catch (error: any) {
-        // 登录失败
-        ElMessage({
-          message: error.message || "登录失败，请检查账号和密码",
-          type: "error",
-          duration: 3000,
-        });
       } finally {
         loading.value = false;
       }
