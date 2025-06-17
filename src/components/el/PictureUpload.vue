@@ -1,5 +1,6 @@
 <template>
   <el-upload
+    v-loading="loading"
     class="avatar-uploader"
     drag
     :headers="headers"
@@ -19,6 +20,8 @@
 
   let imageUrl = defineModel("imageUrl", { type: String, default: "" });
 
+  const loading = ref(false);
+
   const { maxSize = 5 } = defineProps<{
     maxSize?: number;
   }>();
@@ -32,7 +35,8 @@
 
   /** 上传前 */
   const beforeAvatarUpload = (file: any) => {
-    console.log("上传前file", file);
+    loading.value = true;
+
     const mb = file.size / 1024 / 1024;
     if (mb > maxSize) {
       ElMessage.error("上传图片大小不能超过" + maxSize + "MB!");
@@ -48,11 +52,13 @@
 
   /** 上传成功 */
   const handleAvatarSuccess = (res: any, file: any) => {
+    loading.value = false;
     emit("updateSuccess", res, file);
   };
 
   /** 上传失败 */
   const handleAvatarError = (err: any, file: any) => {
+    loading.value = false;
     const res = JSON.parse(err.message);
     ElMessage.error(res.message);
     emit("updateError", err, file);
