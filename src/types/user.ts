@@ -49,8 +49,7 @@ export type UsersQueryParams = UsersQuery & PageQueryParams;
 
 /** 返回用户信息 */
 export interface UserResponseData {
-  id: number;
-  uuid: string;
+  id: string;
   sort: number;
   status: number;
   createdAt: string;

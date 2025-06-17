@@ -216,13 +216,13 @@
   });
 
   // 查询详情
-  const handleForm = async (type: typeObj, id?: string | number) => {
+  const handleForm = async (type: typeObj, id?: string) => {
     try {
       loading.value = true;
       dialogVisible.value = true;
       const typeObj = {
         getDetail: async function () {
-          let res = await getRoutesDetail(id as string);
+          let res = await getRoutesDetail(id);
           form.value = res.data;
         },
         edit: async function () {
@@ -237,7 +237,7 @@
             component: "",
             meta: "",
             icon: "",
-            parentId: id as number,
+            parentId: id,
             externalLinks: false,
             redirect: "",
             type: "",
@@ -294,7 +294,7 @@
   };
 
   /** 删除 */
-  const handleDel = (id: string | number) => {
+  const handleDel = (id: string) => {
     ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
       type: "error",
     }).then(async () => {

@@ -10,8 +10,7 @@ export interface getDictionaryItemAllParams {
 
 /** 无分页查询字典项返回结果 */
 export interface getDictionaryItemAllResult {
-  id: number;
-  uuid: string;
+  id: string;
   sort: number;
   status: number;
   createdAt: string;

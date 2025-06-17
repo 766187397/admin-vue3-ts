@@ -75,8 +75,7 @@ export interface getRoutesByRoleParams {
 
 /** 详情返回 */
 interface RouterInfo {
-  id: number;
-  uuid: string;
+  id: string;
   sort: number;
   status: number;
   createdAt: string;
