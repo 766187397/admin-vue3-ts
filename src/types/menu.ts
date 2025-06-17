@@ -1,31 +1,33 @@
-/** 创建路由参数 */
-export interface CreateRoutesParams {
+// Required  转换为必选
+// Partial  转换为可选
+
+interface Router {
   /*排序 */
-  sort?: number;
+  sort: number;
 
   /*状态；1 - 启用，2 - 禁用；根据模块业务定义 */
-  status?: number;
+  status: number;
 
   /*Vue组件路径（物理路径） */
-  component?: string;
+  component: string;
 
   /*其他携带信息 */
-  meta?: string;
+  meta: string;
 
   /*图标 */
-  icon?: string;
+  icon: string;
 
   /*父级路由id */
-  parentId?: string | number;
+  parentId: string;
 
   /*是否为外链 */
-  externalLinks?: boolean;
+  externalLinks: boolean;
 
   /*重定向地址 */
-  redirect?: string;
+  redirect: string;
 
   /*平台标识（如admin/web/app/mini等） */
-  platform?: string;
+  platform: string;
 
   /*路由类型：菜单/按钮/API等 */
   type: string;
@@ -37,8 +39,20 @@ export interface CreateRoutesParams {
   title: string;
 
   /*前端路由路径（可以含动态参数） */
-  path?: string;
+  path: string;
 }
+
+/** 创建路由参数 */
+export type CreateRoutesParams = Partial<Router> & {
+  /*路由类型：菜单/按钮/API等 */
+  type: string;
+
+  /*路由名称 */
+  name: string;
+
+  /*路由显示名称 */
+  title: string;
+};
 
 /** 查询所有路由参数 */
 export interface GetRoutesAllParams {
@@ -74,22 +88,10 @@ export interface GetRoutesByRoleParams {
 }
 
 /** 详情返回 */
-interface RouterInfo {
+interface RouterInfo extends Router {
   id: string;
-  sort: number;
-  status: number;
   createdAt: string;
   updatedAt: string;
-  type: string;
-  name: string;
-  title: string;
-  path: string;
-  component: string;
-  meta: string;
-  icon: string;
-  externalLinks: boolean;
-  redirect: string;
-  parentId: number;
 }
 
 /** 路由详情 抽离 防止循环引用 */

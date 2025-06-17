@@ -36,7 +36,7 @@ interface User {
 }
 
 /** 创建用户 */
-export interface UsersCreateParams extends User {
+export type UsersCreateParams = Partial<User> & {
   /*账号 */
   account: string;
 
@@ -45,7 +45,7 @@ export interface UsersCreateParams extends User {
 
   /*密码 */
   password: string;
-}
+};
 
 /** 更新用户信息 */
 export type UsersUpdateParams = Partial<UsersCreateParams>;
