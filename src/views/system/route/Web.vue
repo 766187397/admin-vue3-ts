@@ -108,12 +108,12 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="是否为外链：">
-                <el-switch v-model="form.externalLinks" />
+                <el-switch v-model="form.externalLinks" @change="handleExternalLinksChange" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="重定向地址：">
-                <el-input v-model="form.redirect" placeholder="请输入重定向地址" />
+                <el-input v-model="form.redirect" placeholder="请输入重定向地址" :disabled="form.externalLinks" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -222,7 +222,7 @@
       dialogVisible.value = true;
       const typeObj = {
         getDetail: async function () {
-          let res = await getRoutesDetail(id);
+          let res = await getRoutesDetail(id as string);
           form.value = res.data;
         },
         edit: async function () {
@@ -257,6 +257,13 @@
       await typeObj[type]();
     } finally {
       loading.value = false;
+    }
+  };
+
+  // 修改外链状态
+  const handleExternalLinksChange = () => {
+    if (form.value) {
+      form.value.redirect = "";
     }
   };
 
