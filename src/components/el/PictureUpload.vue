@@ -16,6 +16,9 @@
 <script setup lang="ts">
   import { useUserInfoStore } from "@/store";
   import { ElMessage } from "element-plus";
+
+  let imageUrl = defineModel("imageUrl", { type: String, default: "" });
+
   const { maxSize = 5 } = defineProps<{
     maxSize?: number;
   }>();
@@ -26,8 +29,6 @@
   const headers = {
     Authorization: token.startsWith("Bearer ") ? token : "Bearer " + token,
   };
-
-  const imageUrl = ref("");
 
   /** 上传前 */
   const beforeAvatarUpload = (file: any) => {
@@ -46,8 +47,8 @@
   const emit = defineEmits(["updateSuccess", "updateError"]);
 
   /** 上传成功 */
-  const handleAvatarSuccess = (ref: any, file: any) => {
-    emit("updateSuccess", ref, file);
+  const handleAvatarSuccess = (res: any, file: any) => {
+    emit("updateSuccess", res, file);
   };
 
   /** 上传失败 */

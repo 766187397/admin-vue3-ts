@@ -110,19 +110,18 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="状态：">
-                <el-input v-model="form.status"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="排序：">
-                <el-input v-model="form.sort"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
               <el-form-item label="头像：">
-                <PictureUpload />
-                <!-- <el-input v-model="form.avatar"></el-input> -->
+                <PictureUpload v-model:imageUrl="form.avatar" @updateSuccess="handlePictureUploadSuccess" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="状态：">
+                <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="排序：">
+                <el-input-number v-model="form.sort" :min="1" controls-position="right" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -203,6 +202,13 @@
     loading.value = false;
   };
   getTableData();
+
+  // 文件上传成功
+  const handlePictureUploadSuccess = (res: any, file: any) => {
+    if (form.value) {
+      form.value.avatar = res.data.completePath;
+    }
+  };
 
   // 表单数据
   const form = ref<UsersCreateParams | UsersUpdateParams | UserResponseData>();
