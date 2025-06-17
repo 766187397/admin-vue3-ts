@@ -158,7 +158,7 @@
   import Pagination from "@/components/el/Pagination.vue";
   import { ElMessage } from "element-plus";
   import { getDictionaryItemAll } from "@/api/public";
-  import { getUserInfo, updateUser, deleteUser, getUsersPageAdmin, createUserAdmin } from "@/api/user";
+  import { getUserInfo, updateUser, deleteUser, getUsersPageWeb, createUserWeb } from "@/api/user";
   import { displayValue } from "@/hooks/dictionary";
   import type { HandleRowType } from "@/types/public";
   import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
@@ -213,7 +213,7 @@
     }
     loading.value = true;
     let data = { ...query.value };
-    const res = await getUsersPageAdmin(data);
+    const res = await getUsersPageWeb(data);
     query.value.total = res.data.total;
     tableData.value = res.data.data;
     loading.value = false;
@@ -314,7 +314,7 @@
           res = await updateUser(form.value?.id, form.value as UsersUpdateParams);
         } else {
           // 新增
-          res = await createUserAdmin(form.value as UsersCreateParams);
+          res = await createUserWeb(form.value as UsersCreateParams);
         }
         dialogVisible.value = false;
         ElMessage.success({
