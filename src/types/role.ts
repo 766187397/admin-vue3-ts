@@ -4,15 +4,13 @@ import type { Base, QueryParams, PageQueryParams } from "./public";
 
 // 角色信息
 interface Role {
-  sort: number;
-  status: number;
   name: string;
   roleKey: string;
   description: string;
 }
 
 /** 创建角色  */
-export type RoleCreateParams = Partial<Role> & {
+export type RoleCreateParams = {
   /*角色名称 */
   name: string;
 
@@ -21,7 +19,8 @@ export type RoleCreateParams = Partial<Role> & {
 
   /*角色描述 */
   description: string;
-};
+} & Partial<Role> &
+  Base;
 
 /** 更新角色  */
 export type RoleUpdateParams = Partial<RoleCreateParams>;
