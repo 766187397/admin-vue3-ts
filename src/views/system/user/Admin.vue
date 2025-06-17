@@ -56,7 +56,20 @@
         <el-table-column prop="email" label="邮箱" align="center" />
         <el-table-column prop="phone" label="手机号" align="center" />
         <el-table-column prop="sex" label="性别" align="center" />
-        <el-table-column prop="avatar" label="头像" align="center" />
+        <el-table-column prop="avatar" label="头像" align="center">
+          <template v-slot="scope">
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.avatar"
+              :zoom-rate="1.2"
+              :max-scale="7"
+              :min-scale="0.2"
+              :preview-src-list="[scope.row.avatar]"
+              show-progress
+              preview-teleported
+              fit="cover" />
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
