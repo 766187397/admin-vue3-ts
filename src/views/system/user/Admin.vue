@@ -109,11 +109,6 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
-              <el-form-item label="头像：">
-                <el-input v-model="form.avatar"></el-input>
-              </el-form-item>
-            </el-col>
             <el-col :span="12">
               <el-form-item label="状态：">
                 <el-input v-model="form.status"></el-input>
@@ -122,6 +117,12 @@
             <el-col :span="12">
               <el-form-item label="排序：">
                 <el-input v-model="form.sort"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="头像：">
+                <PictureUpload />
+                <!-- <el-input v-model="form.avatar"></el-input> -->
               </el-form-item>
             </el-col>
           </el-row>
@@ -138,6 +139,7 @@
 </template>
 
 <script setup lang="ts">
+  import PictureUpload from "@/components/el/PictureUpload.vue";
   import { getDictionaryItemAll } from "@/api/public";
   import { getUserInfo, updateUser, deleteUser, getUsersPageAdmin, createUserAdmin } from "@/api/user";
   import Pagination from "@/components/el/Pagination.vue";
