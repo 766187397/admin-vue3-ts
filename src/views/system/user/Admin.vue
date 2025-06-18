@@ -26,7 +26,7 @@
           <el-col :span="8">
             <el-form-item label="时间范围：">
               <el-date-picker
-                v-model="query.time"
+                v-model="time"
                 type="datetimerange"
                 :default-time="defaultTime"
                 value-format="YYYY-MM-DD HH:mm:ss"
@@ -184,7 +184,10 @@
     nickName: "",
     email: "",
     phone: "",
+    time: "",
   };
+  // 时间
+  const time = ref();
   // 总条数
   const total = ref(0);
   // 查询条件
@@ -213,6 +216,9 @@
     }
     loading.value = true;
     let data = { ...query.value };
+    if (time.value && time.value.length > 0) {
+      data.time = time.value.join(",");
+    }
     const res = await getUsersPageAdmin(data);
     total.value = res.data.total;
     tableData.value = res.data.data;
