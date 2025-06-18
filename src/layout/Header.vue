@@ -30,7 +30,7 @@
         <div class="r_item">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar v-if="userInfo.avatar" shape="square" size="default" :src="userInfo.avatar" />
+              <el-avatar v-if="userInfo.avatar" shape="square" size="default" :src="userInfo.avatar" :title="userInfo.nickName"  />
               <span v-else>{{ userInfo.nickName }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
