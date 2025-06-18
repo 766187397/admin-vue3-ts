@@ -214,7 +214,7 @@
     loading.value = true;
     let data = { ...query.value };
     const res = await getUsersPageWeb(data);
-    query.value.total = res.data.total;
+    total.value = res.data.total;
     tableData.value = res.data.data;
     loading.value = false;
   };
