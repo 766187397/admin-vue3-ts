@@ -1,4 +1,4 @@
-import type { Result } from "@/types/api";
+import type { PageApiResult, Result } from "@/types/api";
 import type { RoleUpdateParams, RoleDetail, RoleQuery, RoleQueryParams, RoleCreateParams } from "@/types/role";
 import { http } from "@/utils/http";
 
@@ -32,7 +32,7 @@ export const getRolesAllAdmin = async (data: RoleQuery): Promise<Result<RoleDeta
 };
 
 /** 分页查询角色 */
-export const getRolesByRoleAdmin = async (data: RoleQueryParams): Promise<Result<RoleDetail[]>> => {
+export const getRolesByRoleAdmin = async (data: RoleQueryParams): Promise<Result<PageApiResult<RoleDetail[]>>> => {
   return await http.get(`/api/v1/admin/roles/page/admin`, data);
 };
 
@@ -50,7 +50,7 @@ export const getRolesAllWeb = async (data: RoleQuery): Promise<Result<RoleDetail
 };
 
 /** 分页查询角色 */
-export const getRolesByRoleWeb = async (data: RoleQueryParams): Promise<Result<RoleDetail[]>> => {
+export const getRolesByRoleWeb = async (data: RoleQueryParams): Promise<Result<PageApiResult<RoleDetail[]>>> => {
   return await http.get(`/api/v1/admin/roles/page/web`, data);
 };
 
