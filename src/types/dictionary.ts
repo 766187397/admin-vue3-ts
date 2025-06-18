@@ -45,10 +45,10 @@ type DictionaryItem = Base & {
 };
 
 /** 创建字典项 */
-export type DictionaryItemCreateParams = DictionaryItem;
+export type DictionaryItemCreate = DictionaryItem;
 
 /** 更新字典项 */
-export type DictionaryItemUpdateParams = Partial<DictionaryItemCreateParams>;
+export type DictionaryItemUpdate = Partial<DictionaryItemCreate>;
 
 /** 无分页查询字典项 */
 export interface GetDictionaryItemAllParams {
