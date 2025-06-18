@@ -1,17 +1,27 @@
-/**
- * 登录表单数据接口
- */
+import type { Base, Static } from "./public";
+import type { RoleDetail } from "./role";
+/** 登录表单数据接口 */
 export interface LoginForm {
   account: string;
   password: string;
 }
 
-/**
- * 登录响应数据接口
- */
+/** 用户信息 */
+type userInfo = Base &
+  Static & {
+    account: string;
+    nickName: string;
+    email: string;
+    phone: string;
+    sex: string;
+    avatar: string;
+    roles: RoleDetail[];
+  };
+
+/** 登录响应数据接口 */
 export interface LoginResponseData {
-  token_type: string;
-  access_token: string;
-  refresh_token: string;
-  userInfo: any;
+  readonly token_type: string;
+  readonly access_token: string;
+  readonly refresh_token: string;
+  userInfo: userInfo;
 }

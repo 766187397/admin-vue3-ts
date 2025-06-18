@@ -1,13 +1,8 @@
+import type { Base, PageQueryParams, Static } from "./public";
 // Required  转换为必选
 // Partial  转换为可选
 
-interface Router {
-  /*排序 */
-  sort: number;
-
-  /*状态；1 - 启用，2 - 禁用；根据模块业务定义 */
-  status: number;
-
+type Router = Base & {
   /*Vue组件路径（物理路径） */
   component: string;
 
@@ -40,7 +35,7 @@ interface Router {
 
   /*前端路由路径（可以含动态参数） */
   path: string;
-}
+};
 
 /** 创建路由参数 */
 export type CreateRoutesParams = Partial<Router> & {
@@ -88,11 +83,7 @@ export interface GetRoutesByRoleParams {
 }
 
 /** 详情返回 */
-interface RouterInfo extends Router {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-}
+type RouterInfo = Router & Static;
 
 /** 路由详情 抽离 防止循环引用 */
 export interface RouterInfoList extends RouterInfo {

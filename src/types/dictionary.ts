@@ -1,3 +1,11 @@
+import type { Base, Static } from "./public";
+
+type Dictionary = Base & {
+  label: string;
+  value: string;
+  description: string;
+};
+
 /** 无分页查询字典项 */
 export interface GetDictionaryItemAllParams {
   sort?: string;
@@ -9,13 +17,4 @@ export interface GetDictionaryItemAllParams {
 }
 
 /** 无分页查询字典项返回结果 */
-export interface GetDictionaryItemAllResult {
-  id: string;
-  sort: number;
-  status: number;
-  createdAt: string;
-  updatedAt: string;
-  label: string;
-  value: string;
-  description: string;
-}
+export type GetDictionaryItemAllResult = Dictionary & Static;

@@ -1,9 +1,9 @@
-import type { Base, PageQueryParams } from "./public";
+import type { Base, PageQueryParams, Static } from "./public";
 // Required  转换为必选
 // Partial  转换为可选
 
 /** 用户信息 */
-interface User {
+type User = Base & {
   /*邮箱 */
   email: string;
 
@@ -27,20 +27,19 @@ interface User {
 
   /*密码 */
   password: string;
-}
+};
 
 /** 创建用户 */
-export type UsersCreateParams = Partial<User> &
-  Base & {
-    /*账号 */
-    account: string;
+export type UsersCreateParams = Partial<User> & {
+  /*账号 */
+  account: string;
 
-    /*昵称 */
-    nickName: string;
+  /*昵称 */
+  nickName: string;
 
-    /*密码 */
-    password: string;
-  };
+  /*密码 */
+  password: string;
+};
 
 /** 更新用户信息 */
 export type UsersUpdateParams = Partial<UsersCreateParams>;
@@ -60,8 +59,4 @@ export interface UsersQuery {
 export type UsersQueryParams = UsersQuery & PageQueryParams;
 
 /** 返回用户信息 */
-export interface UserResponseData extends User {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-}
+export type UserResponseData = User & Static;

@@ -1,15 +1,19 @@
-/** 接口返回基础类型 */
-export interface Base {
+/** 接口返回静态数据 */
+export interface Static {
   /** id */
-  id: string;
+  readonly id: string;
+  /** 创建时间 */
+  readonly createdAt: string;
+  /** 更新时间 */
+  readonly updatedAt: string;
+}
+
+/** 基础类型 */
+export interface Base {
   /** 排序 */
   sort: number;
   /** 状态 */
   status: number;
-  /** 创建时间 */
-  createdAt: string;
-  /** 更新时间 */
-  updatedAt: string;
 }
 
 /** 不分页查询 */
