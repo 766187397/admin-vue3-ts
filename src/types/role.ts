@@ -18,7 +18,7 @@ type Role = Base & {
 };
 
 /** 创建角色  */
-export type RoleCreateParams = Required<Role>;
+export type RoleCreateParams = Role;
 
 /** 更新角色  */
 export type RoleUpdateParams = Partial<RoleCreateParams>;
