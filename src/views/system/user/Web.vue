@@ -197,6 +197,7 @@
   /** 重置 */
   const handleReset = () => {
     query.value = { ...defaultQuery };
+    time.value = undefined;
   };
 
   const sexOptions = ref();
