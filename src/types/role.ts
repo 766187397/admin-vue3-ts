@@ -12,6 +12,9 @@ type Role = Base & {
 
   /*角色描述 */
   description: string;
+
+  /** 路由ids */
+  routeIds: string[];
 };
 
 /** 创建角色  */

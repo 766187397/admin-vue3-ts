@@ -67,11 +67,25 @@
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="名称：" prop="name">
-                <el-input v-model="form.name" placeholder="请输入名称" clearable></el-input>
+              <el-form-item label="角色名称：" prop="name">
+                <el-input v-model="form.name" placeholder="请输入角色名称" clearable></el-input>
               </el-form-item>
             </el-col>
-
+            <el-col :span="12">
+              <el-form-item label="角色标识：" prop="roleKey">
+                <el-input v-model="form.roleKey" placeholder="请输入角色标识" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="角色描述：" prop="description">
+                <el-input
+                  :rows="2"
+                  type="textarea"
+                  v-model="form.description"
+                  placeholder="请输入角色描述"
+                  clearable></el-input>
+              </el-form-item>
+            </el-col>
             <el-col :span="6">
               <el-form-item label="状态：">
                 <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
@@ -80,6 +94,20 @@
             <el-col :span="6">
               <el-form-item label="排序：">
                 <el-input-number v-model="form.sort" :min="1" controls-position="right" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="路由：">
+                <el-tree
+                  :data="router"
+                  show-checkbox
+                  node-key="id"
+                  :default-checked-keys="defaultCheckedKeys"
+                  :props="{
+                    label: 'title',
+                    children: 'children',
+                  }"
+                  @check="handleCheckChange" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -98,10 +126,10 @@
 <script setup lang="ts">
   import Pagination from "@/components/el/Pagination.vue";
   import { ElMessage } from "element-plus";
-  import { getDictionaryItemAll } from "@/api/public";
   import { createRoleAdmin, deleteRole, getRoleDetail, getRolesByRoleAdmin, updateRole } from "@/api/role";
   import type { HandleRowType } from "@/types/public";
   import type { RoleCreateParams, RoleDetail, RoleQueryParams, RoleUpdateParams } from "@/types/role";
+  import { getRoutesAllAdmin } from "@/api/menu";
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -136,6 +164,26 @@
   const handleReset = () => {
     query.value = { ...defaultQuery };
     time.value = undefined;
+  };
+
+  /** 路由 */
+  const router = ref();
+
+  /** 默认数据 */
+  const defaultCheckedKeys = ref([]);
+
+  /** 获取路由 */
+  const getRoutesAll = async () => {
+    const res = await getRoutesAllAdmin();
+    router.value = res.data;
+  };
+  getRoutesAll();
+
+  /** 勾选 */
+  const handleCheckChange = (node: any, data: any) => {
+    if (form.value) {
+      form.value.routeIds = data.checkedKeys;
+    }
   };
 
   /** 数据 */
@@ -180,6 +228,7 @@
       const fns = {
         getDetail: async function () {
           let res = await getRoleDetail(id as string);
+          defaultCheckedKeys.value = res.data.routes.map((item: any) => item.id);
           form.value = res.data;
         },
         edit: async function () {
