@@ -1,12 +1,5 @@
 import type { Result } from "@/types/api";
-import type {
-  RoleUpdateParams,
-  RoleDetail,
-  RoleQuery,
-  RoleQueryParams,
-  RoleCreateParams,
-  RoleResponseData,
-} from "@/types/role";
+import type { RoleUpdateParams, RoleDetail, RoleQuery, RoleQueryParams, RoleCreateParams } from "@/types/role";
 import { http } from "@/utils/http";
 
 //#region public 不区分平台
@@ -16,7 +9,7 @@ export const getRoleDetail = async (id: string): Promise<Result<any>> => {
 };
 
 /** 更新角色 */
-export const updateRole = async (id: string, data: RoleUpdateParams): Promise<Result<RoleResponseData>> => {
+export const updateRole = async (id: string, data: RoleUpdateParams): Promise<Result<null>> => {
   return await http.patch(`/api/v1/admin/roles/${id}`, data);
 };
 
@@ -29,7 +22,7 @@ export const deleteRole = async (id: string): Promise<Result<null>> => {
 
 //#region admin 平台
 /** 创建角色 */
-export const createRoleAdmin = async (data: RoleCreateParams): Promise<Result<RoleResponseData>> => {
+export const createRoleAdmin = async (data: RoleCreateParams): Promise<Result<null>> => {
   return await http.post(`/api/v1/admin/roles/create/admin`, data);
 };
 
@@ -47,7 +40,7 @@ export const getRolesByRoleAdmin = async (data: RoleQueryParams): Promise<Result
 
 //#region web 平台
 /** 创建角色 */
-export const createRoleWeb = async (data: RoleCreateParams): Promise<Result<RoleResponseData>> => {
+export const createRoleWeb = async (data: RoleCreateParams): Promise<Result<RoleDetail>> => {
   return await http.post(`/api/v1/admin/roles/create/web`, data);
 };
 

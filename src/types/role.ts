@@ -31,6 +31,3 @@ export type RoleQueryParams = RoleQuery & PageQueryParams;
 
 /** 角色详情 */
 export type RoleDetail = Required<Role> & Required<Static>;
-
-/** 更新或创建返回参数 */
-export type RoleResponseData = Partial<RoleDetail>;
