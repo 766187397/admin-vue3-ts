@@ -1,3 +1,5 @@
+/** 角色相关接口 */
+
 import type { PageApiResult, Result } from "@/types/api";
 import type { RoleUpdateParams, RoleDetail, RoleQuery, RoleQueryParams, RoleCreateParams } from "@/types/role";
 import { http } from "@/utils/http";

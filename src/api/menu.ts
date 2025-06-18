@@ -1,3 +1,4 @@
+/** 菜单路由相关接口 */
 import type { Result } from "@/types/api";
 import type {
   CreateRoutesParams,

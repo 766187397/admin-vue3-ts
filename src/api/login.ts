@@ -1,3 +1,5 @@
+/** 登录模块接口 */
+
 import { http } from "@/utils/http";
 import type { LoginForm, LoginResponseData } from "@/types/login";
 import type { Result } from "@/types/api";

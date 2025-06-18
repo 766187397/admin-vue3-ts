@@ -1,3 +1,4 @@
+/** 公共模块 */
 import type { Result } from "@/types/api";
 import type { GetDictionaryItemAllParams, GetDictionaryItemAllResult } from "@/types/dictionary";
 import { http } from "@/utils/http";
