@@ -42,7 +42,7 @@
         </el-row>
       </div>
       <el-table :data="tableData">
-        <el-table-column prop="name" label="账号" align="center" />
+        <el-table-column prop="name" label="名称" align="center" />
         <el-table-column prop="roleKey" label="标识" align="center" />
         <el-table-column prop="description" label="描述" align="center" />
         <el-table-column prop="createdAt" label="创建时间" align="center" />
