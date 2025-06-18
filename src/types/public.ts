@@ -11,9 +11,9 @@ export interface Static {
 /** 基础类型 */
 export interface Base {
   /** 排序 */
-  sort: number;
+  sort?: number;
   /** 状态 */
-  status: number;
+  status?: number;
 }
 
 /** 不分页查询 */
