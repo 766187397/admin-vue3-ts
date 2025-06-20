@@ -29,7 +29,7 @@ export const useElConfigStore = defineStore(
       darkTheme: false,
 
       /** 菜单宽度 */
-      menuWidth: 200,
+      menuWidth: 260,
     };
 
     /** 组件全局配置 */

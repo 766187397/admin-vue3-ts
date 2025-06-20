@@ -13,7 +13,8 @@
       </div>
       <div class="right">
         <div class="r_item">
-          <el-icon @click="drawer = true"><Setting /></el-icon>
+          <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState"><FullScreen /></el-icon>
+          <el-icon size="20" @click="exitFullscreen" v-else><CopyDocument /></el-icon>
         </div>
         <div class="r_item">
           <el-switch
@@ -24,13 +25,17 @@
             @click="handleAnimation($event)" />
         </div>
         <div class="r_item">
-          <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState"><FullScreen /></el-icon>
-          <el-icon size="20" @click="exitFullscreen" v-else><CopyDocument /></el-icon>
+          <el-icon @click="drawer = true"><Setting /></el-icon>
         </div>
         <div class="r_item">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar v-if="userInfo.avatar" shape="square" size="default" :src="userInfo.avatar" :title="userInfo.nickName"  />
+              <el-avatar
+                v-if="userInfo.avatar"
+                shape="square"
+                size="default"
+                :src="userInfo.avatar"
+                :title="userInfo.nickName" />
               <span v-else>{{ userInfo.nickName }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
