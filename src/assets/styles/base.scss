@@ -28,8 +28,9 @@
 }
 
 /* 禁止默认聚焦样式 */
-:focus-visible {
-  outline: none;
+.aside *:focus-visible,
+.header *:focus-visible {
+  outline: none !important;
 }
 
 /** 基础样式 */
@@ -134,4 +135,9 @@
 // 文件上传样式
 .el-upload-dragger {
   padding: 0 !important;
+}
+
+/** 抽屉组件的header样式 */
+.el-drawer__header {
+  margin-bottom: 0 !important;
 }
