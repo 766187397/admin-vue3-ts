@@ -6,6 +6,7 @@ import { logout } from "@/api/login";
 import router from "@/router";
 
 import { useElConfigStore } from "./elConfig";
+import { useMenuStore } from "./menu";
 
 // 定义 Store，使用函数，更适合Vue3，注意要使用ref并将需要的数据或函数返回出去
 export const useUserInfoStore = defineStore(
@@ -64,7 +65,9 @@ export const useUserInfoStore = defineStore(
       let res = await logout();
       if (res.code === 200) {
         const elConfigStore = useElConfigStore();
+        const menuStore = useMenuStore();
         const { restoreDefault, changeThemeColor } = elConfigStore;
+        const { removeRouters, dynamicMenu } = menuStore;
         // 清除token
         setToken("");
         setRfreshToken("");
@@ -74,6 +77,8 @@ export const useUserInfoStore = defineStore(
         restoreDefault();
         // 恢复默认颜色
         changeThemeColor(elConfigStore.defaultConfig.themeColor);
+        // 移除动态路由
+        removeRouters(dynamicMenu);
         router.push("/login");
       }
     };

@@ -74,6 +74,9 @@ export const useMenuStore = defineStore("menu", () => {
         removeRouters(route.children);
       }
     });
+    menu.value = [];
+    dynamicMenu.value = [];
+    dynamicMenuAll.value = [];
   };
 
   // 全部路由扁平化
@@ -129,5 +132,6 @@ export const useMenuStore = defineStore("menu", () => {
     menuFlatten,
     isCollapse,
     setIsCollapse,
+    removeRouters,
   };
 });
