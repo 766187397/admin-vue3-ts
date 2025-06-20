@@ -4,8 +4,8 @@
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
           <el-col :span="4">
-            <el-form-item label="手机号：">
-              <!-- <el-input v-model="query.phone" placeholder="请输入手机号"></el-input> -->
+            <el-form-item label="字典名称：">
+              <el-input v-model="query.name" placeholder="请输入字典名称"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -36,7 +36,18 @@
         </el-row>
       </div>
       <el-table :data="tableData">
-        <el-table-column prop="account" label="账号" align="center" />
+        <el-table-column prop="name" label="字典名称" align="center" />
+        <el-table-column prop="type" label="字典类型" align="center">
+          <template v-slot="scope">
+            <div class="row">
+              <span class="dictionary_type">{{ scope.row.type }}</span>
+              <span class="icon_copy" @click="copyTextToClipboard(scope.row.type)">
+                <el-icon size="16"><CopyDocument /></el-icon>
+              </span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="description" label="字典描述" align="center" />
         <el-table-column prop="createdAt" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
@@ -56,10 +67,10 @@
 
     <el-drawer v-model="drawerVisible" direction="rtl">
       <template #header>
-        <h4>set title by slot</h4>
+        <h4>{{ title }}</h4>
       </template>
-      <template #default>
-        <el-form ref="formRef" :model="form" label-width="auto" style="max-width: 600px">
+      <template #default v-if="form">
+        <el-form ref="formRef" :model="form" label-width="auto">
           <el-form-item label="Activity name">
             <el-input v-model="form.name" />
           </el-form-item>
@@ -86,6 +97,8 @@
     getDictionaryPage,
     updateDictionary,
   } from "@/api/dictionary";
+  import type { DictionaryDetail, GetDictionaryPageParams } from "@/types/dictionary";
+  import { copyTextToClipboard } from "@/utils/tool";
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -104,14 +117,15 @@
   const defaultQuery = {
     page: 1,
     pageSize: 10,
+    name: "",
     time: "",
   };
   // 时间
-  const time = ref();
+  const time = ref<[Date, Date]>();
   // 总条数
   const total = ref(0);
   // 查询条件
-  const query = ref({
+  const query = ref<GetDictionaryPageParams>({
     ...defaultQuery,
   });
   /** 重置 */
@@ -121,7 +135,7 @@
   };
 
   /** 数据 */
-  const tableData = ref();
+  const tableData = ref<DictionaryDetail[]>();
 
   /** 查询数据 */
   const getTableData = async (type: boolean = false) => {
@@ -217,4 +231,20 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .table {
+    .row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      .icon_copy {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+</style>

@@ -16,7 +16,7 @@ export type DictionaryCreateParams = Dictionary;
 /** 字典更新 */
 export type DictionaryUpdateParams = Partial<Dictionary>;
 
-/** 字典分类分页查询 */
+/** 字典分类无分页查询 */
 export interface GetDictionaryAllParams {
   sort?: string;
   status?: string;

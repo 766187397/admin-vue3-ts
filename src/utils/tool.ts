@@ -1,3 +1,5 @@
+import { ElMessage } from "element-plus";
+
 /**
  * 递归深拷贝（常见类型）
  * @template T 要克隆的值的类型
@@ -127,3 +129,23 @@ export function typeValue(arr?: any[], value?: string): string {
   }
   return value || "";
 }
+
+/**
+ * 复制文本到剪贴板（仅支持现代浏览器），并且使用了element-plus的Message组件提示
+ * @param text 要复制的文本
+ * @returns Promise<boolean> 表示是否复制成功
+ */
+export const copyTextToClipboard = async (text: string): Promise<boolean> => {
+  try {
+    await navigator.clipboard.writeText(text);
+    ElMessage.success({
+      message: "复制成功",
+    });
+    return true;
+  } catch (error) {
+    ElMessage.error({
+      message: "复制失败",
+    });
+    return false;
+  }
+};
