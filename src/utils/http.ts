@@ -135,7 +135,7 @@ export class Http {
         }
         if (error.code === "ERR_NETWORK") {
           console.log("网络异常！");
-          router.push("/error/500/网络异常，请稍后尝试！");
+          router.push({ name: "error", params: { errorCode: 500, errorMessage: "服务器网络异常！" } });
         }
         // 全局的错误处理
         else if (!error.config.headers.skipErrorHandler) {
