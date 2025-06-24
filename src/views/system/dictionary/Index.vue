@@ -65,24 +65,51 @@
       @size-change="getTableData(true)"
       @current-change="getTableData(false)" />
 
-    <el-drawer v-model="drawerVisible" direction="rtl">
-      <template #header>
-        <h4>{{ title }}</h4>
-      </template>
-      <template #default v-if="form">
-        <el-form ref="formRef" :model="form" label-width="auto">
-          <el-form-item label="Activity name">
-            <el-input v-model="form.name" />
-          </el-form-item>
+    <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
+      <div class="dialog" v-if="form">
+        <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="字典名称：">
+                <el-input v-model="form.name" placeholder="请输入字典名称" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="字典类型：">
+                <el-input v-model="form.type" placeholder="请输入字典类型" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="字典描述：">
+                <el-input
+                  v-model="form.description"
+                  :rows="2"
+                  type="textarea"
+                  placeholder="请输入字典描述"
+                  clearable></el-input>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="6">
+              <el-form-item label="状态：">
+                <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="排序：">
+                <el-input-number v-model="form.sort" :min="1" controls-position="right" />
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
-      </template>
+      </div>
       <template #footer>
-        <div style="flex: auto">
-          <el-button>取消</el-button>
-          <el-button type="primary">确认</el-button>
+        <div class="dialog-footer">
+          <el-button type="danger" @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="submit">确认</el-button>
         </div>
       </template>
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 
@@ -97,7 +124,12 @@
     getDictionaryPage,
     updateDictionary,
   } from "@/api/dictionary";
-  import type { DictionaryDetail, GetDictionaryPageParams } from "@/types/dictionary";
+  import type {
+    DictionaryCreateParams,
+    DictionaryDetail,
+    DictionaryUpdateParams,
+    GetDictionaryPageParams,
+  } from "@/types/dictionary";
   import { copyTextToClipboard } from "@/utils/tool";
 
   const now = new Date();
@@ -110,7 +142,7 @@
   const loading = ref(false);
   const buttonLoading = ref(false);
   // 弹窗状态
-  const drawerVisible = ref(false);
+  const dialogVisible = ref(false);
   // 弹窗名称
   const title = ref("");
   // 默认查询条件
@@ -155,7 +187,7 @@
   getTableData();
 
   // 表单数据
-  const form = ref();
+  const form = ref<DictionaryCreateParams | DictionaryUpdateParams | DictionaryDetail>();
   const rules = ref({});
 
   /** 行操作 */
@@ -168,17 +200,17 @@
           form.value = res.data;
         },
         edit: async function () {
-          drawerVisible.value = true;
+          dialogVisible.value = true;
           await fns.getDetail();
           title.value = "编辑";
         },
         add: async function () {
-          drawerVisible.value = true;
+          dialogVisible.value = true;
           title.value = "新增";
           form.value = {};
         },
         detail: async function () {
-          drawerVisible.value = true;
+          dialogVisible.value = true;
           await fns.getDetail();
           title.value = "详情";
         },
@@ -200,6 +232,12 @@
     }
   };
 
+  // 关闭弹窗
+  const handleClose = () => {
+    form.value = undefined;
+    dialogVisible.value = false;
+  };
+
   /** 表单 */
   const formRef = useTemplateRef("formRef");
 
@@ -216,9 +254,9 @@
           res = await updateDictionary(form.value?.id, form.value);
         } else {
           // 新增
-          res = await createDictionary(form.value);
+          res = await createDictionary(form.value as DictionaryCreateParams);
         }
-        drawerVisible.value = false;
+        dialogVisible.value = false;
         ElMessage.success({
           message: res?.message || "操作成功",
         });

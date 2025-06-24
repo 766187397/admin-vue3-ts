@@ -5,8 +5,8 @@ import type { Base, PageQueryParams, Static } from "./public";
 //#region 字典
 /** 字典 */
 type Dictionary = Base & {
-  label: string;
-  value: string;
+  name: string;
+  type: string;
   description: string;
 };
 
