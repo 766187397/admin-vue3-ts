@@ -22,7 +22,7 @@ export const createDictionary = (data: DictionaryCreateParams): Promise<Result<D
 
 /** 更新字典分类 */
 export const updateDictionary = (id: string, data: DictionaryUpdateParams): Promise<Result<null>> => {
-  return http.post(`/api/v1/admin/dictionary/update/${id}`, data);
+  return http.patch(`/api/v1/admin/dictionary/update/${id}`, data);
 };
 
 /** 无分页获取字典分类 */
