@@ -42,13 +42,15 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/error",
+    path: "/error/:errorCode/:errorMessage",
     name: "error",
     component: Error,
-    props: (route) => ({
-      errorCode: route.params.errorCode,
-      errorMessage: route.params.errorMessage,
-    }),
+    props: (route) => {
+      return {
+        errorCode: route.params.errorCode,
+        errorMessage: route.params.errorMessage,
+      };
+    },
     meta: {
       title: "服务器网络异常",
     },
