@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useElConfigStore } from "@/store";
+  import { useElConfigStore, type DefaultConfig } from "@/store";
   const elConfigStore = useElConfigStore();
   const { changeThemeColor, handleAnimation } = elConfigStore;
   // 设置缓存颜色
@@ -82,7 +82,7 @@
     { name: "玫瑰红", color: "#bb1b1b" },
   ];
 
-  let restored: any = {};
+  let restored: DefaultConfig;
   const config = computed(() => elConfigStore.config);
   // 开启
   const handleOpen = () => {

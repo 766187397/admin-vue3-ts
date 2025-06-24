@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-interface DefaultConfig {
+export interface DefaultConfig {
   size: "" | "default" | "small" | "large";
   themeColor: string;
   menuDarkTheme: boolean;
@@ -38,11 +38,8 @@ export const useElConfigStore = defineStore(
     });
 
     /** 设置组件全局配置 */
-    const setConfig = (newConfig: any) => {
-      config.value = {
-        ...config.value,
-        ...newConfig,
-      };
+    const setConfig = (newConfig: DefaultConfig) => {
+      config.value = { ...newConfig };
     };
 
     /** 恢复默认值 */
@@ -102,10 +99,6 @@ export const useElConfigStore = defineStore(
         document.documentElement.style.setProperty(`--el-color-dark-light-${i}`, `${getDarkColor(val, i / 10)}`);
       }
       config.value.themeColor = val;
-      if (val) {
-        config.value.menuDarkTheme = false;
-        config.value.topTheme = false;
-      }
     };
 
     /** 切换主题动画 */
@@ -114,6 +107,8 @@ export const useElConfigStore = defineStore(
       const transition = document.startViewTransition(() => {
         // 动画过渡切换主题色
         document.documentElement.classList.toggle("dark");
+        config.value.menuDarkTheme = false;
+        config.value.topTheme = false;
       });
 
       transition.ready.then(() => {
