@@ -60,17 +60,17 @@ export const updateDictionaryItem = async (id: string, data: DictionaryItemUpdat
   return http.patch(`/api/v1/admin/dictionaryItem/update/${id}`, data);
 };
 
-/** 字典项分页查询 */
+/** 字典项分页查询  */
 export const getDictionaryItemPage = async (
   data: GetDictionaryItemPageParams
-): Promise<Result<GetDictionaryItemAllResult[]>> => {
+): Promise<Result<PageApiResult<GetDictionaryItemAllResult[]>>> => {
   return http.get(`/api/v1/admin/dictionaryItem/page`, data);
 };
 
 /** 查询所有字典项 */
 export const getDictionaryItemAll = async (
   data: GetDictionaryItemAllParams
-): Promise<Result<PageApiResult<GetDictionaryItemAllResult[]>>> => {
+): Promise<Result<GetDictionaryItemAllResult[]>> => {
   return http.get(`/api/v1/admin/dictionaryItem/all`, data);
 };
 
@@ -79,4 +79,8 @@ export const getDictionaryItemDetail = async (id: string): Promise<Result<GetDic
   return http.get(`/api/v1/admin/dictionaryItem/detail/${id}`);
 };
 
+/** 删除字典项 */
+export const deleteDictionaryItem = async (id: string): Promise<Result<null>> => {
+  return http.delete(`/api/v1/admin/dictionaryItem/delete/${id}`);
+};
 //#endregion
