@@ -215,7 +215,7 @@
           title.value = "详情";
         },
         delete: async function () {
-          ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
+          ElMessageBox.confirm("删除字典会连同当前字典绑定的所有数据一起删除，你确定要删除吗？", "删除字典", {
             type: "error",
           }).then(async () => {
             let res = await deleteDictionary(id as string);
