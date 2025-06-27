@@ -76,7 +76,7 @@ export const getDictionaryItemAll = async (
 
 /** 查询字典项详情 */
 export const getDictionaryItemDetail = async (id: string): Promise<Result<GetDictionaryItemAllResult>> => {
-  return http.get(`/api/v1/admin/dictionaryItem/detail/${id}`);
+  return http.get(`/api/v1/admin/dictionaryItem/info/${id}`);
 };
 
 /** 删除字典项 */

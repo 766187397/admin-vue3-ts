@@ -36,7 +36,7 @@
         </el-row>
       </div>
       <el-table :data="tableData">
-        <el-table-column prop="name" label="字典名称" align="center" />
+        <el-table-column prop="label" label="字典名称" align="center" />
         <el-table-column prop="type" label="字典类型" align="center">
           <template v-slot="scope">
             <div class="row">
