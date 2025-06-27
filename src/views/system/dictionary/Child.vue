@@ -118,29 +118,24 @@
   import { ElMessage } from "element-plus";
   import type { HandleRowType } from "@/types/public";
   import {
-    createDictionary,
     createDictionaryItem,
-    deleteDictionary,
     deleteDictionaryItem,
-    getDictionaryDetail,
     getDictionaryItemDetail,
     getDictionaryItemPage,
-    getDictionaryPage,
-    updateDictionary,
     updateDictionaryItem,
   } from "@/api/dictionary";
   import type {
-    DictionaryCreateParams,
-    DictionaryDetail,
     DictionaryDetailItem,
     DictionaryItemCreate,
     DictionaryItemUpdate,
-    DictionaryUpdateParams,
     GetDictionaryItemAllResult,
     GetDictionaryItemPageParams,
-    GetDictionaryPageParams,
   } from "@/types/dictionary";
   import { copyTextToClipboard } from "@/utils/tool";
+
+  const route = useRoute();
+  console.log("route", route);
+  const router = useRouter();
 
   const now = new Date();
   const defaultTime: [Date, Date] = [

@@ -51,6 +51,7 @@
         <el-table-column prop="createdAt" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
+            <el-button type="primary" text plain @click="handleChild(scope.row.id)">编辑字典项</el-button>
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
             <el-button type="danger" text plain @click="handleRow('delete', scope.row.id)">删除</el-button>
           </template>
@@ -131,6 +132,8 @@
     GetDictionaryPageParams,
   } from "@/types/dictionary";
   import { copyTextToClipboard } from "@/utils/tool";
+
+  const router = useRouter();
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -265,6 +268,14 @@
       } finally {
         buttonLoading.value = false;
       }
+    });
+  };
+
+  /** 跳转子页面 */
+  const handleChild = (id: number) => {
+    router.push({
+      name: "dictionaryChild",
+      params: { id },
     });
   };
 </script>
