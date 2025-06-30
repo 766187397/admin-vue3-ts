@@ -35,12 +35,12 @@ export const createUserAdmin = (data: UsersCreateParams): Promise<Result<UserRes
 };
 
 /** 不分页查询 */
-export const getUsersAdmin = (data: UsersQuery): Promise<Result<UserResponseData[]>> => {
+export const getUsersAdmin = (data?: UsersQuery): Promise<Result<UserResponseData[]>> => {
   return http.get("/api/v1/admin/users/all/admin", data);
 };
 
 /** 分页查询用户 */
-export const getUsersPageAdmin = (data: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
+export const getUsersPageAdmin = (data?: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
   return http.get("/api/v1/admin/users/page/admin", data);
 };
 //#endregion
@@ -52,12 +52,12 @@ export const createUserWeb = (data: UsersCreateParams): Promise<Result<UserRespo
 };
 
 /** 不分页查询 */
-export const getUsersWeb = (data: UsersQuery): Promise<Result<UserResponseData[]>> => {
+export const getUsersWeb = (data?: UsersQuery): Promise<Result<UserResponseData[]>> => {
   return http.get("/api/v1/admin/users/all/web", data);
 };
 
 /** 分页查询用户 */
-export const getUsersPageWeb = (data: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
+export const getUsersPageWeb = (data?: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
   return http.get("/api/v1/admin/users/page/web", data);
 };
 //#endregion

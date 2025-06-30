@@ -100,7 +100,11 @@
   import type { HandleRowType } from "@/types/public";
   import { createNotice, deleteNotice, getNoticeDetail, getNoticePage, updateNotice } from "@/api/notice";
   import type { CreateNoticeParams, NoticeDetail, UpdateNoticeParams, GetNoticeParams } from "@/types/notice";
-  import { copyTextToClipboard } from "@/utils/tool";
+  import { getRolesAllAdmin, getRolesAllWeb } from "@/api/role";
+  import type { RoleDetail } from "@/types/role";
+  import type { userInfo } from "@/types/login";
+  import { getUsersAdmin, getUsersWeb } from "@/api/user";
+  import type { UserResponseData } from "@/types/user";
 
   const router = useRouter();
 
@@ -137,6 +141,27 @@
     query.value = { ...defaultQuery };
     time.value = undefined;
   };
+
+  const adminRoles = ref<RoleDetail[]>();
+  const webRoles = ref<RoleDetail[]>();
+  /** 查询角色 */
+  const getRolesAll = async () => {
+    let adminRes = await getRolesAllAdmin();
+    adminRoles.value = adminRes.data;
+    let webRes = await getRolesAllWeb();
+    webRoles.value = webRes.data;
+  };
+  getRolesAll();
+
+  const adminUsers = ref<UserResponseData[]>();
+  const webUsers = ref<UserResponseData[]>();
+  const getUsersAll = async () => {
+    let adminRes = await getUsersAdmin();
+    adminUsers.value = adminRes.data;
+    let webRes = await getUsersWeb();
+    webUsers.value = webRes.data;
+  };
+  getUsersAll();
 
   /** 数据 */
   const tableData = ref<NoticeDetail[]>();

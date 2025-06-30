@@ -7,7 +7,7 @@ export interface LoginForm {
 }
 
 /** 用户信息 */
-type userInfo = Base &
+export type userInfo = Base &
   Static & {
     account: string;
     nickName: string;

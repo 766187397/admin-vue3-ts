@@ -29,12 +29,12 @@ export const createRoleAdmin = async (data: RoleCreateParams): Promise<Result<nu
 };
 
 /** 不分页查询角色 */
-export const getRolesAllAdmin = async (data: RoleQuery): Promise<Result<RoleDetail[]>> => {
+export const getRolesAllAdmin = async (data?: RoleQuery): Promise<Result<RoleDetail[]>> => {
   return await http.get(`/api/v1/admin/roles/all/admin`, data);
 };
 
 /** 分页查询角色 */
-export const getRolesByRoleAdmin = async (data: RoleQueryParams): Promise<Result<PageApiResult<RoleDetail[]>>> => {
+export const getRolesByRoleAdmin = async (data?: RoleQueryParams): Promise<Result<PageApiResult<RoleDetail[]>>> => {
   return await http.get(`/api/v1/admin/roles/page/admin`, data);
 };
 
@@ -47,12 +47,12 @@ export const createRoleWeb = async (data: RoleCreateParams): Promise<Result<Role
 };
 
 /** 不分页查询角色 */
-export const getRolesAllWeb = async (data: RoleQuery): Promise<Result<RoleDetail[]>> => {
+export const getRolesAllWeb = async (data?: RoleQuery): Promise<Result<RoleDetail[]>> => {
   return await http.get(`/api/v1/admin/roles/all/web`, data);
 };
 
 /** 分页查询角色 */
-export const getRolesByRoleWeb = async (data: RoleQueryParams): Promise<Result<PageApiResult<RoleDetail[]>>> => {
+export const getRolesByRoleWeb = async (data?: RoleQueryParams): Promise<Result<PageApiResult<RoleDetail[]>>> => {
   return await http.get(`/api/v1/admin/roles/page/web`, data);
 };
 
