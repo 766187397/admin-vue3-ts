@@ -98,7 +98,8 @@
             </el-col>
             <el-col :span="24">
               <el-form-item label="内容：">
-                <el-input v-model="form.content" type="textarea" placeholder="请输入内容" clearable></el-input>
+                <Wangeditor v-model="form.content" />
+                <!-- <el-input v-model="form.content" type="textarea" placeholder="请输入内容" clearable></el-input> -->
               </el-form-item>
             </el-col>
 
@@ -127,13 +128,14 @@
 
 <script setup lang="ts">
   import Pagination from "@/components/el/Pagination.vue";
+  import Wangeditor from "@/components/public/Wangeditor.vue";
   import { ElMessage } from "element-plus";
   import type { HandleRowType } from "@/types/public";
   import { createNoticeAdmin, getNoticePageAdmin, deleteNotice, getNoticeDetail, updateNotice } from "@/api/notice";
   import type { CreateNoticeParams, NoticeDetail, UpdateNoticeParams, GetNoticeParams } from "@/types/notice";
-  import { getRolesAllAdmin, getRolesAllWeb } from "@/api/role";
+  import { getRolesAllAdmin } from "@/api/role";
   import type { RoleDetail } from "@/types/role";
-  import { getUsersAdmin, getUsersWeb } from "@/api/user";
+  import { getUsersAdmin } from "@/api/user";
   import type { UserResponseData } from "@/types/user";
 
   const now = new Date();

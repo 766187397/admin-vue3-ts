@@ -58,6 +58,7 @@ declare module 'vue' {
     PictureUpload: typeof import('./components/el/PictureUpload.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Wangeditor: typeof import('./components/public/Wangeditor.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
