@@ -38,11 +38,19 @@ router.beforeEach(async (to, from, next) => {
     // 获取初始的数据
     initData();
     // 已登录
-    if (!menuStore.dynamicMenuAll || menuStore.dynamicMenuAll.length === 0) {
+    if (!menuStore.dynamicMenuAll) {
       await menuStore.getDynamicMenu({ type: "menu" });
       await menuStore.getDynamicMenuAll();
       next({ path: to.path, replace: true });
       menuStore.getMenu();
+    } else if (menuStore.dynamicMenuAll.length === 0) {
+      next({
+        name: "error",
+        params: {
+          errorCode: 403,
+          errorMessage: "未配置路由，请联系管理员。",
+        },
+      });
     } else {
       next();
     }

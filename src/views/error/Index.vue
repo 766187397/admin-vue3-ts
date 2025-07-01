@@ -3,14 +3,18 @@
     <div class="content">
       <h1>{{ errorCode }}</h1>
       <p>{{ errorMessage }}</p>
-      <el-button type="primary" @click="goHome">返回首页</el-button>
+      <el-button type="primary" @click="goPage('/')" v-if="errorCode != 403">返回首页</el-button>
+      <el-button type="primary" @click="goPage('/')" v-else>重新登录</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { useUserInfoStore } from "@/store";
   import { useRouter } from "vue-router";
 
+  const userInfoStore = useUserInfoStore();
+  const { handleLogout } = userInfoStore;
   const router = useRouter();
 
   const { errorCode = 404, errorMessage = "抱歉，您访问的页面不存在" } = defineProps<{
@@ -18,8 +22,23 @@
     errorMessage?: string;
   }>();
 
-  const goHome = () => {
-    router.push("/");
+  const goPage = (page: string) => {
+    const fns: {
+      [key: string]: () => void;
+    } = {
+      default: () => {
+        router.push(page);
+      },
+      403: () => {
+        handleLogout();
+      },
+    };
+    const fn = fns[errorCode as string];
+    if (fn) {
+      fn();
+    } else {
+      fns["default"]();
+    }
   };
 </script>
 
