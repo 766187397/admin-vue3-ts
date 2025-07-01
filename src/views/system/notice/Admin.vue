@@ -70,6 +70,32 @@
                 <el-input v-model="form.type" placeholder="请输入类型" clearable></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户：">
+                <el-select-v2
+                  v-model="form.userIds"
+                  :options="adminUsers"
+                  :props="{
+                    label: 'nickName',
+                    value: 'id',
+                  }"
+                  placeholder="请选择用户"
+                  multiple />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="角色：">
+                <el-select-v2
+                  v-model="form.roleKeys"
+                  :options="adminRoles"
+                  :props="{
+                    label: 'name',
+                    value: 'id',
+                  }"
+                  placeholder="请选择角色"
+                  multiple />
+              </el-form-item>
+            </el-col>
 
             <el-col :span="6">
               <el-form-item label="状态：">
@@ -139,24 +165,18 @@
     time.value = undefined;
   };
 
-  const adminRoles = ref<RoleDetail[]>();
-  const webRoles = ref<RoleDetail[]>();
+  const adminRoles = ref<RoleDetail[]>([]);
   /** 查询角色 */
   const getRolesAll = async () => {
     let adminRes = await getRolesAllAdmin();
     adminRoles.value = adminRes.data;
-    let webRes = await getRolesAllWeb();
-    webRoles.value = webRes.data;
   };
   getRolesAll();
 
-  const adminUsers = ref<UserResponseData[]>();
-  const webUsers = ref<UserResponseData[]>();
+  const adminUsers = ref<UserResponseData[]>([]);
   const getUsersAll = async () => {
     let adminRes = await getUsersAdmin();
     adminUsers.value = adminRes.data;
-    let webRes = await getUsersWeb();
-    webUsers.value = webRes.data;
   };
   getUsersAll();
 
