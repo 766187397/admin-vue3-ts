@@ -98,11 +98,10 @@
   import Pagination from "@/components/el/Pagination.vue";
   import { ElMessage } from "element-plus";
   import type { HandleRowType } from "@/types/public";
-  import { createNotice, deleteNotice, getNoticeDetail, getNoticePage, updateNotice } from "@/api/notice";
+  import { createNoticeAdmin, deleteNotice, getNoticeDetail, getNoticePageAdmin, updateNotice } from "@/api/notice";
   import type { CreateNoticeParams, NoticeDetail, UpdateNoticeParams, GetNoticeParams } from "@/types/notice";
   import { getRolesAllAdmin, getRolesAllWeb } from "@/api/role";
   import type { RoleDetail } from "@/types/role";
-  import type { userInfo } from "@/types/login";
   import { getUsersAdmin, getUsersWeb } from "@/api/user";
   import type { UserResponseData } from "@/types/user";
 
@@ -176,7 +175,7 @@
     if (time.value && time.value.length > 0) {
       data.time = time.value.join(",");
     }
-    const res = await getNoticePage(data);
+    const res = await getNoticePageAdmin(data);
     total.value = res.data.total;
     tableData.value = res.data.data;
     loading.value = false;
@@ -251,7 +250,7 @@
           res = await updateNotice(form.value?.id, form.value);
         } else {
           // 新增
-          res = await createNotice(form.value as CreateNoticeParams);
+          res = await createNoticeAdmin(form.value as CreateNoticeParams);
         }
         dialogVisible.value = false;
         ElMessage.success({
