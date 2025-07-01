@@ -96,6 +96,11 @@
                   multiple />
               </el-form-item>
             </el-col>
+            <el-col :span="24">
+              <el-form-item label="内容：">
+                <el-input v-model="form.content" type="textarea" placeholder="请输入内容" clearable></el-input>
+              </el-form-item>
+            </el-col>
 
             <el-col :span="6">
               <el-form-item label="状态：">
