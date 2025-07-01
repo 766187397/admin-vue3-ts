@@ -31,14 +31,18 @@
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
           <el-col :span="1.5">
-            <el-button type="primary" plain>添加</el-button>
+            <el-button class="upload" type="primary" plain>
+            添加
+            <input class="upload_input" type="file" name="file" @change="handleFileChange"></input>
+            </el-button>
           </el-col>
         </el-row>
       </div>
       <el-table :data="tableData">
-        <el-table-column prop="title" label="标题" align="center" />
-        <el-table-column prop="type" label="类型" align="center" />
-        <el-table-column prop="specifyTime" label="预发布时间" align="center" />
+        <el-table-column prop="fileName" label="文件名称" align="center" />
+        <el-table-column prop="mimetype" label="文件类型" align="center" />
+        <el-table-column prop="size" label="文件大小" align="center" />
+        <el-table-column prop="completePath" label="文件地址" align="center" />
         <el-table-column prop="createdAt" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
@@ -61,6 +65,7 @@
   import Pagination from "@/components/el/Pagination.vue";
   import type { FileDetail, FilePageParams } from "@/types/file";
   import { uploadFile, deleteFile, getFileDetail, uploadPage } from "@/api/file";
+import { ElMessage } from "element-plus";
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -110,6 +115,29 @@
     loading.value = false;
   };
   getTableData();
+
+  /** 文件上传 */
+  const handleFileChange = async (event:Event) => {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if(!file){
+      ElMessage.success("请选择文件")
+      return
+    }
+    const data = new FormData();
+    data.append("file", file);
+    let res = await uploadFile(data);
+    ElMessage.success(res.message);
+    getTableData();
+  }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.upload{
+  position: relative;
+  .upload_input{
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+  }
+}
+</style>
