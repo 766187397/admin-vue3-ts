@@ -56,7 +56,7 @@
       @size-change="getTableData(true)"
       @current-change="getTableData(false)" />
 
-    <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
+    <el-dialog top="10vh" v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
