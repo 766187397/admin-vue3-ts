@@ -56,12 +56,9 @@
     MENU_CONF: {
       uploadImage: {
         async customUpload(file: File, insertFn: UploadImageFnType) {
-          console.log("file", file);
-          // insertFn(url, alt, href);
           const data = new FormData();
           data.append("file", file);
           const res = await uploadFile(data);
-          console.log("res", res);
           const {
             data: { completePath: url, fileName: alt, completePath: href },
           } = res;
@@ -70,8 +67,13 @@
       },
       uploadVideo: {
         async customUpload(file: File, insertFn: UploadVideoFnType) {
-          console.log("file", file);
-          // insertFn(url, poster);
+          const data = new FormData();
+          data.append("file", file);
+          const res = await uploadFile(data);
+          const {
+            data: { completePath: url },
+          } = res;
+          insertFn(url, "");
         },
       },
     },
