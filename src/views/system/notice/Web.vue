@@ -105,8 +105,6 @@
   import { getUsersAdmin, getUsersWeb } from "@/api/user";
   import type { UserResponseData } from "@/types/user";
 
-  const router = useRouter();
-
   const now = new Date();
   const defaultTime: [Date, Date] = [
     new Date(now.getFullYear(), now.getMonth(), now.getDate()),
