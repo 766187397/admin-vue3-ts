@@ -99,10 +99,19 @@
             <el-col :span="24">
               <el-form-item label="内容：">
                 <Wangeditor v-model="form.content" />
-                <!-- <el-input v-model="form.content" type="textarea" placeholder="请输入内容" clearable></el-input> -->
               </el-form-item>
             </el-col>
 
+            <el-col :span="12">
+              <el-form-item label="预发布时间：">
+                <el-date-picker
+                  v-model="form.specifyTime"
+                  type="datetime"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择日期时间" />
+              </el-form-item>
+            </el-col>
             <el-col :span="6">
               <el-form-item label="状态：">
                 <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
@@ -228,7 +237,10 @@
         add: async function () {
           dialogVisible.value = true;
           title.value = "新增";
-          form.value = {};
+          form.value = {
+            status: 1,
+            sort: 1,
+          };
         },
         detail: async function () {
           dialogVisible.value = true;
