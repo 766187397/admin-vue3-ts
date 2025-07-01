@@ -30,7 +30,7 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1">
+          <el-col :span="1.5">
             <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
         </el-row>
@@ -56,7 +56,7 @@
       @size-change="getTableData(true)"
       @current-change="getTableData(false)" />
 
-    <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
+    <el-dialog top="10vh" v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
@@ -70,7 +70,48 @@
                 <el-input v-model="form.type" placeholder="请输入类型" clearable></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户：">
+                <el-select-v2
+                  v-model="form.userIds"
+                  :options="adminUsers"
+                  :props="{
+                    label: 'nickName',
+                    value: 'id',
+                  }"
+                  placeholder="请选择用户"
+                  multiple />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="角色：">
+                <el-select-v2
+                  v-model="form.roleKeys"
+                  :options="adminRoles"
+                  :props="{
+                    label: 'name',
+                    value: 'id',
+                  }"
+                  placeholder="请选择角色"
+                  multiple />
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="内容：">
+                <Wangeditor v-model="form.content" />
+              </el-form-item>
+            </el-col>
 
+            <el-col :span="12">
+              <el-form-item label="预发布时间：">
+                <el-date-picker
+                  v-model="form.specifyTime"
+                  type="datetime"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择日期时间" />
+              </el-form-item>
+            </el-col>
             <el-col :span="6">
               <el-form-item label="状态：">
                 <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
@@ -96,13 +137,14 @@
 
 <script setup lang="ts">
   import Pagination from "@/components/el/Pagination.vue";
+  import Wangeditor from "@/components/public/Wangeditor.vue";
   import { ElMessage } from "element-plus";
   import type { HandleRowType } from "@/types/public";
   import { createNoticeWeb, getNoticePageWeb, deleteNotice, getNoticeDetail, updateNotice } from "@/api/notice";
   import type { CreateNoticeParams, NoticeDetail, UpdateNoticeParams, GetNoticeParams } from "@/types/notice";
-  import { getRolesAllAdmin, getRolesAllWeb } from "@/api/role";
+  import { getRolesAllAdmin } from "@/api/role";
   import type { RoleDetail } from "@/types/role";
-  import { getUsersAdmin, getUsersWeb } from "@/api/user";
+  import { getUsersAdmin } from "@/api/user";
   import type { UserResponseData } from "@/types/user";
 
   const now = new Date();
@@ -139,24 +181,18 @@
     time.value = undefined;
   };
 
-  const adminRoles = ref<RoleDetail[]>();
-  const webRoles = ref<RoleDetail[]>();
+  const adminRoles = ref<RoleDetail[]>([]);
   /** 查询角色 */
   const getRolesAll = async () => {
     let adminRes = await getRolesAllAdmin();
     adminRoles.value = adminRes.data;
-    let webRes = await getRolesAllWeb();
-    webRoles.value = webRes.data;
   };
   getRolesAll();
 
-  const adminUsers = ref<UserResponseData[]>();
-  const webUsers = ref<UserResponseData[]>();
+  const adminUsers = ref<UserResponseData[]>([]);
   const getUsersAll = async () => {
     let adminRes = await getUsersAdmin();
     adminUsers.value = adminRes.data;
-    let webRes = await getUsersWeb();
-    webUsers.value = webRes.data;
   };
   getUsersAll();
 
@@ -201,7 +237,10 @@
         add: async function () {
           dialogVisible.value = true;
           title.value = "新增";
-          form.value = {};
+          form.value = {
+            status: 1,
+            sort: 1,
+          };
         },
         detail: async function () {
           dialogVisible.value = true;

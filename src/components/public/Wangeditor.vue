@@ -16,6 +16,7 @@
   import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
   import type { IEditorConfig } from "@wangeditor/editor";
   import { ElMessage } from "element-plus";
+  import { uploadFile } from "@/api/file";
 
   type UploadImageFnType = (url: string, alt: string, href: string) => void;
   type UploadVideoFnType = (url: string, poster: string) => void;
@@ -57,6 +58,14 @@
         async customUpload(file: File, insertFn: UploadImageFnType) {
           console.log("file", file);
           // insertFn(url, alt, href);
+          const data = new FormData();
+          data.append("file", file);
+          const res = await uploadFile(data);
+          console.log("res", res);
+          const {
+            data: { completePath: url, fileName: alt, completePath: href },
+          } = res;
+          insertFn(url, alt, href);
         },
       },
       uploadVideo: {
@@ -73,4 +82,8 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .w-e-full-screen-container {
+    z-index: 10000;
+  }
+</style>

@@ -30,7 +30,7 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1">
+          <el-col :span="1.5">
             <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
         </el-row>
