@@ -134,8 +134,6 @@
   import { copyTextToClipboard } from "@/utils/tool";
 
   const route = useRoute();
-  console.log("route", route);
-  const router = useRouter();
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -150,12 +148,14 @@
   const dialogVisible = ref(false);
   // 弹窗名称
   const title = ref("");
+  const type = route.query.type as string;
   // 默认查询条件
   const defaultQuery = {
     page: 1,
     pageSize: 10,
     name: "",
     time: "",
+    type: type,
   };
   // 时间
   const time = ref<[Date, Date]>();

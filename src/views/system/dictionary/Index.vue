@@ -51,7 +51,7 @@
         <el-table-column prop="createdAt" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
-            <el-button type="primary" text plain @click="handleChild(scope.row.id)">编辑字典项</el-button>
+            <el-button type="primary" text plain @click="handleChild(scope.row)">编辑字典项</el-button>
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
             <el-button type="danger" text plain @click="handleRow('delete', scope.row.id)">删除</el-button>
           </template>
@@ -272,10 +272,12 @@
   };
 
   /** 跳转子页面 */
-  const handleChild = (id: number) => {
+  const handleChild = (row: DictionaryDetail) => {
     router.push({
       name: "dictionaryChild",
-      params: { id },
+      query: {
+        type: row.type,
+      },
     });
   };
 </script>
