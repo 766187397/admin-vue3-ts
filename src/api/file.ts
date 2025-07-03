@@ -24,5 +24,5 @@ export const getFileDetail = async (id: string): Promise<Result<FileDetail>> => 
 
 /** 根据id删除文件 */
 export const deleteFile = async (id: string): Promise<Result<null>> => {
-  return await http.delete(`/api/v1/upload/delete/${id}`);
+  return await http.delete(`/api/v1/upload/${id}`);
 };

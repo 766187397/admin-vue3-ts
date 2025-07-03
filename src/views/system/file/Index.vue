@@ -32,21 +32,27 @@
         <el-row :gutter="20" justify="end">
           <el-col :span="1.5">
             <el-button class="upload" type="primary" plain>
-            添加
-            <input class="upload_input" type="file" name="file" @change="handleFileChange"></input>
+              添加
+              <input class="upload_input" type="file" name="file" @change="handleFileChange" />
             </el-button>
           </el-col>
         </el-row>
       </div>
       <el-table :data="tableData">
         <el-table-column prop="fileName" label="文件名称" align="center" />
-        <el-table-column prop="mimetype" label="文件类型" align="center" />
-        <el-table-column prop="size" label="文件大小" align="center" />
-        <el-table-column prop="completePath" label="文件地址" align="center" />
-        <el-table-column prop="createdAt" label="创建时间" align="center" />
-        <el-table-column label="操作" align="center" fixed="right" width="300">
+        <el-table-column prop="mimetype" label="文件类型" align="center" width="140" />
+        <el-table-column prop="size" label="文件大小" align="center" width="140" />
+        <el-table-column prop="completePath" label="文件地址" align="center">
           <template v-slot="scope">
-            <el-button type="danger" text plain>删除</el-button>
+            <el-link type="primary" :href="scope.row.completePath" target="_blank">{{
+              scope.row.completePath
+            }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
+        <el-table-column label="操作" align="center" fixed="right" width="200">
+          <template v-slot="scope">
+            <el-button type="danger" text plain @click="handleDlete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -64,8 +70,8 @@
 <script setup lang="ts">
   import Pagination from "@/components/el/Pagination.vue";
   import type { FileDetail, FilePageParams } from "@/types/file";
-  import { uploadFile, deleteFile, getFileDetail, uploadPage } from "@/api/file";
-import { ElMessage } from "element-plus";
+  import { uploadFile, deleteFile, uploadPage } from "@/api/file";
+  import { ElMessage } from "element-plus";
 
   const now = new Date();
   const defaultTime: [Date, Date] = [
@@ -117,27 +123,51 @@ import { ElMessage } from "element-plus";
   getTableData();
 
   /** 文件上传 */
-  const handleFileChange = async (event:Event) => {
+  const handleFileChange = async (event: Event) => {
     const file = (event.target as HTMLInputElement)?.files?.[0];
-    if(!file){
-      ElMessage.success("请选择文件")
-      return
+    if (!file) {
+      ElMessage.success("请选择文件");
+      return;
     }
     const data = new FormData();
     data.append("file", file);
     let res = await uploadFile(data);
     ElMessage.success(res.message);
     getTableData();
-  }
+  };
+
+  /** 删除 */
+  const handleDlete = async (id: string) => {
+    ElMessageBox.confirm("你确定要删除吗？", "删除文件", {
+      type: "error",
+    }).then(async () => {
+      let res = await deleteFile(id as string);
+      getTableData();
+      ElMessage.success({
+        message: res?.message || "操作成功",
+      });
+    });
+  };
 </script>
 
 <style lang="scss" scoped>
-.upload{
-  position: relative;
-  .upload_input{
-    cursor: pointer;
-    position: absolute;
-    opacity: 0;
+  .el-link {
+    width: 100%;
+
+    :deep(.el-link__inner) {
+      display: block;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
-}
+  .upload {
+    position: relative;
+    .upload_input {
+      cursor: pointer;
+      position: absolute;
+      opacity: 0;
+    }
+  }
 </style>
