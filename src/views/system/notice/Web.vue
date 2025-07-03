@@ -61,12 +61,12 @@
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="标题：">
+              <el-form-item label="标题：" prop="title">
                 <el-input v-model="form.title" placeholder="请输入标题" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="类型：">
+              <el-form-item label="类型：" prop="type">
                 <el-input v-model="form.type" placeholder="请输入类型" clearable></el-input>
               </el-form-item>
             </el-col>
@@ -97,7 +97,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="内容：">
+              <el-form-item label="内容：" prop="content">
                 <Wangeditor v-model="form.content" />
               </el-form-item>
             </el-col>
@@ -218,7 +218,11 @@
 
   // 表单数据
   const form = ref<CreateNoticeParams | UpdateNoticeParams | NoticeDetail>();
-  const rules = ref({});
+  const rules = ref({
+    title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+    type: [{ required: true, message: "请输入类型", trigger: "blur" }],
+    content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+  });
 
   /** 行操作 */
   const handleRow = async (type: HandleRowType, id?: string) => {
