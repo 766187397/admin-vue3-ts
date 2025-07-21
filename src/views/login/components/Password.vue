@@ -123,12 +123,6 @@
 </script>
 
 <style lang="scss" scoped>
-  // 变量定义
-  $primary-color: #1890ff;
-  $button-gradient: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-  $box-shadow-button: 0 4px 12px rgba(24, 144, 255, 0.4);
-  $border-radius-base: 8px;
-  $transition-base: all 0.3s ease;
   // 登录表单
   .login-form {
     margin-top: 30px;
@@ -137,9 +131,9 @@
     .custom-input {
       :deep(.el-input__wrapper) {
         padding: 12px 15px;
-        border-radius: $border-radius-base;
+        border-radius: 8px;
         box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-        transition: $transition-base;
+        transition: all 0.3s ease;
 
         &:hover {
           box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.3);
@@ -159,7 +153,7 @@
       font-size: 14px;
 
       .forgot-password {
-        color: $primary-color;
+        color: #1890ff;
         text-decoration: none;
         transition: color 0.3s;
 
@@ -174,14 +168,14 @@
       width: 100%;
       padding: 12px 20px;
       font-size: 16px;
-      border-radius: $border-radius-base;
-      background: $button-gradient;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
       border: none;
-      transition: $transition-base;
+      transition: all 0.3s ease;
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: $box-shadow-button;
+        box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
       }
     }
   }

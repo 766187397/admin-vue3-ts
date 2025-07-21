@@ -39,20 +39,6 @@
 </script>
 
 <style lang="scss" scoped>
-  // 变量定义
-  $primary-color: #1890ff;
-  $primary-gradient: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
-  $button-gradient: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-  $text-primary: #303133;
-  $text-secondary: #909399;
-  $box-shadow-light: 0 8px 24px rgba(0, 0, 0, 0.05);
-  $box-shadow-medium: 0 12px 36px rgba(0, 0, 0, 0.1);
-  $box-shadow-button: 0 4px 12px rgba(24, 144, 255, 0.4);
-  $border-radius-base: 8px;
-  $border-radius-large: 12px;
-  $border-radius-logo: 16px;
-  $transition-base: all 0.3s ease;
-
   // 动画
   @keyframes rotate {
     from {
@@ -88,12 +74,12 @@
         width: 400px;
         padding: 40px;
         background-color: white;
-        border-radius: $border-radius-large;
-        box-shadow: $box-shadow-light;
-        transition: $transition-base;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
 
         &:hover {
-          box-shadow: $box-shadow-medium;
+          box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
         }
 
         // 登录头部
@@ -109,8 +95,8 @@
             .logo {
               width: 64px;
               height: 64px;
-              background: $primary-gradient;
-              border-radius: $border-radius-logo;
+              background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
+              border-radius: 16px;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -126,13 +112,13 @@
 
           .login-title {
             font-size: 24px;
-            color: $text-primary;
+            color: #303133;
             font-weight: 600;
             margin-bottom: 8px;
           }
 
           .login-subtitle {
-            color: $text-secondary;
+            color: #909399;
             font-size: 14px;
           }
         }
@@ -142,7 +128,7 @@
       .login-footer {
         margin-top: 40px;
         text-align: center;
-        color: $text-secondary;
+        color: #909399;
         font-size: 14px;
       }
     }
@@ -150,7 +136,7 @@
     // 右侧装饰区域
     .login-decoration {
       flex: 1;
-      background: $primary-gradient;
+      background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
       display: flex;
       justify-content: center;
       align-items: center;
