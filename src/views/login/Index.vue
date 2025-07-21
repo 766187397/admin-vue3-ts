@@ -5,7 +5,9 @@
         <div class="login-header">
           <div class="logo-container">
             <div class="logo">
-              <el-icon class="logo-icon"><Monitor /></el-icon>
+              <el-icon class="logo-icon">
+                <Monitor />
+              </el-icon>
             </div>
           </div>
           <h2 class="login-title">{{ title }}</h2>
@@ -17,14 +19,8 @@
             <el-input v-model="loginForm.account" placeholder="请输入账号" :prefix-icon="User" class="custom-input" />
           </el-form-item>
           <el-form-item prop="password">
-            <el-input
-              v-model="loginForm.password"
-              type="password"
-              placeholder="请输入密码"
-              :prefix-icon="Lock"
-              show-password
-              class="custom-input"
-              @keyup.enter="handleLogin" />
+            <el-input v-model="loginForm.password" type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password
+              class="custom-input" @keyup.enter="handleLogin" />
           </el-form-item>
           <div class="form-options">
             <el-checkbox v-model="rememberMe">记住我</el-checkbox>
@@ -153,201 +149,236 @@
 </script>
 
 <style lang="scss" scoped>
+  // 变量定义
+  $primary-color: #1890ff;
+  $primary-gradient: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
+  $button-gradient: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  $text-primary: #303133;
+  $text-secondary: #909399;
+  $box-shadow-light: 0 8px 24px rgba(0, 0, 0, 0.05);
+  $box-shadow-medium: 0 12px 36px rgba(0, 0, 0, 0.1);
+  $box-shadow-button: 0 4px 12px rgba(24, 144, 255, 0.4);
+  $border-radius-base: 8px;
+  $border-radius-large: 12px;
+  $border-radius-logo: 16px;
+  $transition-base: all 0.3s ease;
+
+  // 动画
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  // 主容器
   .login-container {
     display: flex;
     height: 100vh;
     width: 100%;
     overflow: hidden;
     background-color: #f0f2f5;
-  }
 
-  .login-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-    padding: 20px;
-  }
-
-  .login-decoration {
-    flex: 1;
-    background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
-      animation: rotate 30s linear infinite;
-    }
-  }
-
-  .decoration-content {
-    text-align: center;
-    padding: 0 40px;
-    max-width: 500px;
-    z-index: 1;
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-    p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  .login-box {
-    width: 400px;
-    padding: 40px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-
-    &:hover {
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
-    }
-  }
-
-  .login-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  .logo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-
-  .logo {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 32px;
-    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
-  }
-
-  .logo-icon {
-    font-size: 32px;
-  }
-
-  .login-title {
-    font-size: 24px;
-    color: #303133;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  .login-subtitle {
-    color: #909399;
-    font-size: 14px;
-  }
-
-  .login-form {
-    margin-top: 30px;
-  }
-
-  .custom-input {
-    :deep(.el-input__wrapper) {
-      padding: 12px 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    :deep(.el-input__wrapper:hover) {
-      box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.3);
-    }
-    :deep(.el-input__wrapper.is-focus) {
-      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-    }
-  }
-
-  .form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 14px;
-  }
-
-  .forgot-password {
-    color: #1890ff;
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-
-  .forgot-password:hover {
-    color: #40a9ff;
-    text-decoration: underline;
-  }
-
-  .login-button {
-    width: 100%;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-    border: none;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
-    }
-  }
-
-  .login-footer {
-    margin-top: 40px;
-    text-align: center;
-    color: #909399;
-    font-size: 14px;
-  }
-
-  /* 响应式设计 */
-  @media (max-width: 992px) {
-    .login-decoration {
-      display: none;
-    }
-
+    // 左侧登录区域
     .login-content {
-      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+
+      // 登录框
+      .login-box {
+        width: 400px;
+        padding: 40px;
+        background-color: white;
+        border-radius: $border-radius-large;
+        box-shadow: $box-shadow-light;
+        transition: $transition-base;
+
+        &:hover {
+          box-shadow: $box-shadow-medium;
+        }
+
+        // 登录头部
+        .login-header {
+          text-align: center;
+          margin-bottom: 30px;
+
+          .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+
+            .logo {
+              width: 64px;
+              height: 64px;
+              background: $primary-gradient;
+              border-radius: $border-radius-logo;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: white;
+              font-size: 32px;
+              box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+
+              .logo-icon {
+                font-size: 32px;
+              }
+            }
+          }
+
+          .login-title {
+            font-size: 24px;
+            color: $text-primary;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+
+          .login-subtitle {
+            color: $text-secondary;
+            font-size: 14px;
+          }
+        }
+
+        // 登录表单
+        .login-form {
+          margin-top: 30px;
+
+          // 表单元素样式
+          .custom-input {
+            :deep(.el-input__wrapper) {
+              padding: 12px 15px;
+              border-radius: $border-radius-base;
+              box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+              transition: $transition-base;
+
+              &:hover {
+                box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.3);
+              }
+
+              &.is-focus {
+                box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+              }
+            }
+          }
+
+          .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+
+            .forgot-password {
+              color: $primary-color;
+              text-decoration: none;
+              transition: color 0.3s;
+
+              &:hover {
+                color: #40a9ff;
+                text-decoration: underline;
+              }
+            }
+          }
+
+          .login-button {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: $border-radius-base;
+            background: $button-gradient;
+            border: none;
+            transition: $transition-base;
+
+            &:hover {
+              transform: translateY(-2px);
+              box-shadow: $box-shadow-button;
+            }
+          }
+        }
+      }
+
+      // 页脚
+      .login-footer {
+        margin-top: 40px;
+        text-align: center;
+        color: $text-secondary;
+        font-size: 14px;
+      }
+    }
+
+    // 右侧装饰区域
+    .login-decoration {
+      flex: 1;
+      background: $primary-gradient;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 60%);
+        animation: rotate 30s linear infinite;
+      }
+
+      .decoration-content {
+        text-align: center;
+        padding: 0 40px;
+        max-width: 500px;
+        z-index: 1;
+
+        h1 {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+          font-weight: 600;
+        }
+
+        p {
+          font-size: 1.2rem;
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
+
+
+  // 响应式设计
+  @media (max-width: 992px) {
+    .login-container {
+      .login-decoration {
+        display: none;
+      }
+
+      .login-content {
+        width: 100%;
+      }
     }
   }
 
   @media (max-width: 576px) {
-    .login-box {
-      width: 100%;
-      padding: 30px 20px;
+    .login-container {
+      .login-content {
+        .login-box {
+          width: 100%;
+          padding: 30px 20px;
+        }
+      }
     }
   }
 </style>
