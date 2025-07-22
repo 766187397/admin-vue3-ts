@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4935064 */
-  src: url('iconfont.woff2?t=1748424595457') format('woff2'),
-       url('iconfont.woff?t=1748424595457') format('woff'),
-       url('iconfont.ttf?t=1748424595457') format('truetype');
+  src: url('iconfont.woff2?t=1753177955368') format('woff2'),
+       url('iconfont.woff?t=1753177955368') format('woff'),
+       url('iconfont.ttf?t=1753177955368') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-account:before {
+  content: "\e616";
+}
+
+.icon-email:before {
+  content: "\e665";
 }
 
 .icon-guanbi:before {

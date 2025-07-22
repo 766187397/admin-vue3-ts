@@ -1,7 +1,7 @@
 /** 登录模块接口 */
 
 import { http } from "@/utils/http";
-import type { LoginForm, LoginResponseData } from "@/types/login";
+import type { EmailLoginForm, LoginForm, LoginResponseData } from "@/types/login";
 import type { Result } from "@/types/api";
 
 /**
@@ -11,6 +11,15 @@ import type { Result } from "@/types/api";
  */
 export const login = (data: LoginForm): Promise<Result<LoginResponseData>> => {
   return http.post("/api/v1/admin/users/logIn", data);
+};
+
+/**
+ * 邮箱验证码登录
+ * @param data 登录表单数据
+ * @returns  登录响应数据
+ */
+export const emailLogin = (data: EmailLoginForm): Promise<Result<LoginResponseData>> => {
+  return http.post("/api/v1/admin/users/logIn/verificationCode", data);
 };
 
 /** 退出登录 */

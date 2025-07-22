@@ -14,7 +14,21 @@
           <p class="login-subtitle">欢迎回来，请登录您的账号</p>
         </div>
 
-        <Password />
+        <component :is="comp"></component>
+
+        <!-- <Password /> -->
+
+        <div class="switch">
+          <template v-for="(item, index) in switchList" :key="index">
+            <i
+              v-if="type !== item.type"
+              :style="{ color: item.color }"
+              class="icon iconfont"
+              :class="item.icon"
+              :title="item.title"
+              @click="handleSwitch(item)"></i>
+          </template>
+        </div>
       </div>
 
       <div class="login-footer">
@@ -36,6 +50,31 @@
   import { Monitor } from "@element-plus/icons-vue";
 
   const title = ref("管理系统");
+
+  const comp = shallowRef(markRaw(Password));
+  const type = ref("account");
+
+  const switchList = ref([
+    {
+      title: "邮箱验证码登录",
+      color: "#ffa254",
+      icon: "icon-email",
+      type: "email",
+      component: defineAsyncComponent(() => import("./components/Email.vue")),
+    },
+    {
+      title: "账号密码登录",
+      color: "#40A9FF",
+      icon: "icon-account",
+      type: "account",
+      component: defineAsyncComponent(() => import("./components/Password.vue")),
+    },
+  ]);
+
+  const handleSwitch = (item: any) => {
+    comp.value = markRaw(item.component);
+    type.value = item.type;
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -120,6 +159,17 @@
           .login-subtitle {
             color: #909399;
             font-size: 14px;
+          }
+        }
+
+        .switch {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+
+          .icon {
+            cursor: pointer;
+            font-size: 32px;
           }
         }
       }

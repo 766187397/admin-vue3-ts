@@ -6,6 +6,12 @@ export interface LoginForm {
   password: string;
 }
 
+/** 登录表单数据接口 */
+export interface EmailLoginForm {
+  email: string;
+  code: string;
+}
+
 /** 用户信息 */
 export type userInfo = Base &
   Static & {

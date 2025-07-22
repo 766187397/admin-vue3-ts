@@ -1,10 +1,24 @@
 {
   "id": "4935064",
-  "name": "后台管理",
+  "name": "个人后台管理",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
+    {
+      "icon_id": "9560534",
+      "name": "账号",
+      "font_class": "account",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "32301527",
+      "name": "邮箱",
+      "font_class": "email",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
     {
       "icon_id": "28941586",
       "name": "关闭",
