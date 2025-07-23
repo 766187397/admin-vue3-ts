@@ -9,3 +9,8 @@ export const getDictionaryItemAll = async (
 ): Promise<Result<GetDictionaryItemAllResult[]>> => {
   return await http.get("/api/v1/admin/dictionaryItem/all", params);
 };
+
+/** 发送邮箱 */
+export const sendEmail = async (label: string, email: string): Promise<Result<null>> => {
+  return await http.post("/api/v1/admin/email/send/email", { label, email });
+};

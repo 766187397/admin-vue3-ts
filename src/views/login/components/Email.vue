@@ -1,17 +1,22 @@
 <template>
   <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="0" class="login-form">
-    <el-form-item prop="account">
-      <el-input v-model="loginForm.account" placeholder="请输入账号" :prefix-icon="User" class="custom-input" />
+    <el-form-item prop="email">
+      <el-input v-model="loginForm.email" placeholder="请输入邮箱" :prefix-icon="Message" class="custom-input" />
     </el-form-item>
-    <el-form-item prop="password">
-      <el-input
-        v-model="loginForm.password"
-        type="password"
-        placeholder="请输入密码"
-        :prefix-icon="Lock"
-        show-password
-        class="custom-input"
-        @keyup.enter="handleLogin" />
+    <el-form-item prop="code">
+      <div class="row">
+        <el-input
+          v-model="loginForm.code"
+          placeholder="请输入验证码"
+          :prefix-icon="ChatLineSquare"
+          show-password
+          class="custom-input"
+          @keyup.enter="handleLogin" />
+
+        <el-button text type="primary" class="code" @click="getCode" :disabled="timer ? true : false">
+          {{ btnText }}
+        </el-button>
+      </div>
     </el-form-item>
     <el-form-item>
       <el-button :loading="loading" type="primary" class="login-button" @click="handleLogin">
@@ -22,11 +27,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ElNotification, type FormInstance } from "element-plus";
-  import { User, Lock } from "@element-plus/icons-vue";
+  import { ElMessage, ElNotification, type FormInstance } from "element-plus";
+  import { Message, ChatLineSquare } from "@element-plus/icons-vue";
   import { useRouter, useRoute } from "vue-router";
-  import { login } from "@/api/login";
-  import type { LoginForm } from "@/types/login";
+  import { emailLogin } from "@/api/login";
+  import { sendEmail } from "@/api/public.ts";
+  import type { EmailLoginForm } from "@/types/login";
   import { useUserInfoStore } from "@/store";
 
   const userInfoStore = useUserInfoStore();
@@ -35,22 +41,80 @@
   const route = useRoute();
   const loading = ref(false);
   const loginFormRef = ref<FormInstance>();
+  const btnText = ref("获取验证码");
+  const time = ref(120);
 
   // 登录表单数据
-  const loginForm = reactive<LoginForm>({
+  const loginForm = reactive<EmailLoginForm>({
     account: "",
     password: "",
   });
 
+  const timer = ref();
+  // 获取验证码
+  const getCode = () => {
+    loginFormRef.value.validateField("email", async (valid, fields) => {
+      if (!valid) return;
+
+      if (timer.value) return;
+
+      let res = await sendEmail("logonCode", loginForm.email);
+
+      ElMessage({
+        message: res.message || "操作成功",
+        type: "scuccess",
+        duration: 5 * 1000,
+      });
+
+      // 接口调用成功后执行
+      timer.value = setInterval(() => {
+        time.value--;
+        btnText.value = time.value + "秒后重新获取";
+        if (time.value <= 0) {
+          clearInterval(timer);
+          timer.value = null;
+          btnText.value = "获取验证码";
+          time.value = 120;
+        }
+      }, 1000);
+    });
+  };
+
+  // 验证邮箱
+  const validateEmail = (rule: any, value: any, callback: any) => {
+    if (value === "") {
+      callback(new Error("请输入邮箱"));
+    } else if (
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        value
+      )
+    ) {
+      callback();
+    } else {
+      callback(new Error("邮箱格式错误"));
+    }
+  };
+
+  // 验证验证码
+  const validateCode = (rule: any, value: any, callback: any) => {
+    if (value === "") {
+      callback(new Error("请输入验证码"));
+    } else if (value.length == 6) {
+      callback();
+    } else {
+      callback(new Error("验证码长度为 6 个字符"));
+    }
+  };
+
   // 表单验证规则
   const loginRules = {
-    account: [
-      { required: true, message: "请输入账号", trigger: "blur" },
-      { min: 3, max: 20, message: "账号长度应在 3 到 20 个字符之间", trigger: "blur" },
+    email: [
+      { required: true, message: "请输入邮箱", trigger: ["blur", "change"] },
+      { validator: validateEmail, trigger: ["blur", "change"] },
     ],
-    password: [
-      { required: true, message: "请输入密码", trigger: "blur" },
-      { min: 6, max: 20, message: "密码长度应在 6 到 20 个字符之间", trigger: "blur" },
+    code: [
+      { required: true, message: "请输入验证码", trigger: ["blur", "change"] },
+      { validator: validateCode, trigger: ["blur", "change"] },
     ],
   };
 
@@ -63,11 +127,11 @@
       try {
         loading.value = true;
 
-        const loginData: LoginForm = {
-          account: loginForm.account,
-          password: loginForm.password,
+        const loginData: EmailLoginForm = {
+          email: loginForm.email,
+          code: loginForm.code,
         };
-        const response = await login(loginData);
+        const response = await emailLogin(loginData);
 
         // 登录成功
         const { token_type, access_token, refresh_token, userInfo } = response.data;
@@ -119,22 +183,15 @@
       }
     }
 
-    .form-options {
+    .row {
+      width: 100%;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      font-size: 14px;
+      gap: 20px;
 
-      .forgot-password {
-        color: #1890ff;
-        text-decoration: none;
-        transition: color 0.3s;
-
-        &:hover {
-          color: #40a9ff;
-          text-decoration: underline;
-        }
+      .code {
+        flex: 0 0 140px;
+        height: 100%;
       }
     }
 
