@@ -62,7 +62,7 @@
 
       ElMessage({
         message: res.message || "操作成功",
-        type: "scuccess",
+        type: "success",
         duration: 5 * 1000,
       });
 
