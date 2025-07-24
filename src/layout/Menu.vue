@@ -69,9 +69,11 @@
 
 <style lang="scss" scoped>
   .menu {
-    height: 100%;
+    height: calc(100% - 60px);
+    // height: 100%;
     border-right: none;
     transition: all 0.3s;
+    overflow: auto;
   }
 
   .menu:not(.el-menu--collapse) {
