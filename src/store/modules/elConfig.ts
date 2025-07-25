@@ -118,15 +118,25 @@ export const useElConfigStore = defineStore(
         // 计算最大半径
         const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY));
 
+        // 设置动画的clipPath属性
+        const clipPath = [
+          `circle(0% at ${clientX}px ${clientY}px)`,
+          `circle(${radius}px at ${clientX}px ${clientY}px)`,
+        ];
+
+        // 暗色主题
+        const isDarkTheme = config.value.darkTheme;
+
         // 圆形动画扩散开始
         const animation = document.documentElement.animate(
           {
-            clipPath: [`circle(0% at ${clientX}px ${clientY}px)`, `circle(${radius}px at ${clientX}px ${clientY}px)`],
+            clipPath: isDarkTheme ? clipPath.reverse() : clipPath,
           },
           // 设置时间，已经目标伪元素
           {
             duration: 500,
-            pseudoElement: "::view-transition-new(root)",
+            easing: "ease-in",
+            pseudoElement: isDarkTheme ? "::view-transition-old(root)" : "::view-transition-new(root)",
           }
         );
 
