@@ -17,7 +17,8 @@
                 value-format="YYYY-MM-DD HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期" />
+                end-placeholder="结束日期"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -64,7 +65,8 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)" />
+      @current-change="getTableData(false)"
+    />
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -87,7 +89,8 @@
                   :rows="2"
                   type="textarea"
                   placeholder="请输入字典描述"
-                  clearable></el-input>
+                  clearable
+                ></el-input>
               </el-form-item>
             </el-col>
 
@@ -115,187 +118,188 @@
 </template>
 
 <script setup lang="ts">
-  import Pagination from "@/components/el/Pagination.vue";
-  import { ElMessage } from "element-plus";
-  import type { HandleRowType } from "@/types/public";
-  import {
-    createDictionary,
-    deleteDictionary,
-    getDictionaryDetail,
-    getDictionaryPage,
-    updateDictionary,
-  } from "@/api/dictionary";
-  import type {
-    DictionaryCreateParams,
-    DictionaryDetail,
-    DictionaryUpdateParams,
-    GetDictionaryPageParams,
-  } from "@/types/dictionary";
-  import { copyTextToClipboard } from "@/utils/tool";
+import Pagination from "@/components/el/Pagination.vue";
+import { ElMessage, type FormInstance } from "element-plus";
+import type { HandleRowType } from "@/types/public";
+import {
+  createDictionary,
+  deleteDictionary,
+  getDictionaryDetail,
+  getDictionaryPage,
+  updateDictionary,
+} from "@/api/dictionary";
+import type {
+  DictionaryCreateParams,
+  DictionaryDetail,
+  DictionaryUpdateParams,
+  GetDictionaryPageParams,
+} from "@/types/dictionary";
+import { copyTextToClipboard } from "@/utils/tool";
 
-  const router = useRouter();
+const router = useRouter();
 
-  const now = new Date();
-  const defaultTime: [Date, Date] = [
-    new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-    new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
-  ];
+const now = new Date();
+const defaultTime: [Date, Date] = [
+  new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+  new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
+];
 
-  // 加载中动画
-  const loading = ref(false);
-  const buttonLoading = ref(false);
-  // 弹窗状态
-  const dialogVisible = ref(false);
-  // 弹窗名称
-  const title = ref("");
-  // 默认查询条件
-  const defaultQuery = {
-    page: 1,
-    pageSize: 10,
-    name: "",
-    time: "",
-  };
-  // 时间
-  const time = ref<[Date, Date]>();
-  // 总条数
-  const total = ref(0);
-  // 查询条件
-  const query = ref<GetDictionaryPageParams>({
-    ...defaultQuery,
-  });
-  /** 重置 */
-  const handleReset = () => {
-    query.value = { ...defaultQuery };
-    time.value = undefined;
-  };
+// 加载中动画
+const loading = ref(false);
+const buttonLoading = ref(false);
+// 弹窗状态
+const dialogVisible = ref(false);
+// 弹窗名称
+const title = ref("");
+// 默认查询条件
+const defaultQuery = {
+  page: 1,
+  pageSize: 10,
+  name: "",
+  time: "",
+};
+// 时间
+const time = ref<[Date, Date]>();
+// 总条数
+const total = ref(0);
+// 查询条件
+const query = ref<GetDictionaryPageParams>({
+  ...defaultQuery,
+});
+/** 重置 */
+const handleReset = () => {
+  query.value = { ...defaultQuery };
+  time.value = undefined;
+};
 
-  /** 数据 */
-  const tableData = ref<DictionaryDetail[]>();
+/** 数据 */
+const tableData = ref<DictionaryDetail[]>();
 
-  /** 查询数据 */
-  const getTableData = async (type: boolean = false) => {
-    if (type) {
-      query.value.page = 1;
-    }
+/** 查询数据 */
+const getTableData = async (type: boolean = false) => {
+  if (type) {
+    query.value.page = 1;
+  }
+  loading.value = true;
+  let data = { ...query.value };
+  if (time.value && time.value.length > 0) {
+    data.time = time.value.join(",");
+  }
+  const res = await getDictionaryPage(data);
+  total.value = res.data.total;
+  tableData.value = res.data.data;
+  loading.value = false;
+};
+getTableData();
+
+// 表单数据
+const form = ref<DictionaryCreateParams | DictionaryUpdateParams | DictionaryDetail>();
+const rules = ref({});
+
+/** 行操作 */
+const handleRow = async (type: HandleRowType, id?: string) => {
+  try {
     loading.value = true;
-    let data = { ...query.value };
-    if (time.value && time.value.length > 0) {
-      data.time = time.value.join(",");
-    }
-    const res = await getDictionaryPage(data);
-    total.value = res.data.total;
-    tableData.value = res.data.data;
-    loading.value = false;
-  };
-  getTableData();
-
-  // 表单数据
-  const form = ref<DictionaryCreateParams | DictionaryUpdateParams | DictionaryDetail>();
-  const rules = ref({});
-
-  /** 行操作 */
-  const handleRow = async (type: HandleRowType, id?: string) => {
-    try {
-      loading.value = true;
-      const fns = {
-        getDetail: async function () {
-          let res = await getDictionaryDetail(id as string);
-          form.value = res.data;
-        },
-        edit: async function () {
-          dialogVisible.value = true;
-          await fns.getDetail();
-          title.value = "编辑";
-        },
-        add: async function () {
-          dialogVisible.value = true;
-          title.value = "新增";
-          form.value = {};
-        },
-        detail: async function () {
-          dialogVisible.value = true;
-          await fns.getDetail();
-          title.value = "详情";
-        },
-        delete: async function () {
-          ElMessageBox.confirm("删除字典会连同当前字典绑定的所有数据一起删除，你确定要删除吗？", "删除字典", {
-            type: "error",
-          }).then(async () => {
-            let res = await deleteDictionary(id as string);
-            getTableData();
-            ElMessage.success({
-              message: res?.message || "操作成功",
-            });
-          });
-        },
-      };
-      await fns[type]();
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // 关闭弹窗
-  const handleClose = () => {
-    form.value = undefined;
-    dialogVisible.value = false;
-  };
-
-  /** 表单 */
-  const formRef = useTemplateRef("formRef");
-
-  /** 提交 */
-  const submit = () => {
-    formRef.value?.validate(async (valid) => {
-      if (!valid) return;
-      try {
-        buttonLoading.value = true;
-        let res;
-        // 调用接口
-        if ("id" in form.value!) {
-          // 编辑
-          res = await updateDictionary(form.value?.id, form.value);
-        } else {
-          // 新增
-          res = await createDictionary(form.value as DictionaryCreateParams);
-        }
-        dialogVisible.value = false;
-        ElMessage.success({
-          message: res?.message || "操作成功",
-        });
-        getTableData();
-      } catch (error) {
-      } finally {
-        buttonLoading.value = false;
-      }
-    });
-  };
-
-  /** 跳转子页面 */
-  const handleChild = (row: DictionaryDetail) => {
-    router.push({
-      name: "dictionaryChild",
-      query: {
-        type: row.type,
+    const fns = {
+      getDetail: async function () {
+        let res = await getDictionaryDetail(id as string);
+        form.value = res.data;
       },
-    });
-  };
+      edit: async function () {
+        dialogVisible.value = true;
+        await fns.getDetail();
+        title.value = "编辑";
+      },
+      add: async function () {
+        dialogVisible.value = true;
+        title.value = "新增";
+        form.value = {};
+      },
+      detail: async function () {
+        dialogVisible.value = true;
+        await fns.getDetail();
+        title.value = "详情";
+      },
+      delete: async function () {
+        ElMessageBox.confirm("删除字典会连同当前字典绑定的所有数据一起删除，你确定要删除吗？", "删除字典", {
+          type: "error",
+        }).then(async () => {
+          let res = await deleteDictionary(id as string);
+          getTableData();
+          ElMessage.success({
+            message: res?.message || "操作成功",
+          });
+        });
+      },
+    };
+    await fns[type]();
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 关闭弹窗
+const handleClose = () => {
+  form.value = undefined;
+  dialogVisible.value = false;
+};
+
+/** 表单 */
+const formRef = useTemplateRef<FormInstance>("formRef");
+
+/** 提交 */
+const submit = () => {
+  if (!formRef.value) return;
+  formRef.value?.validate(async (valid) => {
+    if (!valid) return;
+    try {
+      buttonLoading.value = true;
+      let res;
+      // 调用接口
+      if ("id" in form.value!) {
+        // 编辑
+        res = await updateDictionary(form.value?.id, form.value);
+      } else {
+        // 新增
+        res = await createDictionary(form.value as DictionaryCreateParams);
+      }
+      dialogVisible.value = false;
+      ElMessage.success({
+        message: res?.message || "操作成功",
+      });
+      getTableData();
+    } catch (error) {
+    } finally {
+      buttonLoading.value = false;
+    }
+  });
+};
+
+/** 跳转子页面 */
+const handleChild = (row: DictionaryDetail) => {
+  router.push({
+    name: "dictionaryChild",
+    query: {
+      type: row.type,
+    },
+  });
+};
 </script>
 
 <style lang="scss" scoped>
-  .table {
-    .row {
-      width: 100%;
+.table {
+  .row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    .icon_copy {
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      .icon_copy {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
     }
   }
+}
 </style>

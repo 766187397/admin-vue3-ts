@@ -23,7 +23,8 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                clearable />
+                clearable
+              />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -60,7 +61,8 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)" />
+      @current-change="getTableData(false)"
+    />
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -83,7 +85,8 @@
                   type="textarea"
                   v-model="form.description"
                   placeholder="请输入角色描述"
-                  clearable></el-input>
+                  clearable
+                ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -107,7 +110,8 @@
                     label: 'title',
                     children: 'children',
                   }"
-                  @check="handleCheckChange" />
+                  @check="handleCheckChange"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -124,181 +128,182 @@
 </template>
 
 <script setup lang="ts">
-  import Pagination from "@/components/el/Pagination.vue";
-  import { ElMessage } from "element-plus";
-  import { createRoleAdmin, deleteRole, getRoleDetail, getRolesByRoleAdmin, updateRole } from "@/api/role";
-  import type { HandleRowType } from "@/types/public";
-  import type { RoleCreateParams, RoleDetail, RoleQueryParams, RoleUpdateParams } from "@/types/role";
-  import { getRoutesAllAdmin } from "@/api/menu";
+import Pagination from "@/components/el/Pagination.vue";
+import { ElMessage, type FormInstance } from "element-plus";
+import { createRoleAdmin, deleteRole, getRoleDetail, getRolesByRoleAdmin, updateRole } from "@/api/role";
+import type { HandleRowType } from "@/types/public";
+import type { RoleCreateParams, RoleDetail, RoleQueryParams, RoleUpdateParams } from "@/types/role";
+import { getRoutesAllAdmin } from "@/api/menu";
 
-  const now = new Date();
-  const defaultTime: [Date, Date] = [
-    new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-    new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
-  ];
+const now = new Date();
+const defaultTime: [Date, Date] = [
+  new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+  new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
+];
 
-  // 加载中动画
-  const loading = ref(false);
-  const buttonLoading = ref(false);
-  // 弹窗状态
-  const dialogVisible = ref(false);
-  // 弹窗名称
-  const title = ref("");
-  // 默认查询条件
-  const defaultQuery = {
-    page: 1,
-    pageSize: 10,
-    name: "",
-    roleKey: "",
-    time: "",
-  };
-  // 时间
-  const time = ref();
-  // 总条数
-  const total = ref(0);
-  // 查询条件
-  const query = ref<RoleQueryParams>({
-    ...defaultQuery,
-  });
-  /** 重置 */
-  const handleReset = () => {
-    query.value = { ...defaultQuery };
-    time.value = undefined;
-  };
+// 加载中动画
+const loading = ref(false);
+const buttonLoading = ref(false);
+// 弹窗状态
+const dialogVisible = ref(false);
+// 弹窗名称
+const title = ref("");
+// 默认查询条件
+const defaultQuery = {
+  page: 1,
+  pageSize: 10,
+  name: "",
+  roleKey: "",
+  time: "",
+};
+// 时间
+const time = ref();
+// 总条数
+const total = ref(0);
+// 查询条件
+const query = ref<RoleQueryParams>({
+  ...defaultQuery,
+});
+/** 重置 */
+const handleReset = () => {
+  query.value = { ...defaultQuery };
+  time.value = undefined;
+};
 
-  /** 路由 */
-  const router = ref();
+/** 路由 */
+const router = ref();
 
-  /** 默认数据 */
-  const defaultCheckedKeys = ref([]);
+/** 默认数据 */
+const defaultCheckedKeys = ref([]);
 
-  /** 获取路由 */
-  const getRoutesAll = async () => {
-    const res = await getRoutesAllAdmin();
-    router.value = res.data;
-  };
-  getRoutesAll();
+/** 获取路由 */
+const getRoutesAll = async () => {
+  const res = await getRoutesAllAdmin();
+  router.value = res.data;
+};
+getRoutesAll();
 
-  /** 勾选 */
-  const handleCheckChange = (node: any, data: any) => {
-    if (form.value) {
-      form.value.routeIds = data.checkedKeys;
-    }
-  };
+/** 勾选 */
+const handleCheckChange = (node: any, data: any) => {
+  if (form.value) {
+    form.value.routeIds = data.checkedKeys;
+  }
+};
 
-  /** 数据 */
-  const tableData = ref<RoleDetail[]>();
+/** 数据 */
+const tableData = ref<RoleDetail[]>();
 
-  /** 查询数据 */
-  const getTableData = async (type: boolean = false) => {
-    if (type) {
-      query.value.page = 1;
-    }
+/** 查询数据 */
+const getTableData = async (type: boolean = false) => {
+  if (type) {
+    query.value.page = 1;
+  }
+  loading.value = true;
+  let data = { ...query.value };
+  if (time.value && time.value.length > 0) {
+    data.time = time.value.join(",");
+  }
+  const res = await getRolesByRoleAdmin(data);
+  total.value = res.data.total;
+  tableData.value = res.data.data;
+  loading.value = false;
+};
+getTableData();
+
+// 表单数据
+const form = ref<RoleCreateParams | RoleUpdateParams | RoleDetail>();
+const rules = ref({
+  name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+  roleKey: [{ required: true, message: "请输入标识", trigger: "blur" }],
+});
+
+// 关闭弹窗
+const handleClose = () => {
+  form.value = undefined;
+  dialogVisible.value = false;
+};
+
+const formRef = useTemplateRef<FormInstance>("formRef");
+
+/** 行操作 */
+const handleRow = async (type: HandleRowType, id?: string) => {
+  try {
     loading.value = true;
-    let data = { ...query.value };
-    if (time.value && time.value.length > 0) {
-      data.time = time.value.join(",");
-    }
-    const res = await getRolesByRoleAdmin(data);
-    total.value = res.data.total;
-    tableData.value = res.data.data;
-    loading.value = false;
-  };
-  getTableData();
-
-  // 表单数据
-  const form = ref<RoleCreateParams | RoleUpdateParams | RoleDetail>();
-  const rules = ref({
-    name: [{ required: true, message: "请输入名称", trigger: "blur" }],
-    roleKey: [{ required: true, message: "请输入标识", trigger: "blur" }],
-  });
-
-  // 关闭弹窗
-  const handleClose = () => {
-    form.value = undefined;
-    dialogVisible.value = false;
-  };
-
-  const formRef = useTemplateRef("formRef");
-
-  /** 行操作 */
-  const handleRow = async (type: HandleRowType, id?: string) => {
-    try {
-      loading.value = true;
-      const fns = {
-        getDetail: async function () {
-          let res = await getRoleDetail(id as string);
-          defaultCheckedKeys.value = res.data.routes.map((item: any) => item.id);
-          form.value = res.data;
-        },
-        edit: async function () {
-          dialogVisible.value = true;
-          await fns.getDetail();
-          title.value = "编辑";
-        },
-        add: async function () {
-          dialogVisible.value = true;
-          title.value = "新增";
-          form.value = {
-            sort: 1,
-            status: 1,
-            description: "",
-            roleKey: "",
-            name: "",
-          };
-        },
-        detail: async function () {
-          dialogVisible.value = true;
-          await fns.getDetail();
-          title.value = "详情";
-        },
-        delete: async function () {
-          ElMessageBox.confirm("你确定要删除吗？", "删除角色", {
-            type: "error",
-          }).then(async () => {
-            let res = await deleteRole(id as string);
-            getTableData();
-            ElMessage.success({
-              message: res?.message || "操作成功",
-            });
+    const fns = {
+      getDetail: async function () {
+        let res = await getRoleDetail(id as string);
+        defaultCheckedKeys.value = res.data.routes.map((item: any) => item.id);
+        form.value = res.data;
+      },
+      edit: async function () {
+        dialogVisible.value = true;
+        await fns.getDetail();
+        title.value = "编辑";
+      },
+      add: async function () {
+        dialogVisible.value = true;
+        title.value = "新增";
+        form.value = {
+          sort: 1,
+          status: 1,
+          description: "",
+          roleKey: "",
+          name: "",
+        };
+      },
+      detail: async function () {
+        dialogVisible.value = true;
+        await fns.getDetail();
+        title.value = "详情";
+      },
+      delete: async function () {
+        ElMessageBox.confirm("你确定要删除吗？", "删除角色", {
+          type: "error",
+        }).then(async () => {
+          let res = await deleteRole(id as string);
+          getTableData();
+          ElMessage.success({
+            message: res?.message || "操作成功",
           });
-        },
-      };
-      // 直接调用不影响this的指向，否则使用bind(this)
-      // const fn = fns[type];
-      // await fn.bind(fns)();
-      await fns[type]();
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  /** 提交 */
-  const submit = () => {
-    formRef.value?.validate(async (valid) => {
-      if (!valid) return;
-      try {
-        buttonLoading.value = true;
-        let res;
-        // 调用接口
-        if ("id" in form.value!) {
-          // 编辑
-          res = await updateRole(form.value?.id, form.value as RoleUpdateParams);
-        } else {
-          // 新增
-          res = await createRoleAdmin(form.value as RoleCreateParams);
-        }
-        dialogVisible.value = false;
-        ElMessage.success({
-          message: res?.message || "操作成功",
         });
-        getTableData();
-      } catch (error) {
-      } finally {
-        buttonLoading.value = false;
+      },
+    };
+    // 直接调用不影响this的指向，否则使用bind(this)
+    // const fn = fns[type];
+    // await fn.bind(fns)();
+    await fns[type]();
+  } finally {
+    loading.value = false;
+  }
+};
+
+/** 提交 */
+const submit = () => {
+  if (!formRef.value) return;
+  formRef.value?.validate(async (valid) => {
+    if (!valid) return;
+    try {
+      buttonLoading.value = true;
+      let res;
+      // 调用接口
+      if ("id" in form.value!) {
+        // 编辑
+        res = await updateRole(form.value?.id, form.value as RoleUpdateParams);
+      } else {
+        // 新增
+        res = await createRoleAdmin(form.value as RoleCreateParams);
       }
-    });
-  };
+      dialogVisible.value = false;
+      ElMessage.success({
+        message: res?.message || "操作成功",
+      });
+      getTableData();
+    } catch (error) {
+    } finally {
+      buttonLoading.value = false;
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped></style>

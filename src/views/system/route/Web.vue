@@ -51,7 +51,8 @@
                   :props="{ value: 'id', label: 'title', checkStrictly: true }"
                   filterable
                   clearable
-                  style="width: 100%" />
+                  style="width: 100%"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -89,7 +90,8 @@
                   v-model="form.icon"
                   placeholder="请输入图标(element组件/进入的图标class)"
                   clearable
-                  filterable>
+                  filterable
+                >
                   <el-option-group v-for="group in componentAndIcons" :key="group.label" :label="group.label">
                     <el-option v-for="item in group.options" :key="item" :label="item" :value="item">
                       <div class="icon_list">
@@ -127,7 +129,8 @@
                   v-model="form.meta"
                   :autosize="{ minRows: 3, maxRows: 9 }"
                   type="textarea"
-                  placeholder="需要按照JSON格式填写(不要和现有的固定值相同)" />
+                  placeholder="需要按照JSON格式填写(不要和现有的固定值相同)"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -144,192 +147,193 @@
 </template>
 
 <script setup lang="ts">
-  import { createRouteWeb, delRoutes, getRoutesAllWeb, getRoutesDetail, updateRoutes } from "@/api/menu";
-  import type { CreateRoutesParams, RouterInfoList } from "@/types/menu";
-  import { ElMessage, ElMessageBox, type FormRules } from "element-plus";
-  import { getDictionaryItemAll } from "@/api/public";
-  import { typeValue } from "@/utils/tool";
-  import type { GetDictionaryItemAllResult } from "@/types/dictionary";
-  import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-  import { baseIconsList } from "@/assets/icon/index";
-  import type { HandleRowType } from "@/types/public";
+import { createRouteWeb, delRoutes, getRoutesAllWeb, getRoutesDetail, updateRoutes } from "@/api/menu";
+import type { CreateRoutesParams, RouterInfoList } from "@/types/menu";
+import { ElMessage, ElMessageBox,type FormInstance, type FormRules } from "element-plus";
+import { getDictionaryItemAll } from "@/api/public";
+import { typeValue } from "@/utils/tool";
+import type { GetDictionaryItemAllResult } from "@/types/dictionary";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import { baseIconsList } from "@/assets/icon/index";
+import type { HandleRowType } from "@/types/public";
 
-  const elementPlusIcons = Object.keys(ElementPlusIconsVue);
+const elementPlusIcons = Object.keys(ElementPlusIconsVue);
 
-  const componentAndIcons = reactive<any>([
-    {
-      label: "Element Plus Icons",
-      options: [...elementPlusIcons],
-    },
-    {
-      label: "Customize Icons",
-      options: [...baseIconsList],
-    },
-  ]);
-  // 加载中动画
-  const loading = ref(false);
-  const buttonLoading = ref(false);
-  // 弹窗状态
-  const dialogVisible = ref(false);
-  // 弹窗名称
-  const title = ref("");
-  // 查询条件
-  const query = ref({
-    type: "",
-  });
+const componentAndIcons = reactive<any>([
+  {
+    label: "Element Plus Icons",
+    options: [...elementPlusIcons],
+  },
+  {
+    label: "Customize Icons",
+    options: [...baseIconsList],
+  },
+]);
+// 加载中动画
+const loading = ref(false);
+const buttonLoading = ref(false);
+// 弹窗状态
+const dialogVisible = ref(false);
+// 弹窗名称
+const title = ref("");
+// 查询条件
+const query = ref({
+  type: "",
+});
 
-  // 查询类型
-  const typeList = ref<GetDictionaryItemAllResult[]>();
-  const getDictionaryItemAllAsync = async () => {
-    let res = await getDictionaryItemAll({ type: "routeType" });
-    typeList.value = res.data;
-  };
-  getDictionaryItemAllAsync();
+// 查询类型
+const typeList = ref<GetDictionaryItemAllResult[]>();
+const getDictionaryItemAllAsync = async () => {
+  let res = await getDictionaryItemAll({ type: "routeType" });
+  typeList.value = res.data;
+};
+getDictionaryItemAllAsync();
 
-  // 表格数据
-  const tableData = ref<RouterInfoList[]>([]);
+// 表格数据
+const tableData = ref<RouterInfoList[]>([]);
 
-  // 查询表格数据
-  const getTableData = async () => {
+// 查询表格数据
+const getTableData = async () => {
+  try {
+    loading.value = true;
+    const data = {
+      ...query.value,
+    };
+    let res = await getRoutesAllWeb(data);
+    tableData.value = res.data;
+  } catch (error) {
+  } finally {
+    loading.value = false;
+  }
+};
+getTableData();
+
+// 表单数据
+const form = ref<RouterInfoList | CreateRoutesParams>();
+
+// 表单校验
+const rules = reactive<FormRules<RouterInfoList>>({
+  type: [{ required: true, message: "请选择路由类型", trigger: ["blur", "change"] }],
+  name: [{ required: true, message: "请输入路由名称", trigger: ["blur", "change"] }],
+  title: [{ required: true, message: "请输入路由显示名称", trigger: ["blur", "change"] }],
+  path: [{ required: true, message: "请输入前端路由路径", trigger: ["blur", "change"] }],
+});
+
+/** 行操作 */
+const handleRow = async (type: HandleRowType, id?: string) => {
+  try {
+    loading.value = true;
+    const fns = {
+      getDetail: async function () {
+        let res = await getRoutesDetail(id as string);
+        form.value = res.data;
+      },
+      edit: async function () {
+        dialogVisible.value = true;
+        await fns.getDetail();
+        title.value = "编辑";
+      },
+      add: async function () {
+        dialogVisible.value = true;
+        title.value = "新增";
+        form.value = {
+          sort: 0,
+          status: 1,
+          component: "",
+          meta: "",
+          icon: "",
+          parentId: id,
+          externalLinks: false,
+          redirect: "",
+          type: "",
+          name: "",
+          title: "",
+          path: "",
+        } as CreateRoutesParams;
+      },
+      detail: async function () {
+        dialogVisible.value = true;
+        await fns.getDetail();
+        title.value = "详情";
+      },
+      delete: async function () {
+        ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
+          type: "error",
+        }).then(async () => {
+          let res = await delRoutes(id as string);
+          getTableData();
+          ElMessage.success({
+            message: res?.message || "操作成功",
+          });
+        });
+      },
+    };
+    // 直接调用不影响this的指向，否则使用bind(this)
+    // const fn = fns[type];
+    // await fn.bind(fns)();
+    await fns[type]();
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 修改外链状态
+const handleExternalLinksChange = () => {
+  if (form.value) {
+    form.value.redirect = "";
+  }
+};
+
+// 关闭弹窗
+const handleClose = () => {
+  form.value = undefined;
+  dialogVisible.value = false;
+};
+
+const formRef = useTemplateRef<FormInstance>("formRef");
+
+// 提交
+const submit = () => {
+if (!formRef.value) return;
+  formRef.value?.validate(async (valid) => {
+    if (!valid) return;
     try {
-      loading.value = true;
-      const data = {
-        ...query.value,
-      };
-      let res = await getRoutesAllWeb(data);
-      tableData.value = res.data;
+      buttonLoading.value = true;
+      let res;
+      if ("id" in form.value!) {
+        // 编辑
+        res = await updateRoutes(form.value?.id, form.value as CreateRoutesParams);
+      } else {
+        // 新增
+        res = await createRouteWeb(form.value as CreateRoutesParams);
+      }
+      dialogVisible.value = false;
+      ElMessage.success({
+        message: res?.message || "操作成功",
+      });
+      getTableData();
     } catch (error) {
     } finally {
-      loading.value = false;
+      buttonLoading.value = false;
     }
-  };
-  getTableData();
-
-  // 表单数据
-  const form = ref<RouterInfoList | CreateRoutesParams>();
-
-  // 表单校验
-  const rules = reactive<FormRules<RouterInfoList>>({
-    type: [{ required: true, message: "请选择路由类型", trigger: ["blur", "change"] }],
-    name: [{ required: true, message: "请输入路由名称", trigger: ["blur", "change"] }],
-    title: [{ required: true, message: "请输入路由显示名称", trigger: ["blur", "change"] }],
-    path: [{ required: true, message: "请输入前端路由路径", trigger: ["blur", "change"] }],
   });
-
-  /** 行操作 */
-  const handleRow = async (type: HandleRowType, id?: string) => {
-    try {
-      loading.value = true;
-      const fns = {
-        getDetail: async function () {
-          let res = await getRoutesDetail(id as string);
-          form.value = res.data;
-        },
-        edit: async function () {
-          dialogVisible.value = true;
-          await fns.getDetail();
-          title.value = "编辑";
-        },
-        add: async function () {
-          dialogVisible.value = true;
-          title.value = "新增";
-          form.value = {
-            sort: 0,
-            status: 1,
-            component: "",
-            meta: "",
-            icon: "",
-            parentId: id,
-            externalLinks: false,
-            redirect: "",
-            type: "",
-            name: "",
-            title: "",
-            path: "",
-          } as CreateRoutesParams;
-        },
-        detail: async function () {
-          dialogVisible.value = true;
-          await fns.getDetail();
-          title.value = "详情";
-        },
-        delete: async function () {
-          ElMessageBox.confirm("你确定要删除吗？", "删除路由", {
-            type: "error",
-          }).then(async () => {
-            let res = await delRoutes(id as string);
-            getTableData();
-            ElMessage.success({
-              message: res?.message || "操作成功",
-            });
-          });
-        },
-      };
-      // 直接调用不影响this的指向，否则使用bind(this)
-      // const fn = fns[type];
-      // await fn.bind(fns)();
-      await fns[type]();
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // 修改外链状态
-  const handleExternalLinksChange = () => {
-    if (form.value) {
-      form.value.redirect = "";
-    }
-  };
-
-  // 关闭弹窗
-  const handleClose = () => {
-    form.value = undefined;
-    dialogVisible.value = false;
-  };
-
-  const formRef = useTemplateRef("formRef");
-
-  // 提交
-  const submit = () => {
-    formRef.value?.validate(async (valid) => {
-      if (!valid) return;
-      try {
-        buttonLoading.value = true;
-        let res;
-        if ("id" in form.value!) {
-          // 编辑
-          res = await updateRoutes(form.value?.id, form.value as CreateRoutesParams);
-        } else {
-          // 新增
-          res = await createRouteWeb(form.value as CreateRoutesParams);
-        }
-        dialogVisible.value = false;
-        ElMessage.success({
-          message: res?.message || "操作成功",
-        });
-        getTableData();
-      } catch (error) {
-      } finally {
-        buttonLoading.value = false;
-      }
-    });
-  };
+};
 </script>
 
 <style lang="scss" scoped>
-  .icon_list {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  :deep(.el-link) {
+.icon_list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+:deep(.el-link) {
+  width: 100%;
+  .el-link__inner {
     width: 100%;
-    .el-link__inner {
-      width: 100%;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
 </style>

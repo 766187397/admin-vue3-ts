@@ -64,7 +64,7 @@ export interface GetDictionaryItemAllParams {
 export type GetDictionaryItemPageParams = GetDictionaryItemAllParams & PageQueryParams;
 
 /** 无分页查询字典项返回结果 */
-export type GetDictionaryItemAllResult = Dictionary & Static;
+export type GetDictionaryItemAllResult = DictionaryItem & Static;
 
 /** 字典分类详情 */
 export type DictionaryDetailItem = Required<DictionaryItem> & Required<Static>;
