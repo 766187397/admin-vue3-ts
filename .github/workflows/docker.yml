@@ -2,8 +2,10 @@ name: Build & Push to Docker Hub
 
 on:
   push:
-    tags:
-      - "v*" # 仅匹配 v1.0.0 / v2025.07.30 等形式的 tag
+    branches: [main] # 推送到 main 分支时触发
+    tags: ["v*"] # 也可以打 tag 发布版本
+  pull_request: # PR 时仅构建不推送
+    branches: [main]
 
 env:
   REGISTRY: docker.io
