@@ -1,5 +1,5 @@
 # ---------- 阶段 1：编译 ----------
-FROM node:20
+FROM node:20 AS builder
 
 WORKDIR /app
 
