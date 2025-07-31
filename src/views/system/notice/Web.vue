@@ -68,11 +68,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="类型：" prop="type">
-                <el-input v-model="form.type" placeholder="请输入类型" clearable></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
               <el-form-item label="用户：">
                 <el-select-v2
                   v-model="form.userIds"
@@ -291,13 +286,16 @@ const submit = () => {
     try {
       buttonLoading.value = true;
       let res;
+      let data:any = { ...form.value };
+      data.userIds = data.userIds?.join(",");
+      data.roleKeys = data.roleKeys?.join(",");
       // 调用接口
-      if ("id" in form.value!) {
+      if ("id" in data!) {
         // 编辑
-        res = await updateNotice(form.value?.id, form.value);
+        res = await updateNotice(data?.id, data);
       } else {
         // 新增
-        res = await createNoticeWeb(form.value as CreateNoticeParams);
+        res = await createNoticeWeb(data as CreateNoticeParams);
       }
       dialogVisible.value = false;
       ElMessage.success({

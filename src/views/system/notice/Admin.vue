@@ -38,7 +38,6 @@
       </div>
       <el-table :data="tableData">
         <el-table-column prop="title" label="标题" align="center" />
-        <el-table-column prop="type" label="类型" align="center" />
         <el-table-column prop="specifyTime" label="预发布时间" align="center" />
         <el-table-column prop="createdAt" label="创建时间" align="center" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
@@ -65,11 +64,6 @@
             <el-col :span="12">
               <el-form-item label="标题：" prop="title">
                 <el-input v-model="form.title" placeholder="请输入标题" clearable></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="类型：" prop="type">
-                <el-input v-model="form.type" placeholder="请输入类型" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -291,13 +285,16 @@ const submit = () => {
     try {
       buttonLoading.value = true;
       let res;
+      let data:any = { ...form.value };
+      data.userIds = data.userIds?.join(",");
+      data.roleKeys = data.roleKeys?.join(",");
       // 调用接口
-      if ("id" in form.value!) {
+      if ("id" in data!) {
         // 编辑
-        res = await updateNotice(form.value?.id, form.value);
+        res = await updateNotice(data?.id, data);
       } else {
         // 新增
-        res = await createNoticeAdmin(form.value as CreateNoticeParams);
+        res = await createNoticeAdmin(data as CreateNoticeParams);
       }
       dialogVisible.value = false;
       ElMessage.success({

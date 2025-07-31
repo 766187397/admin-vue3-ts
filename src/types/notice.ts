@@ -18,9 +18,6 @@ type Notice = Base & {
   /*指定的平台标识（如admin/web/app/mini） */
   platform: string;
 
-  /*类型 */
-  type: string;
-
   /*标题 */
   title: string;
 };
@@ -33,9 +30,6 @@ export type CreateNoticeParams = Partial<Notice> & {
   /*指定的平台标识（如admin/web/app/mini） */
   platform: string;
 
-  /*类型 */
-  type: string;
-
   /*标题 */
   title: string;
 };
@@ -45,9 +39,6 @@ export type UpdateNoticeParams = Partial<CreateNoticeParams>;
 
 /** 列表查询参数 查询公告列表(分页,后端编辑使用查询所有) */
 export type GetNoticeParams = PageQueryParams & {
-  /** 类型 */
-  type?: string;
-
   /** 标签 */
   title?: string;
 };
