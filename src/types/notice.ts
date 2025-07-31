@@ -51,3 +51,13 @@ export interface GetNoticeByUserOrRole extends PageQueryParams {
 
 /** 公告详情 */
 export type NoticeDetail = Required<Notice> & Required<Static>;
+
+/** 通知详情 */
+export interface FindUserOrRole {
+  id: string;
+  status: boolean;
+  content: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+}

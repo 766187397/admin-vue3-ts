@@ -7,14 +7,18 @@
       v-infinite-scroll="getTableData"
       :infinite-scroll-disabled="isDisabled"
       :infinite-scroll-immediate="false"
+      :infinite-scroll-delay="500"
       infinite-scroll-distance="20"
-      v-loading="loading"
     >
       <div class="item" v-for="item in tableData" :key="item.id">
+        <i class="iconfont icon-biaoqian" :class="{ active: item.status }" @click="handleReadNotice(item)"></i>
         <div class="title">{{ item.title }}</div>
         <div class="content" v-html="item.content"></div>
         <div class="time">{{ item.createdAt }}</div>
       </div>
+
+      <p class="text_center" v-if="loading">加载中...</p>
+      <p class="text_center" v-if="isDisabled">没有更多数据了</p>
     </div>
   </el-drawer>
 </template>
@@ -22,12 +26,13 @@
 <script setup lang="ts">
 import { io } from "socket.io-client";
 import { useUserInfoStore } from "@/store";
-import { getNoticeByUserOrRoleAdmin } from "@/api/notice.ts";
+import { getNoticeByUserOrRoleAdmin, signReadNotice } from "@/api/notice.ts";
+import type { FindUserOrRole } from "@/types/notice";
 const userInfoStore = useUserInfoStore();
 const token = userInfoStore.token_type + userInfoStore.token;
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
-const noticeList = ref<any[]>([]);
+const noticeList = ref<FindUserOrRole[]>([]);
 // 连接指定命名空间
 const socket = io(`${baseUrl}/api/v1/admin/notice/ws`, {
   transports: ["websocket"], // 强制使用 WebSocket 协议
@@ -43,7 +48,15 @@ socket.on("connect", () => {
 // 接收命名空间专属消息
 socket.on("list", (data) => {
   console.log(" 收到通知:", data);
-  noticeList.value = data.data;
+  noticeList.value = data.data as FindUserOrRole[];
+  noticeList.value.forEach((item: FindUserOrRole, index) => {
+    setTimeout(() => {
+      ElNotification({
+        title: item.title,
+        message: item.content,
+      });
+    }, 1 * index);
+  });
 });
 
 // 接收命名空间专属消息
@@ -61,7 +74,7 @@ const query = ref({
   pageSize: 5,
 });
 // 数据
-const tableData = ref([]);
+const tableData = ref<FindUserOrRole[]>([]);
 // 加载状态
 const loading = ref(false);
 
@@ -86,20 +99,54 @@ const handleOpen = () => {
   isDisabled.value = false;
   getTableData();
 };
+
+// 标记已读
+const handleReadNotice = async (item: any) => {
+  let res = await signReadNotice(item.id);
+  item.status = true;
+};
 </script>
 
 <style lang="scss" scoped>
+@keyframes shrinkAndGrow {
+  0% {
+    transform: translate(10px, 0) scale(1);
+  }
+  50% {
+    transform: translate(10px, 0) scale(0);
+  }
+  100% {
+    transform: translate(10px, 0) scale(1);
+  }
+}
+
 .list {
   width: 100%;
   height: 100%;
   overflow: auto;
 
   .item {
+    position: relative;
     padding: 10px;
     box-sizing: border-box;
     margin: 20px;
     border-radius: 12px;
     box-shadow: var(--el-box-shadow-lighter);
+
+    .icon-biaoqian {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 24px;
+      color: red;
+      transform: translate(10px, 0);
+
+      &.active {
+        color: var(--el-color-primary);
+        animation: shrinkAndGrow 0.5s ease-in-out forwards;
+      }
+    }
 
     .title {
       font-size: 18px;
@@ -117,6 +164,11 @@ const handleOpen = () => {
       font-size: 12px;
       color: #ccc;
     }
+  }
+
+  .text_center {
+    text-align: center;
+    color: #ccc;
   }
 }
 </style>

@@ -2,6 +2,7 @@
 import type { PageApiResult, Result } from "@/types/api";
 import type {
   CreateNoticeParams,
+  FindUserOrRole,
   GetNoticeByUserOrRole,
   GetNoticeParams,
   NoticeDetail,
@@ -24,6 +25,11 @@ export const updateNotice = async (id: string, data: UpdateNoticeParams): Promis
 export const deleteNotice = async (id: string): Promise<Result<null>> => {
   return await http.delete(`/api/v1/admin/notice/delete/${id}`);
 };
+
+/** 标记为已读 */
+export const signReadNotice = async (id: string): Promise<Result<null>> => {
+  return await http.post(`/api/v1/admin/notice/read/${id}`);
+};
 //#endregion
 
 //#region admin 平台
@@ -40,7 +46,7 @@ export const getNoticePageAdmin = async (params: GetNoticeParams): Promise<Resul
 /** 查询公告列表(分页,后台查询当前用户和角色权限对应的公告) */
 export const getNoticeByUserOrRoleAdmin = async (
   params: GetNoticeByUserOrRole
-): Promise<Result<PageApiResult<NoticeDetail[]>>> => {
+): Promise<Result<PageApiResult<FindUserOrRole[]>>> => {
   return await http.get("/api/v1/admin/notice/page/userOrRole/admin", params);
 };
 //#endregion
