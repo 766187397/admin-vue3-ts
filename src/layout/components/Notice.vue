@@ -7,6 +7,7 @@
       v-infinite-scroll="getTableData"
       :infinite-scroll-disabled="isDisabled"
       :infinite-scroll-immediate="false"
+      infinite-scroll-distance="20"
       v-loading="loading"
     >
       <div class="item" v-for="item in tableData" :key="item.id">
@@ -57,7 +58,7 @@ const isDisabled = ref(false);
 // 查询条件
 const query = ref({
   page: 1,
-  pageSize: 10,
+  pageSize: 5,
 });
 // 数据
 const tableData = ref([]);
@@ -69,10 +70,10 @@ const getTableData = async (type: boolean = false) => {
   loading.value = true;
   let data = { ...query.value };
   const res = await getNoticeByUserOrRoleAdmin(data);
-  tableData.value = res.data.data;
+  tableData.value = [...tableData.value, ...res.data.data];
   loading.value = false;
-  if (res.data.total != query.value.pageSize) {
-    isDisabled.value = res.data.total != query.value.pageSize;
+  if (Number(query.value.pageSize) != res.data.data.length) {
+    isDisabled.value = true;
   } else {
     query.value.page = query.value.page + 1;
   }
