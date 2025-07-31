@@ -98,7 +98,7 @@ const handleOpen = () => {
     box-sizing: border-box;
     margin: 20px;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--el-box-shadow-lighter);
 
     .title {
       font-size: 18px;
