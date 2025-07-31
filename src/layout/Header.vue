@@ -65,7 +65,7 @@
 import { useRouter, useRoute } from "vue-router";
 import { useUserInfoStore, useMenuStore, usePublicStore, useElConfigStore } from "@/store";
 import Contextmenu from "@/components/public/Contextmenu.vue";
-import Drawer from "@/components/layout/Drawer.vue";
+import Drawer from "./components/Drawer.vue";
 import Notice from "./components/Notice.vue";
 import Tags from "./components/Tags.vue";
 
