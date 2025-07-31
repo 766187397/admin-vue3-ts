@@ -1,21 +1,27 @@
 <template>
-  <el-dropdown>
-    <span class="el-dropdown-link">
-      <el-icon size="20"><Bell /></el-icon>
-    </span>
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item v-for="(item, index) in noticeList" :key="index" @click="clickItem(item)">
-          {{ item.title }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+  <el-icon size="20" @click="drawer = true"><Bell /></el-icon>
+
+  <el-drawer v-model="drawer" title="通知公告" size="500" @open="handleOpen">
+    <div
+      class="list"
+      v-infinite-scroll="getTableData"
+      :infinite-scroll-disabled="isDisabled"
+      :infinite-scroll-immediate="false"
+      v-loading="loading"
+    >
+      <div class="item" v-for="item in tableData" :key="item.id">
+        <div class="title">{{ item.title }}</div>
+        <div class="content" v-html="item.content"></div>
+        <div class="time">{{ item.createdAt }}</div>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { io } from "socket.io-client";
 import { useUserInfoStore } from "@/store";
+import { getNoticeByUserOrRoleAdmin } from "@/api/notice.ts";
 const userInfoStore = useUserInfoStore();
 const token = userInfoStore.token_type + userInfoStore.token;
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -44,10 +50,72 @@ socket.on("update", (data) => {
   socket.emit("message", { token });
 });
 
-const clickItem = (item: any) => {
-  console.log("点击通知:", item);
-  // 后续写了详情跳转到详情页面
+// 抽屉开关
+const drawer = ref(false);
+// 加载更多
+const isDisabled = ref(false);
+// 查询条件
+const query = ref({
+  page: 1,
+  pageSize: 10,
+});
+// 数据
+const tableData = ref([]);
+// 加载状态
+const loading = ref(false);
+
+/** 查询数据 */
+const getTableData = async (type: boolean = false) => {
+  loading.value = true;
+  let data = { ...query.value };
+  const res = await getNoticeByUserOrRoleAdmin(data);
+  tableData.value = res.data.data;
+  loading.value = false;
+  if (res.data.total != query.value.pageSize) {
+    isDisabled.value = res.data.total != query.value.pageSize;
+  } else {
+    query.value.page = query.value.page + 1;
+  }
+};
+
+// 打开抽屉时的处理函数
+const handleOpen = () => {
+  tableData.value = [];
+  query.value.page = 1;
+  isDisabled.value = false;
+  getTableData();
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  .item {
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .content {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .time {
+      width: fit-content;
+      margin-left: auto;
+      font-size: 12px;
+      color: #ccc;
+    }
+  }
+}
+</style>

@@ -132,7 +132,7 @@ const config = computed(() => elConfigStore.config);
       gap: 20px;
 
       .r_item {
-        cursor: pointer;
+        // cursor: pointer;
 
         :deep(.el-switch) {
           .el-icon {
