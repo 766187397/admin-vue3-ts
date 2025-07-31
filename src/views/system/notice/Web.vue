@@ -236,7 +236,11 @@ const handleRow = async (type: HandleRowType, id?: string) => {
     const fns = {
       getDetail: async function () {
         let res = await getNoticeDetail(id as string);
-        form.value = res.data;
+         form.value = {
+          ...res.data,
+          roleKeys:(res.data.roleKeys as string)?.split(','),
+          userIds:(res.data.userIds as string)?.split(',')
+        }
       },
       edit: async function () {
         dialogVisible.value = true;

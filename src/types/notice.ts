@@ -4,10 +4,10 @@ import type { Base, PageQueryParams, Static } from "./public";
 
 type Notice = Base & {
   /*角色权限 */
-  roleKeys?: string;
+  roleKeys?: string | string[];
 
   /*用户ids（逗号隔开） */
-  userIds?: string;
+  userIds?: string | string[];
 
   /*内容 */
   content?: string;
