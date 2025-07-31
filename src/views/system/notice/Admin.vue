@@ -39,6 +39,11 @@
       <el-table :data="tableData">
         <el-table-column prop="title" label="标题" align="center" />
         <el-table-column prop="content" label="内容" align="center" />
+        <el-table-column prop="status" label="状态" align="center" width="100">
+          <template v-slot="scope">
+            <span>{{ scope.row.status == 1 ? "暂存" : "发布" }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="specifyTime" label="预发布时间" align="center" width="200" />
         <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
@@ -113,8 +118,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="状态：">
-                <el-switch v-model="form.status" :active-value="1" :inactive-value="0" />
+              <el-form-item label="发布状态：">
+                <el-switch v-model="form.status" :active-value="2" :inactive-value="1" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -303,6 +308,7 @@ const submit = () => {
       });
       getTableData();
     } catch (error) {
+      console.log('error :>> ', error);
     } finally {
       buttonLoading.value = false;
     }

@@ -37,6 +37,15 @@ export type CreateNoticeParams = Partial<Notice> & {
 /** 更新公告 */
 export type UpdateNoticeParams = Partial<CreateNoticeParams>;
 
+/** 表单操作类型 */
+export type NoticeFormData = Partial<CreateNoticeParams> & {
+  /*角色权限 */
+  roleKeys?: string[];
+
+  /*用户ids（逗号隔开） */
+  userIds?: string[];
+};
+
 /** 列表查询参数 查询公告列表(分页,后端编辑使用查询所有) */
 export type GetNoticeParams = PageQueryParams & {
   /** 标签 */
@@ -55,9 +64,12 @@ export type NoticeDetail = Required<Notice> & Required<Static>;
 /** 通知详情 */
 export interface FindUserOrRole {
   id: string;
-  status: boolean;
-  content: string;
+  /** 1 - 暂存，2 - 发布 */
+  status: number;
   title: string;
+  content: string;
   createdAt: string;
   updatedAt: string;
+  /** 是否已读 */
+  readStatus: boolean;
 }
