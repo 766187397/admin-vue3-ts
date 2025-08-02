@@ -41,6 +41,8 @@ html.dark::view-transition-new(root) {
 #app {
   width: 100vw;
   height: 100vh;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 /* 禁止默认聚焦样式 */
@@ -92,6 +94,11 @@ html.dark::view-transition-new(root) {
           justify-content: flex-end;
         }
       }
+
+      .footer {
+        margin-top: 20px;
+      }
+
       .el-table--fit .el-table__inner-wrapper::before {
         display: none;
       }
