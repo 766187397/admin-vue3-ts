@@ -10,13 +10,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="时间范围：">
-              <el-date-picker
-                v-model="time"
-                type="datetimerange"
-                :default-time="defaultTime"
-                value-format="YYYY-MM-DD HH:mm:ss"
-                range-separator="至"
-                start-placeholder="开始日期"
+              <el-date-picker v-model="time" type="datetimerange" :default-time="defaultTime"
+                value-format="YYYY-MM-DD HH:mm:ss" range-separator="至" start-placeholder="开始日期"
                 end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
@@ -46,7 +41,7 @@
           <template v-slot="scope">
             <el-link type="primary" :href="scope.row.completePath" target="_blank">{{
               scope.row.completePath
-            }}</el-link>
+              }}</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
@@ -58,12 +53,8 @@
       </el-table>
     </div>
 
-    <Pagination
-      v-model:pageSize="query.pageSize"
-      v-model:page="query.page"
-      v-model:total="total"
-      @size-change="getTableData(true)"
-      @current-change="getTableData(false)" />
+    <Pagination v-model:pageSize="query.pageSize" v-model:page="query.page" v-model:total="total"
+      @size-change="getTableData(true)" @current-change="getTableData(false)" />
   </div>
 </template>
 
@@ -162,12 +153,18 @@
       text-overflow: ellipsis;
     }
   }
+
   .upload {
     position: relative;
+
     .upload_input {
       cursor: pointer;
       position: absolute;
       opacity: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
     }
   }
 </style>

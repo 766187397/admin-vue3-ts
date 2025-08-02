@@ -25,15 +25,9 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="时间范围：">
-              <el-date-picker
-                v-model="time"
-                type="datetimerange"
-                :default-time="defaultTime"
-                value-format="YYYY-MM-DD HH:mm:ss"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
+              <el-date-picker v-model="time" type="datetimerange" :default-time="defaultTime"
+                value-format="YYYY-MM-DD HH:mm:ss" range-separator="至" start-placeholder="开始日期"
+                end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -61,17 +55,8 @@
         </el-table-column>
         <el-table-column prop="avatar" label="头像" align="center">
           <template v-slot="scope">
-            <el-image
-              style="width: 100px; height: 100px"
-              :src="scope.row.avatar"
-              :zoom-rate="1.2"
-              :max-scale="7"
-              :min-scale="0.2"
-              :preview-src-list="[scope.row.avatar]"
-              show-progress
-              preview-teleported
-              fit="cover"
-            />
+            <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :zoom-rate="1.2" :max-scale="7"
+              :min-scale="0.2" :preview-src-list="[scope.row.avatar]" show-progress preview-teleported fit="cover" />
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="创建时间" align="center" />
@@ -84,13 +69,8 @@
       </el-table>
     </div>
 
-    <Pagination
-      v-model:pageSize="query.pageSize"
-      v-model:page="query.page"
-      v-model:total="total"
-      @size-change="getTableData(true)"
-      @current-change="getTableData(false)"
-    />
+    <Pagination v-model:pageSize="query.pageSize" v-model:page="query.page" v-model:total="total"
+      @size-change="getTableData(true)" @current-change="getTableData(false)" />
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -165,6 +145,7 @@ import { getUserInfo, updateUser, deleteUser, getUsersPageAdmin, createUserAdmin
 import { displayValue } from "@/hooks/dictionary";
 import type { HandleRowType } from "@/types/public";
 import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
+
 
 const now = new Date();
 const defaultTime: [Date, Date] = [

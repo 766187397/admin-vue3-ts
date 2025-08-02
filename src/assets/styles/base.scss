@@ -79,10 +79,12 @@ html.dark::view-transition-new(root) {
 
         .table_menu {
           width: 100%;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
+          height: 60px;
+          overflow: auto;
+
+          .el-row {
+            margin: 0 !important;
+          }
         }
       }
 
