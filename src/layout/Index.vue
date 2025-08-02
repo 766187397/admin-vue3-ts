@@ -81,6 +81,11 @@ watch(
     }
   }
 }
+
+.el-container.is-vertical {
+  height: 100vh;
+}
+
 :deep(.el-header) {
   height: auto;
 }

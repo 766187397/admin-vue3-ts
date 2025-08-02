@@ -56,17 +56,7 @@ html.dark::view-transition-new(root) {
   font-size: 14px;
 }
 
-/** 查询表单 */
-.query_form {
-  padding-bottom: 30px;
-
-  .el-form-item {
-    .el-form-item__label {
-      font-weight: 700;
-    }
-  }
-}
-
+// 主体内容
 .el-main {
   background-color: #f8f8f8;
 
@@ -85,6 +75,7 @@ html.dark::view-transition-new(root) {
       flex-direction: column;
       .table {
         flex: auto;
+        overflow: auto;
 
         .table_menu {
           width: 100%;
@@ -106,6 +97,18 @@ html.dark::view-transition-new(root) {
   }
 }
 
+/** 查询表单 */
+.query_form {
+  padding-bottom: 30px;
+
+  .el-form-item {
+    .el-form-item__label {
+      font-weight: 700;
+    }
+  }
+}
+
+// 分页
 .footer {
   .el-pagination {
     justify-content: flex-end;
