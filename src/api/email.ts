@@ -41,12 +41,12 @@ export const createEmailAdmin = async (data: CreateEmailParams): Promise<Result<
 export const getEmailPageAdmin = async (
   params: PageQueryEmailParams
 ): Promise<Result<PageApiResult<EmailDetail[]>>> => {
-  return await http.get(`/api/v1/admin/email/page/admin`, { params });
+  return await http.get(`/api/v1/admin/email/page/admin`, params);
 };
 
 /** 不分页查询 */
 export const getEmailAllAdmin = async (params: AllQueryEmailParams): Promise<Result<EmailDetail[]>> => {
-  return await http.get(`/api/v1/admin/email/all/admin`, { params });
+  return await http.get(`/api/v1/admin/email/all/admin`, params);
 };
 //#endregion
 
@@ -58,11 +58,11 @@ export const createEmailWeb = async (data: CreateEmailParams): Promise<Result<nu
 
 /** 分页查询 */
 export const getEmailPageWeb = async (params: PageQueryEmailParams): Promise<Result<PageApiResult<EmailDetail[]>>> => {
-  return await http.get(`/api/v1/admin/email/page/web`, { params });
+  return await http.get(`/api/v1/admin/email/page/web`, params);
 };
 
 /** 不分页查询 */
 export const getEmailAllWeb = async (params: AllQueryEmailParams): Promise<Result<EmailDetail[]>> => {
-  return await http.get(`/api/v1/admin/email/all/web`, { params });
+  return await http.get(`/api/v1/admin/email/all/web`, params);
 };
 //#endregion
