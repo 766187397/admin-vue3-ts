@@ -11,6 +11,6 @@ export const getDictionaryItemAll = async (
 };
 
 /** 发送邮箱 */
-export const sendEmail = async (label: string, email: string): Promise<Result<null>> => {
-  return await http.post("/api/v1/admin/email/send/email", { label, email });
+export const sendEmail = async (type: string, email: string): Promise<Result<null>> => {
+  return await http.post("/api/v1/admin/email/send/email", { type, email });
 };
