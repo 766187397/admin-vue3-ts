@@ -75,9 +75,23 @@ npm run build:dev
 
 
 
+
+
+## Docker部署
+
+> 使用了GitHub自动化上传到了Docker hub
+
+```
+docker pull 766187397/admin-vue3-ts:latest
+```
+
+
+
 ## 截图
 
 ![image-20250804174509229](example/image-20250804174509229.png)
+
+
 
 
 
