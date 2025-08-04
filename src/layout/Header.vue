@@ -3,8 +3,12 @@
     <div class="navbar">
       <div class="left">
         <div class="is_collapse" @click="handleCollapse">
-          <el-icon size="20" v-if="isCollapse"><Expand /></el-icon>
-          <el-icon size="20" v-else><Fold /></el-icon>
+          <el-icon size="20" v-if="isCollapse">
+            <Expand />
+          </el-icon>
+          <el-icon size="20" v-else>
+            <Fold />
+          </el-icon>
         </div>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -16,31 +20,27 @@
           <Notice />
         </div>
         <div class="r_item">
-          <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState"><FullScreen /></el-icon>
-          <el-icon size="20" @click="exitFullscreen" v-else><CopyDocument /></el-icon>
+          <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState">
+            <FullScreen />
+          </el-icon>
+          <el-icon size="20" @click="exitFullscreen" v-else>
+            <CopyDocument />
+          </el-icon>
         </div>
         <div class="r_item">
-          <el-switch
-            v-model="config.darkTheme"
-            style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
-            active-action-icon="Moon"
-            inactive-action-icon="Sunny"
-            @click="handleAnimation($event)"
-          />
+          <el-switch v-model="config.darkTheme" style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
+            active-action-icon="Moon" inactive-action-icon="Sunny" @click="handleAnimation($event)" />
         </div>
         <div class="r_item">
-          <el-icon size="20" @click="drawer = true"><Setting /></el-icon>
+          <el-icon size="20" @click="drawer = true">
+            <Setting />
+          </el-icon>
         </div>
         <div class="r_item">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar
-                v-if="userInfo.avatar"
-                shape="square"
-                size="default"
-                :src="userInfo.avatar"
-                :title="userInfo.nickName"
-              />
+              <el-avatar v-if="userInfo.avatar" shape="square" size="default" :src="userInfo.avatar"
+                :title="userInfo.nickName" />
               <span v-else>{{ userInfo.nickName }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -104,43 +104,48 @@ const config = computed(() => elConfigStore.config);
 </script>
 
 <style lang="scss" scoped>
-.header {
-  padding: 15px 0;
-  box-sizing: border-box;
+  .header {
+    padding: 15px 0;
+    box-sizing: border-box;
 
-  .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-
-      .is_collapse {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-    }
-
-    .right {
+    .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
 
-      .r_item {
-        // cursor: pointer;
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
 
-        :deep(.el-switch) {
+        .is_collapse {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+      }
+
+      .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
+        .r_item {
           .el-icon {
+            cursor: pointer;
             color: #000;
+          }
+
+          :deep(.el-switch) {
+            .el-icon {
+              cursor: pointer;
+              color: #000;
+            }
           }
         }
       }
     }
   }
-}
 </style>

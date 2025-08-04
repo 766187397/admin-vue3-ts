@@ -1,13 +1,20 @@
 <template>
   <el-icon size="20" @click="drawer = true">
+    <div class="dot" v-if="dot"></div>
     <Bell />
   </el-icon>
 
   <el-drawer v-model="drawer" title="通知公告" size="500" @open="handleOpen">
-    <div class="list" v-infinite-scroll="getTableData" :infinite-scroll-disabled="isDisabled"
-      :infinite-scroll-immediate="false" :infinite-scroll-delay="500" infinite-scroll-distance="20">
+    <div
+      class="list"
+      v-infinite-scroll="getTableData"
+      :infinite-scroll-disabled="isDisabled"
+      :infinite-scroll-immediate="false"
+      :infinite-scroll-delay="500"
+      infinite-scroll-distance="20"
+    >
       <div class="item" v-for="item in tableData" :key="item.id">
-        <i class="iconfont icon-biaoqian" :class="{ active: item.status }" @click="handleReadNotice(item)"></i>
+        <i class="iconfont icon-biaoqian" :class="{ active: item.readStatus }" @click="handleReadNotice(item)"></i>
         <div class="title">{{ item.title }}</div>
         <div class="content" v-html="item.content"></div>
         <div class="time">{{ item.createdAt }}</div>
@@ -27,7 +34,7 @@ import type { FindUserOrRole } from "@/types/notice";
 const userInfoStore = useUserInfoStore();
 const token = userInfoStore.token_type + userInfoStore.token;
 const baseUrl = import.meta.env.VITE_BASE_URL;
-
+const dot = ref(false);
 const noticeList = ref<FindUserOrRole[]>([]);
 // 连接指定命名空间
 const socket = io(`${baseUrl}/api/v1/admin/notice/ws`, {
@@ -43,13 +50,17 @@ socket.on("connect", () => {
 
 // 接收命名空间专属消息
 socket.on("list", (data) => {
-  console.log(" 收到通知:", data);
   noticeList.value = data.data as FindUserOrRole[];
+  if (noticeList.value.length > 0) {
+    dot.value = true;
+  } else {
+    dot.value = false;
+  }
   noticeList.value.forEach((item: FindUserOrRole, index) => {
     setTimeout(() => {
       ElNotification({
         title: item.title,
-        dangerouslyUseHTMLString:true,
+        dangerouslyUseHTMLString: true,
         message: item.content,
       });
     }, 1 * index);
@@ -99,75 +110,92 @@ const handleOpen = () => {
 
 // 标记已读
 const handleReadNotice = async (item: any) => {
-  let res = await signReadNotice(item.id);
-  item.status = true;
+  await signReadNotice(item.id);
+  item.readStatus = true;
+  socket.emit("message", { token });
 };
 </script>
 
 <style lang="scss" scoped>
-  @keyframes shrinkAndGrow {
-    0% {
-      transform: translate(10px, 0) scale(1);
-    }
+.el-icon {
+  cursor: pointer;
+  position: relative;
 
-    50% {
-      transform: translate(10px, 0) scale(0);
-    }
+  .dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    transform: translate(30%, -30%);
+    border-radius: 50%;
+    background-color: red;
+  }
+}
 
-    100% {
-      transform: translate(10px, 0) scale(1);
-    }
+@keyframes shrinkAndGrow {
+  0% {
+    transform: translate(10px, 0) scale(1);
   }
 
-  .list {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
+  50% {
+    transform: translate(10px, 0) scale(0);
+  }
 
-    .item {
-      position: relative;
-      padding: 10px;
-      box-sizing: border-box;
-      margin: 20px;
-      border-radius: 12px;
-      box-shadow: var(--el-box-shadow-lighter);
+  100% {
+    transform: translate(10px, 0) scale(1);
+  }
+}
 
-      .icon-biaoqian {
-        cursor: pointer;
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 24px;
-        color: red;
-        transform: translate(10px, 0);
+.list {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 
-        &.active {
-          color: var(--el-color-primary);
-          animation: shrinkAndGrow 0.5s ease-in-out forwards;
-        }
-      }
+  .item {
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: var(--el-box-shadow-lighter);
 
-      .title {
-        font-size: 18px;
-        font-weight: bold;
-      }
+    .icon-biaoqian {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 24px;
+      color: red;
+      transform: translate(10px, 0);
 
-      .content {
-        font-size: 14px;
-        font-weight: 400;
-      }
-
-      .time {
-        width: fit-content;
-        margin-left: auto;
-        font-size: 12px;
-        color: #ccc;
+      &.active {
+        color: var(--el-color-primary);
+        animation: shrinkAndGrow 0.5s ease-in-out forwards;
       }
     }
 
-    .text_center {
-      text-align: center;
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .content {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .time {
+      width: fit-content;
+      margin-left: auto;
+      font-size: 12px;
       color: #ccc;
     }
   }
+
+  .text_center {
+    text-align: center;
+    color: #ccc;
+  }
+}
 </style>
