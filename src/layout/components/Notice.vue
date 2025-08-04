@@ -1,15 +1,11 @@
 <template>
-  <el-icon size="20" @click="drawer = true"><Bell /></el-icon>
+  <el-icon size="20" @click="drawer = true">
+    <Bell />
+  </el-icon>
 
   <el-drawer v-model="drawer" title="通知公告" size="500" @open="handleOpen">
-    <div
-      class="list"
-      v-infinite-scroll="getTableData"
-      :infinite-scroll-disabled="isDisabled"
-      :infinite-scroll-immediate="false"
-      :infinite-scroll-delay="500"
-      infinite-scroll-distance="20"
-    >
+    <div class="list" v-infinite-scroll="getTableData" :infinite-scroll-disabled="isDisabled"
+      :infinite-scroll-immediate="false" :infinite-scroll-delay="500" infinite-scroll-distance="20">
       <div class="item" v-for="item in tableData" :key="item.id">
         <i class="iconfont icon-biaoqian" :class="{ active: item.status }" @click="handleReadNotice(item)"></i>
         <div class="title">{{ item.title }}</div>
@@ -53,6 +49,7 @@ socket.on("list", (data) => {
     setTimeout(() => {
       ElNotification({
         title: item.title,
+        dangerouslyUseHTMLString:true,
         message: item.content,
       });
     }, 1 * index);
@@ -108,67 +105,69 @@ const handleReadNotice = async (item: any) => {
 </script>
 
 <style lang="scss" scoped>
-@keyframes shrinkAndGrow {
-  0% {
-    transform: translate(10px, 0) scale(1);
+  @keyframes shrinkAndGrow {
+    0% {
+      transform: translate(10px, 0) scale(1);
+    }
+
+    50% {
+      transform: translate(10px, 0) scale(0);
+    }
+
+    100% {
+      transform: translate(10px, 0) scale(1);
+    }
   }
-  50% {
-    transform: translate(10px, 0) scale(0);
-  }
-  100% {
-    transform: translate(10px, 0) scale(1);
-  }
-}
 
-.list {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
+  .list {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 
-  .item {
-    position: relative;
-    padding: 10px;
-    box-sizing: border-box;
-    margin: 20px;
-    border-radius: 12px;
-    box-shadow: var(--el-box-shadow-lighter);
+    .item {
+      position: relative;
+      padding: 10px;
+      box-sizing: border-box;
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: var(--el-box-shadow-lighter);
 
-    .icon-biaoqian {
-      cursor: pointer;
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-size: 24px;
-      color: red;
-      transform: translate(10px, 0);
+      .icon-biaoqian {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 24px;
+        color: red;
+        transform: translate(10px, 0);
 
-      &.active {
-        color: var(--el-color-primary);
-        animation: shrinkAndGrow 0.5s ease-in-out forwards;
+        &.active {
+          color: var(--el-color-primary);
+          animation: shrinkAndGrow 0.5s ease-in-out forwards;
+        }
+      }
+
+      .title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .content {
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      .time {
+        width: fit-content;
+        margin-left: auto;
+        font-size: 12px;
+        color: #ccc;
       }
     }
 
-    .title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .content {
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .time {
-      width: fit-content;
-      margin-left: auto;
-      font-size: 12px;
+    .text_center {
+      text-align: center;
       color: #ccc;
     }
   }
-
-  .text_center {
-    text-align: center;
-    color: #ccc;
-  }
-}
 </style>

@@ -22,15 +22,15 @@ const routes: RouteRecordRaw[] = [
     },
     redirect: "/home",
     children: [
-      {
-        name: "test",
-        path: "/test",
-        component: () => import("@/views/Test.vue"),
-        meta: {
-          type: "menu",
-          title: "测试",
-        },
-      },
+      // {
+      //   name: "test",
+      //   path: "/test",
+      //   component: () => import("@/views/Test.vue"),
+      //   meta: {
+      //     type: "menu",
+      //     title: "测试",
+      //   },
+      // },
     ],
   },
   {
