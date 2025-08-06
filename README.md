@@ -87,6 +87,14 @@ docker pull 766187397/admin-vue3-ts:latest
 
 
 
+## 后端项目
+
+gitee：https://gitee.com/sk20020228/nest-serve
+
+GitHub：https://github.com/766187397/nest-serve
+
+
+
 ## 截图
 
 ![image-20250804174509229](example/image-20250804174509229.png)
