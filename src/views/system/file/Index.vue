@@ -10,9 +10,15 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="时间范围：">
-              <el-date-picker v-model="time" type="datetimerange" :default-time="defaultTime"
-                value-format="YYYY-MM-DD HH:mm:ss" range-separator="至" start-placeholder="开始日期"
-                end-placeholder="结束日期" />
+              <el-date-picker
+                v-model="time"
+                type="datetimerange"
+                :default-time="defaultTime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -25,12 +31,13 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1.5">
+          <Upload @uploadSuccess="getTableData(true)" />
+          <!-- <el-col :span="1.5">
             <el-button class="upload" type="primary" plain>
               添加
               <input class="upload_input" type="file" name="file" @change="handleFileChange" />
             </el-button>
-          </el-col>
+          </el-col> -->
         </el-row>
       </div>
       <el-table :data="tableData">
@@ -41,7 +48,7 @@
           <template v-slot="scope">
             <el-link type="primary" :href="scope.row.completePath" target="_blank">{{
               scope.row.completePath
-              }}</el-link>
+            }}</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
@@ -53,118 +60,132 @@
       </el-table>
     </div>
 
-    <Pagination v-model:pageSize="query.pageSize" v-model:page="query.page" v-model:total="total"
-      @size-change="getTableData(true)" @current-change="getTableData(false)" />
+    <Pagination
+      v-model:pageSize="query.pageSize"
+      v-model:page="query.page"
+      v-model:total="total"
+      @size-change="getTableData(true)"
+      @current-change="getTableData(false)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-  import Pagination from "@/components/el/Pagination.vue";
-  import type { FileDetail, FilePageParams } from "@/types/file";
-  import { uploadFile, deleteFile, uploadPage } from "@/api/file";
-  import { ElMessage } from "element-plus";
+import Pagination from "@/components/el/Pagination.vue";
+import Upload from "./components/Upload.vue";
+import type { FileDetail, FilePageParams } from "@/types/file";
+import { uploadFile, deleteFile, uploadPage } from "@/api/file";
+import { ElMessage } from "element-plus";
+import { useLargeFilesStore } from "@/store";
 
-  const now = new Date();
-  const defaultTime: [Date, Date] = [
-    new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-    new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
-  ];
+const largeFilesStore = useLargeFilesStore();
 
-  // 加载中动画
-  const loading = ref(false);
-  // 默认查询条件
-  const defaultQuery = {
-    page: 1,
-    pageSize: 10,
-    fileName: "",
-    time: "",
-  };
-  // 时间
-  const time = ref<[Date, Date]>();
-  // 总条数
-  const total = ref(0);
-  // 查询条件
-  const query = ref<FilePageParams>({
-    ...defaultQuery,
-  });
-  /** 重置 */
-  const handleReset = () => {
-    query.value = { ...defaultQuery };
-    time.value = undefined;
-  };
+const now = new Date();
+const defaultTime: [Date, Date] = [
+  new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+  new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59),
+];
 
-  /** 数据 */
-  const tableData = ref<FileDetail[]>();
+// 加载中动画
+const loading = ref(false);
+// 默认查询条件
+const defaultQuery = {
+  page: 1,
+  pageSize: 10,
+  fileName: "",
+  time: "",
+};
+// 时间
+const time = ref<[Date, Date]>();
+// 总条数
+const total = ref(0);
+// 查询条件
+const query = ref<FilePageParams>({
+  ...defaultQuery,
+});
+/** 重置 */
+const handleReset = () => {
+  query.value = { ...defaultQuery };
+  time.value = undefined;
+};
 
-  /** 查询数据 */
-  const getTableData = async (type: boolean = false) => {
-    if (type) {
-      query.value.page = 1;
-    }
-    loading.value = true;
-    let data = { ...query.value };
-    if (time.value && time.value.length > 0) {
-      data.time = time.value.join(",");
-    }
-    const res = await uploadPage(data);
-    total.value = res.data.total;
-    tableData.value = res.data.data;
-    loading.value = false;
-  };
-  getTableData();
+/** 数据 */
+const tableData = ref<FileDetail[]>();
 
-  /** 文件上传 */
-  const handleFileChange = async (event: Event) => {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-    if (!file) {
-      ElMessage.success("请选择文件");
-      return;
-    }
-    const data = new FormData();
-    data.append("file", file);
-    let res = await uploadFile(data);
+/** 查询数据 */
+const getTableData = async (type: boolean = false) => {
+  if (type) {
+    query.value.page = 1;
+  }
+  loading.value = true;
+  let data = { ...query.value };
+  if (time.value && time.value.length > 0) {
+    data.time = time.value.join(",");
+  }
+  const res = await uploadPage(data);
+  total.value = res.data.total;
+  tableData.value = res.data.data;
+  loading.value = false;
+};
+getTableData();
+
+/** 文件上传 */
+const handleFileChange = async (event: Event) => {
+  const file = (event.target as HTMLInputElement)?.files?.[0];
+  if (!file) {
+    ElMessage.success("请选择文件");
+    return;
+  }
+  const size = (file?.size || 0) / 1024 / 1024;
+  const data = new FormData();
+  data.append("file", file);
+  if (size >= 20) {
+    await largeFilesStore.upload(file);
+  } else {
+    const res = await uploadFile(data);
     ElMessage.success(res.message);
-    getTableData();
-  };
+  }
+  getTableData();
+};
 
-  /** 删除 */
-  const handleDlete = async (id: string) => {
-    ElMessageBox.confirm("你确定要删除吗？", "删除文件", {
-      type: "error",
-    }).then(async () => {
-      let res = await deleteFile(id as string);
-      getTableData();
-      ElMessage.success({
-        message: res?.message || "操作成功",
-      });
+/** 删除 */
+const handleDlete = async (id: string) => {
+  ElMessageBox.confirm("你确定要删除吗？", "删除文件", {
+    type: "error",
+  }).then(async () => {
+    let res = await deleteFile(id as string);
+    getTableData();
+    ElMessage.success({
+      message: res?.message || "操作成功",
     });
-  };
+  });
+};
 </script>
 
 <style lang="scss" scoped>
-  .el-link {
+.el-link {
+  width: 100%;
+
+  :deep(.el-link__inner) {
+    display: block;
     width: 100%;
-
-    :deep(.el-link__inner) {
-      display: block;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+}
 
-  .upload {
-    position: relative;
+.upload {
+  position: relative;
 
-    .upload_input {
-      cursor: pointer;
-      position: absolute;
-      opacity: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
+  .upload_input {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
+}
 </style>

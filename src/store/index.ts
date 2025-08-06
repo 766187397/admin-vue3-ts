@@ -16,3 +16,4 @@ export * from "./modules/test";
 export * from "./modules/usetInfo";
 export * from "./modules/menu";
 export * from "./modules/public";
+export * from "./modules/largeFiles";

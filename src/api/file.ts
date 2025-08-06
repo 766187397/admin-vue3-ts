@@ -26,3 +26,8 @@ export const getFileDetail = async (id: string): Promise<Result<FileDetail>> => 
 export const deleteFile = async (id: string): Promise<Result<null>> => {
   return await http.delete(`/api/v1/upload/${id}`);
 };
+
+/** 大文件取消上传删除临时文件 */
+export const deleteTempFile = async (id: string): Promise<Result<null>> => {
+  return await http.delete(`/api/v1/large/tempFile/${id}`);
+};
