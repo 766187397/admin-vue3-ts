@@ -64,12 +64,10 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
 import { useUserInfoStore, useMenuStore, usePublicStore, useElConfigStore } from "@/store";
-import Contextmenu from "@/components/public/Contextmenu.vue";
 import Drawer from "./components/Drawer.vue";
 import Notice from "./components/Notice.vue";
 import Tags from "./components/Tags.vue";
 
-const router = useRouter();
 const rouet = useRoute();
 const publicStore = usePublicStore();
 const menuStore = useMenuStore();
@@ -135,13 +133,11 @@ const config = computed(() => elConfigStore.config);
         .r_item {
           .el-icon {
             cursor: pointer;
-            color: #000;
           }
 
           :deep(.el-switch) {
             .el-icon {
               cursor: pointer;
-              color: #000;
             }
           }
         }

@@ -45,6 +45,7 @@ export const useElConfigStore = defineStore(
     /** 恢复默认值 */
     const restoreDefault = () => {
       config.value = defaultConfig;
+      changeThemeColor(defaultConfig.themeColor);
     };
 
     /** hex颜色转rgb颜色 */
