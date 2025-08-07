@@ -28,7 +28,7 @@
     // setTimeout 宏任务，下一个事件循环
     setTimeout(()=>{
       useCountElTableHeight();
-    },0)
+    },16)
   })
 
   onMounted(() => {
