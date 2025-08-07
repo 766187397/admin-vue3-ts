@@ -1,16 +1,16 @@
 <template>
   <div class="main">
     <el-config-provider :size="config.size">
-      <RouterView v-slot="{ Component }">
-        <Suspense>
-          <template #default>
-            <component :is="Component" />
-          </template>
+      <RouterView v-slot="{ Component,route }">
+        <Suspense :key="route.fullPath">
+          <component :is="Component" />
           <template #fallback>
-            <Loading />
+            <!-- <Loading /> -->
+            <el-skeleton :rows="10" animated />
           </template>
         </Suspense>
       </RouterView>
+
     </el-config-provider>
   </div>
 </template>

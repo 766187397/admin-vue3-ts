@@ -1,6 +1,6 @@
 import { getRoutesByRole } from "@/api/menu";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, type AsyncComponentLoader } from "vue";
 import type { GetRoutesByRoleParams, RoleRoutes } from "@/types/menu";
 import router from "@/router";
 import { deepClone } from "@/utils/tool";
@@ -105,18 +105,27 @@ export const useMenuStore = defineStore("menu", () => {
   };
 
   // 添加路由
-  const modules = import.meta.glob("@/views/**/*.vue");
+  const modules = import.meta.glob("@/views/**/*.vue") as Record<string, AsyncComponentLoader>;
   const addRouters = (data: RoleRoutes[], fatherName: string = "layout") => {
     data.forEach((item) => {
       const componentPath = `/src/views/${item.component}.vue`;
-      router.addRoute(fatherName, {
+      const routerConfig: RouteRecordRaw = {
         path: item.path,
         name: item.name,
-        component: modules[componentPath],
         meta: item.meta,
         redirect: item.redirect || undefined,
         children: (item.children || []) as RouteRecordRaw[],
-      });
+      };
+      if (item.component) {
+        routerConfig.component = defineAsyncComponent({
+          loader: async () => await modules[componentPath](),
+          // 可选项：设置延迟显示 fallback（默认200ms）
+          delay: 200,
+          // 可选项：加载失败重试等
+          timeout: 30000,
+        });
+      }
+      router.addRoute(fatherName, routerConfig);
       if (item.children && item.children.length > 0) {
         addRouters(item.children, item.name);
       }
