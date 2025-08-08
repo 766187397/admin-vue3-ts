@@ -13,7 +13,7 @@
 
 :root.dark {
   /* 暗主题 */
-  --bg-color: #000;
+  --bg-color: #141414;
 }
 
 ::view-transition-old(root),
@@ -63,7 +63,6 @@ html.dark::view-transition-new(root) {
   .main {
     height: 100%;
     border-radius: 10px;
-    overflow: hidden;
 
     .page {
       width: 100%;
@@ -120,9 +119,9 @@ html.dark::view-transition-new(root) {
 // 暗主题样式
 .dark {
   .el-main {
-    background-color: #000;
+    background-color: #141414;
     .main {
-      background-color: #000;
+      background-color: #141414;
     }
   }
 }

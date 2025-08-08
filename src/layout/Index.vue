@@ -68,7 +68,7 @@ watch(
     gap: 10px;
     padding: 10px;
     box-sizing: border-box;
-    color: #000;
+    color: var(--font-color);
     text-decoration: none;
     transition: all 0.3s;
 
@@ -78,6 +78,7 @@ watch(
     }
     .title {
       font-size: 16px;
+      color: var(--font-color);
     }
   }
 }

@@ -27,7 +27,7 @@ const { info } = defineProps<{
 
 <style lang="scss" scoped>
 .card {
-  background: #fff;
+  background: var(--bg-color);
   border-radius: 12px;
   padding: 20px;
   display: flex;
