@@ -44,8 +44,8 @@ const rememberMe = ref(false);
 
 // 登录表单数据
 const loginForm = reactive<LoginForm>({
-  account: "",
-  password: "",
+  account: "admin",
+  password: "123456",
 });
 
 // 表单验证规则

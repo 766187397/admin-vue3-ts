@@ -1,7 +1,6 @@
 <template>
   <el-icon size="20" @click="drawer = true">
-    <div class="dot" v-if="dot"></div>
-    <Bell />
+    <el-badge :is-dot="dot" class="item"><Bell /></el-badge>
   </el-icon>
 
   <el-drawer v-model="drawer" title="通知公告" size="500" @open="handleOpen">
