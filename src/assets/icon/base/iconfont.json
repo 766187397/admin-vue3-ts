@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1340337",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "7584380",
+      "name": "使用频次",
+      "font_class": "shiyongpinci",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "12110987",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "20253302",
+      "name": "数量",
+      "font_class": "shuliang",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
       "icon_id": "908579",
       "name": "标签",
       "font_class": "biaoqian",

@@ -151,7 +151,7 @@ onBeforeRouteUpdate((to, from) => {
 
 <style lang="scss" scoped>
 .tags {
-  margin-top: 20px;
+  padding-top: 10px;
   .tags_list {
     display: flex;
     align-items: center;

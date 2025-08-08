@@ -17,7 +17,18 @@
       </div>
       <div class="right">
         <div class="r_item">
-          <Notice />
+          <el-icon size="20" @click="drawer = true">
+            <Setting />
+          </el-icon>
+        </div>
+        <div class="r_item">
+          <el-switch
+            v-model="config.darkTheme"
+            style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
+            active-action-icon="Moon"
+            inactive-action-icon="Sunny"
+            @click="handleAnimation($event)"
+          />
         </div>
         <div class="r_item">
           <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState">
@@ -28,19 +39,18 @@
           </el-icon>
         </div>
         <div class="r_item">
-          <el-switch v-model="config.darkTheme" style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
-            active-action-icon="Moon" inactive-action-icon="Sunny" @click="handleAnimation($event)" />
-        </div>
-        <div class="r_item">
-          <el-icon size="20" @click="drawer = true">
-            <Setting />
-          </el-icon>
+          <Notice />
         </div>
         <div class="r_item">
           <el-dropdown>
             <span class="el-dropdown-link">
-              <el-avatar v-if="userInfo.avatar" shape="square" size="default" :src="userInfo.avatar"
-                :title="userInfo.nickName" />
+              <el-avatar
+                v-if="userInfo.avatar"
+                shape="square"
+                size="default"
+                :src="userInfo.avatar"
+                :title="userInfo.nickName"
+              />
               <span v-else>{{ userInfo.nickName }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -55,7 +65,6 @@
         </div>
       </div>
     </div>
-
     <Tags />
     <Drawer v-model:drawer="drawer" />
   </div>
@@ -102,46 +111,46 @@ const config = computed(() => elConfigStore.config);
 </script>
 
 <style lang="scss" scoped>
-  .header {
-    padding: 15px 0;
-    box-sizing: border-box;
+.header {
+  padding: 15px 0;
+  box-sizing: border-box;
 
-    .navbar {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      .is_collapse {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+
+    .right {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
 
-      .left {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-
-        .is_collapse {
-          display: flex;
-          align-items: center;
-          justify-content: center;
+      .r_item {
+        .el-icon {
           cursor: pointer;
         }
-      }
 
-      .right {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-
-        .r_item {
+        :deep(.el-switch) {
           .el-icon {
             cursor: pointer;
-          }
-
-          :deep(.el-switch) {
-            .el-icon {
-              cursor: pointer;
-            }
           }
         }
       }
     }
   }
+}
 </style>
