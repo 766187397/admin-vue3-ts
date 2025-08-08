@@ -46,6 +46,9 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
+          <el-col :span="2">
+            <el-button type="primary" plain @click="handleExport">导出为 Excel</el-button>
+          </el-col>
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
@@ -161,10 +164,11 @@ import PictureUpload from "@/components/el/PictureUpload.vue";
 import Pagination from "@/components/el/Pagination.vue";
 import { ElMessage, type FormInstance } from "element-plus";
 import { getDictionaryItemAll } from "@/api/public";
-import { getUserInfo, updateUser, deleteUser, getUsersPageWeb, createUserWeb } from "@/api/user";
+import { getUserInfo, updateUser, deleteUser, getUsersPageWeb, createUserWeb, getUsersExcelWeb } from "@/api/user";
 import { displayValue } from "@/hooks/dictionary";
 import type { HandleRowType } from "@/types/public";
 import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
+import { downloadByAxiosBlob } from "@/utils/tool";
 
 const now = new Date();
 const defaultTime: [Date, Date] = [
@@ -309,6 +313,12 @@ const handleRow = async (type: HandleRowType, id?: string) => {
   } finally {
     loading.value = false;
   }
+};
+
+/** 导出为Excel */
+const handleExport = async () => {
+  let res = await getUsersExcelWeb(query.value as UsersQueryParams);
+  downloadByAxiosBlob(res);
 };
 
 /** 提交 */

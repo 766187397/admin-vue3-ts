@@ -25,9 +25,15 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="时间范围：">
-              <el-date-picker v-model="time" type="datetimerange" :default-time="defaultTime"
-                value-format="YYYY-MM-DD HH:mm:ss" range-separator="至" start-placeholder="开始日期"
-                end-placeholder="结束日期" />
+              <el-date-picker
+                v-model="time"
+                type="datetimerange"
+                :default-time="defaultTime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -40,6 +46,9 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
+          <el-col :span="2">
+            <el-button type="primary" plain @click="handleExport">导出为 Excel</el-button>
+          </el-col>
           <el-col :span="1.5">
             <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
           </el-col>
@@ -55,8 +64,17 @@
         </el-table-column>
         <el-table-column prop="avatar" label="头像" align="center">
           <template v-slot="scope">
-            <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :zoom-rate="1.2" :max-scale="7"
-              :min-scale="0.2" :preview-src-list="[scope.row.avatar]" show-progress preview-teleported fit="cover" />
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.avatar"
+              :zoom-rate="1.2"
+              :max-scale="7"
+              :min-scale="0.2"
+              :preview-src-list="[scope.row.avatar]"
+              show-progress
+              preview-teleported
+              fit="cover"
+            />
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="创建时间" align="center" />
@@ -69,8 +87,13 @@
       </el-table>
     </div>
 
-    <Pagination v-model:pageSize="query.pageSize" v-model:page="query.page" v-model:total="total"
-      @size-change="getTableData(true)" @current-change="getTableData(false)" />
+    <Pagination
+      v-model:pageSize="query.pageSize"
+      v-model:page="query.page"
+      v-model:total="total"
+      @size-change="getTableData(true)"
+      @current-change="getTableData(false)"
+    />
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -141,11 +164,18 @@ import PictureUpload from "@/components/el/PictureUpload.vue";
 import Pagination from "@/components/el/Pagination.vue";
 import { ElMessage, type FormInstance } from "element-plus";
 import { getDictionaryItemAll } from "@/api/public";
-import { getUserInfo, updateUser, deleteUser, getUsersPageAdmin, createUserAdmin } from "@/api/user";
+import {
+  getUserInfo,
+  updateUser,
+  deleteUser,
+  getUsersPageAdmin,
+  createUserAdmin,
+  getUsersExcelAdmin,
+} from "@/api/user";
 import { displayValue } from "@/hooks/dictionary";
 import type { HandleRowType } from "@/types/public";
 import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
-
+import { downloadByAxiosBlob } from "@/utils/tool";
 
 const now = new Date();
 const defaultTime: [Date, Date] = [
@@ -290,6 +320,12 @@ const handleRow = async (type: HandleRowType, id?: string) => {
   } finally {
     loading.value = false;
   }
+};
+
+/** 导出为Excel */
+const handleExport = async () => {
+  let res = await getUsersExcelAdmin(query.value as UsersQueryParams);
+  downloadByAxiosBlob(res);
 };
 
 /** 提交 */

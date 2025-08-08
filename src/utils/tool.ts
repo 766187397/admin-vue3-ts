@@ -1,3 +1,4 @@
+import type { AxiosResponse } from "axios";
 import { ElMessage } from "element-plus";
 
 /**
@@ -149,3 +150,28 @@ export const copyTextToClipboard = async (text: string): Promise<boolean> => {
     return false;
   }
 };
+
+/**
+ * 通过 axios 下载blob流，并且可以自定义文件名
+ * @param {Response} res axios返回的数据
+ * @param {string} filename 文件名称
+ */
+export function downloadByAxiosBlob(res: AxiosResponse, filename?: string) {
+  //  从 Content-Disposition 中解析文件名
+  const disposition = res.headers["content-disposition"];
+  if (disposition && !filename) {
+    const match = disposition.match(/filename="(.+)"/);
+    const encodedFilename = match ? match[1] : null;
+    filename = decodeURIComponent(encodedFilename);
+  }
+
+  // 触发下载
+  const blobUrl = URL.createObjectURL(res.data);
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  if (filename) {
+    a.download = filename;
+  }
+  a.click();
+  URL.revokeObjectURL(blobUrl);
+}

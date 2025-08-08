@@ -14,6 +14,8 @@ type HttpConfig = AxiosRequestConfig & {
     refresh_token?: string;
     /** 是否跳过全局错误处理 */
     skipErrorHandler?: boolean;
+    /** 响应不过滤 */
+    noResFilter?: boolean;
   };
 };
 
@@ -67,6 +69,9 @@ export class Http {
   private responseInterceptors() {
     this.instance.interceptors.response.use(
       (response) => {
+        if (response.config.headers.noResFilter) {
+          return response;
+        }
         return response.data;
       },
       async (error) => {
@@ -170,7 +175,6 @@ export class Http {
   public post<T>(url: string, data?: any, config?: HttpConfig): Promise<T> {
     return this.instance.post(url, data, config);
   }
-
   public delete<T>(url: string, config?: HttpConfig): Promise<T> {
     return this.instance.delete(url, config);
   }

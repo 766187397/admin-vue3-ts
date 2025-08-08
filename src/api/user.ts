@@ -43,6 +43,16 @@ export const getUsersAdmin = (data?: UsersQuery): Promise<Result<UserResponseDat
 export const getUsersPageAdmin = (data?: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
   return http.get("/api/v1/admin/users/page/admin", data);
 };
+
+/** 导出为excel */
+export const getUsersExcelAdmin = (data?: UsersQueryParams): Promise<any> => {
+  return http.get("/api/v1/admin/users/export/admin", data, {
+    responseType: "blob",
+    headers: {
+      noResFilter: true,
+    },
+  });
+};
 //#endregion
 
 //#region web接口
@@ -59,5 +69,15 @@ export const getUsersWeb = (data?: UsersQuery): Promise<Result<UserResponseData[
 /** 分页查询用户 */
 export const getUsersPageWeb = (data?: UsersQueryParams): Promise<Result<PageApiResult<UserResponseData[]>>> => {
   return http.get("/api/v1/admin/users/page/web", data);
+};
+
+/** 导出为excel */
+export const getUsersExcelWeb = (data?: UsersQueryParams): Promise<any> => {
+  return http.get("/api/v1/admin/users/export/web", data, {
+    responseType: "blob",
+    headers: {
+      noResFilter: true,
+    },
+  });
 };
 //#endregion
