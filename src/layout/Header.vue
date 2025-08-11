@@ -17,6 +17,29 @@
       </div>
       <div class="right">
         <div class="r_item">
+          <el-dropdown>
+            <el-icon size="20">
+              <i class="iconfont icon-github"></i>
+            </el-icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <el-link href="https://github.com/766187397/nest-serve" target="_blank">后端：Github</el-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-link href="https://gitee.com/sk20020228/nest-serve" target="_blank">后端：Gitee</el-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-link href="https://github.com/766187397/admin-vue3-ts" target="_blank">前端：Github</el-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-link href="https://gitee.com/sk20020228/admin-vue3-ts" target="_blank">前端：Gitee</el-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <div class="r_item">
           <el-icon size="20" @click="drawer = true">
             <Setting />
           </el-icon>
@@ -140,8 +163,19 @@ const config = computed(() => elConfigStore.config);
       gap: 20px;
 
       .r_item {
+        display: flex;
+        align-items: center;
+        height: 42px;
+        .iconfont {
+          cursor: pointer;
+          font-size: 24px;
+        }
         .el-icon {
           cursor: pointer;
+        }
+        .el-dropdown-link {
+          display: flex;
+          align-items: center;
         }
 
         :deep(.el-switch) {
