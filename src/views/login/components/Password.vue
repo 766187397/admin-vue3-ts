@@ -14,6 +14,12 @@
         @keyup.enter="handleLogin"
       />
     </el-form-item>
+    <el-form-item prop="code">
+      <div class="row">
+        <el-input class="custom-input" />
+        <img :src="codeUrl" alt="验证码" />
+      </div>
+    </el-form-item>
     <div class="form-options">
       <el-checkbox v-model="rememberMe">记住我</el-checkbox>
       <a href="#" class="forgot-password">忘记密码?</a>
@@ -33,6 +39,7 @@ import { useRouter, useRoute } from "vue-router";
 import { login } from "@/api/login";
 import type { LoginForm } from "@/types/login";
 import { useUserInfoStore } from "@/store";
+import { getCode } from '@/api/public';
 
 const userInfoStore = useUserInfoStore();
 
@@ -42,10 +49,14 @@ const loading = ref(false);
 const loginFormRef = ref<FormInstance>();
 const rememberMe = ref(false);
 
+const codeUrl = ref("");
+
 // 登录表单数据
 const loginForm = reactive<LoginForm>({
   account: "admin",
   password: "123456",
+  code: "",
+  codeKey:""
 });
 
 // 表单验证规则
@@ -69,10 +80,7 @@ const handleLogin = async () => {
     try {
       loading.value = true;
 
-      const loginData: LoginForm = {
-        account: loginForm.account,
-        password: loginForm.password,
-      };
+      const loginData: LoginForm = loginForm
       const response = await login(loginData);
 
       // 登录成功
@@ -121,12 +129,25 @@ const getRememberMeStatus = () => {
   }
 };
 getRememberMeStatus();
+
+// 获取验证码
+const handleeGetCode = async () => {
+  const res = await getCode()
+  console.log('获取验证码 :>> ', res);
+  loginForm.codeKey = res.data.codeKey
+  codeUrl.value = res.data.url
+}
+handleeGetCode()
 </script>
 
 <style lang="scss" scoped>
 // 登录表单
 .login-form {
   margin-top: 30px;
+
+  .row {
+    display: flex;
+  }
 
   // 表单元素样式
   .custom-input {

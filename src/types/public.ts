@@ -32,3 +32,11 @@ export interface PageQueryParams extends QueryParams {
 
 /** 自定义弹窗类型 */
 export type HandleRowType = "edit" | "add" | "detail" | "delete";
+
+/** 验证码 */
+export interface Captcha {
+  /** 验证码 */
+  codeKey: string;
+  /** 验证码图片 */
+  url: string;
+}

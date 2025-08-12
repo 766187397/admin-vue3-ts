@@ -4,6 +4,8 @@ import type { RoleDetail } from "./role";
 export interface LoginForm {
   account: string;
   password: string;
+  code: string;
+  codeKey: string;
 }
 
 /** 登录表单数据接口 */

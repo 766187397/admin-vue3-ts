@@ -1,6 +1,7 @@
 /** 公共模块 */
 import type { Result } from "@/types/api";
 import type { GetDictionaryItemAllParams, GetDictionaryItemAllResult } from "@/types/dictionary";
+import type { Captcha } from "@/types/public";
 import { http } from "@/utils/http";
 
 /** 查询字典项 */
@@ -13,4 +14,9 @@ export const getDictionaryItemAll = async (
 /** 发送邮箱 */
 export const sendEmail = async (type: string, email: string): Promise<Result<null>> => {
   return await http.post("/api/v1/admin/email/send/email", { type, email });
+};
+
+/** 获取验证码 */
+export const getCode = async (): Promise<Result<Captcha>> => {
+  return await http.get("/api/v1/admin/users/captcha");
 };
