@@ -40,3 +40,11 @@ export interface Captcha {
   /** 验证码图片 */
   url: string;
 }
+
+/** 邮箱 */
+export interface Email extends Captcha {
+  /** 邮箱 */
+  email: string;
+  /** 验证码 */
+  code: string;
+}

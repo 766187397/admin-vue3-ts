@@ -1,23 +1,23 @@
 <template>
   <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="0" class="login-form">
     <el-form-item prop="account">
-      <el-input v-model="loginForm.account" placeholder="请输入账号" :prefix-icon="User" class="custom-input" />
+      <el-input class="custom-input" v-model="loginForm.account" placeholder="请输入账号" :prefix-icon="User" />
     </el-form-item>
     <el-form-item prop="password">
       <el-input
+        class="custom-input"
         v-model="loginForm.password"
         type="password"
         placeholder="请输入密码"
         :prefix-icon="Lock"
         show-password
-        class="custom-input"
         @keyup.enter="handleLogin"
       />
     </el-form-item>
     <el-form-item prop="code">
       <div class="row">
-        <el-input class="custom-input" />
-        <img :src="codeUrl" alt="验证码" />
+        <el-input class="custom-input" v-model="loginForm.code" :prefix-icon="ChatSquare" @keyup.enter="handleLogin" />
+        <img :src="codeUrl" alt="验证码" @click="handleeGetCode" />
       </div>
     </el-form-item>
     <div class="form-options">
@@ -34,12 +34,12 @@
 
 <script setup lang="ts">
 import { ElNotification, type FormInstance } from "element-plus";
-import { User, Lock } from "@element-plus/icons-vue";
+import { User, Lock, ChatSquare } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from "vue-router";
 import { login } from "@/api/login";
 import type { LoginForm } from "@/types/login";
 import { useUserInfoStore } from "@/store";
-import { getCode } from '@/api/public';
+import { getCode } from "@/api/public";
 
 const userInfoStore = useUserInfoStore();
 
@@ -56,7 +56,7 @@ const loginForm = reactive<LoginForm>({
   account: "admin",
   password: "123456",
   code: "",
-  codeKey:""
+  codeKey: "",
 });
 
 // 表单验证规则
@@ -80,7 +80,7 @@ const handleLogin = async () => {
     try {
       loading.value = true;
 
-      const loginData: LoginForm = loginForm
+      const loginData: LoginForm = loginForm;
       const response = await login(loginData);
 
       // 登录成功
@@ -101,7 +101,7 @@ const handleLogin = async () => {
 
       ElNotification({
         title: "登录成功",
-        message: "欢迎回来，" +  userInfo.nickName,
+        message: "欢迎回来，" + userInfo.nickName,
         type: "success",
       });
 
@@ -109,6 +109,7 @@ const handleLogin = async () => {
       const redirectPath = (route.query.redirect as string) || "/";
       router.push(redirectPath);
     } catch (error: any) {
+      handleeGetCode();
     } finally {
       loading.value = false;
     }
@@ -132,12 +133,11 @@ getRememberMeStatus();
 
 // 获取验证码
 const handleeGetCode = async () => {
-  const res = await getCode()
-  console.log('获取验证码 :>> ', res);
-  loginForm.codeKey = res.data.codeKey
-  codeUrl.value = res.data.url
-}
-handleeGetCode()
+  const res = await getCode();
+  loginForm.codeKey = res.data.codeKey;
+  codeUrl.value = res.data.url;
+};
+handleeGetCode();
 </script>
 
 <style lang="scss" scoped>
@@ -147,6 +147,7 @@ handleeGetCode()
 
   .row {
     display: flex;
+    gap: 10px;
   }
 
   // 表单元素样式
