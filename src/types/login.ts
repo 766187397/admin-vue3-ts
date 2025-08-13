@@ -1,17 +1,15 @@
-import type { Base, Static } from "./public";
+import type { Base, CaptchaVerify, Static } from "./public";
 import type { RoleDetail } from "./role";
 /** 登录表单数据接口 */
-export interface LoginForm {
+export interface LoginForm extends CaptchaVerify {
   account: string;
   password: string;
-  code: string;
-  codeKey: string;
 }
 
 /** 登录表单数据接口 */
 export interface EmailLoginForm {
   email: string;
-  code: string;
+  emailCode: string;
 }
 
 /** 用户信息 */

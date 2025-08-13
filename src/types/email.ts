@@ -1,4 +1,4 @@
-import type { Base, PageQueryParams, QueryParams, Static } from "./public";
+import type { Base, CaptchaVerify, PageQueryParams, QueryParams, Static } from "./public";
 // Required  转换为必选
 // Partial  转换为可选
 
@@ -33,10 +33,9 @@ export type PageQueryEmailParams = PageQueryParams & {
 export type EmailDetail = Required<Email> & Required<Static>;
 
 /** 发送邮箱 */
-export interface SendEmailParams {
+export interface SendEmailParams extends CaptchaVerify {
   /** 模板类型 */
   type: string;
-
   /** 邮箱 */
   email: string;
 }

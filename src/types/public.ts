@@ -33,7 +33,7 @@ export interface PageQueryParams extends QueryParams {
 /** 自定义弹窗类型 */
 export type HandleRowType = "edit" | "add" | "detail" | "delete";
 
-/** 验证码 */
+/** 验证码返回结果 */
 export interface Captcha {
   /** 验证码 */
   codeKey: string;
@@ -41,10 +41,10 @@ export interface Captcha {
   url: string;
 }
 
-/** 邮箱 */
-export interface Email extends Captcha {
-  /** 邮箱 */
-  email: string;
+/** 验证码验证 */
+export interface CaptchaVerify {
+  /** 验证码 */
+  codeKey: string;
   /** 验证码 */
   code: string;
 }

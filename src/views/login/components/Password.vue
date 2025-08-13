@@ -1,7 +1,12 @@
 <template>
   <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="0" class="login-form">
     <el-form-item prop="account">
-      <el-input class="custom-input" v-model="loginForm.account" placeholder="请输入账号" :prefix-icon="User" />
+      <el-input
+        class="custom-input"
+        v-model="loginForm.account"
+        placeholder="请输入账号"
+        :prefix-icon="User"
+      />
     </el-form-item>
     <el-form-item prop="password">
       <el-input
@@ -16,7 +21,12 @@
     </el-form-item>
     <el-form-item prop="code">
       <div class="row">
-        <el-input class="custom-input" v-model="loginForm.code" :prefix-icon="ChatSquare" @keyup.enter="handleLogin" />
+        <el-input
+          class="custom-input"
+          v-model="loginForm.code"
+          :prefix-icon="ChatSquare"
+          @keyup.enter="handleLogin"
+        />
         <img :src="codeUrl" alt="验证码" @click="handleeGetCode" />
       </div>
     </el-form-item>
@@ -146,8 +156,10 @@ handleeGetCode();
   margin-top: 30px;
 
   .row {
+    width: 100%;
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 20px;
   }
 
   // 表单元素样式

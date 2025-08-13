@@ -1,12 +1,18 @@
 <template>
-  <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="0" class="login-form">
+  <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="auto" class="login-form">
     <el-form-item prop="email">
-      <el-input v-model="loginForm.email" placeholder="请输入邮箱" :prefix-icon="Message" class="custom-input" />
+      <el-input
+        class="custom-input"
+        v-model="loginForm.email"
+        placeholder="请输入邮箱"
+        :prefix-icon="Message"
+        @change="form.email = loginForm.email"
+      />
     </el-form-item>
-    <el-form-item prop="code">
+    <el-form-item prop="emailCode">
       <div class="row">
         <el-input
-          v-model="loginForm.code"
+          v-model="loginForm.emailCode"
           placeholder="请输入验证码"
           :prefix-icon="ChatLineSquare"
           show-password
@@ -14,7 +20,13 @@
           @keyup.enter="handleLogin"
         />
 
-        <el-button text type="primary" class="code" @click="getCode" :disabled="timer ? true : false">
+        <el-button
+          text
+          type="primary"
+          class="emailCode"
+          @click="dialogFormVisible = true"
+          :disabled="timer ? true : false"
+        >
           {{ btnText }}
         </el-button>
       </div>
@@ -25,48 +37,89 @@
       </el-button>
     </el-form-item>
   </el-form>
+
+  <el-dialog v-model="dialogFormVisible" title="验证码" width="500" @open="handleeGetCode" class="login-form">
+    <el-form ref="dialogFormRef" :model="form" :rules="loginRules" label-width="auto">
+      <el-form-item label="邮箱：" prop="email">
+        <el-input
+          class="custom-input"
+          v-model="form.email"
+          autocomplete="off"
+          :prefix-icon="Message"
+          @change="loginForm.email = form.email"
+        />
+      </el-form-item>
+      <el-form-item label="验证码：" prop="code">
+        <el-form-item prop="code">
+          <div class="row">
+            <el-input class="custom-input" v-model="form.code" :prefix-icon="ChatSquare" />
+            <img :src="codeUrl" alt="验证码" @click="handleeGetCode" />
+          </div>
+        </el-form-item>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="getEmailCode"> 确认 </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { ElMessage, ElNotification, type FormInstance } from "element-plus";
-import { Message, ChatLineSquare } from "@element-plus/icons-vue";
+import { Message, ChatLineSquare, ChatSquare } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from "vue-router";
 import { emailLogin } from "@/api/login";
-import { sendEmail } from "@/api/public.ts";
+import { getCode, sendEmail } from "@/api/public.ts";
 import type { EmailLoginForm } from "@/types/login";
 import { useUserInfoStore } from "@/store";
+import type { SendEmailParams } from "@/types/email";
 
 const userInfoStore = useUserInfoStore();
 
 const router = useRouter();
 const route = useRoute();
 const loading = ref(false);
-const loginFormRef = ref<FormInstance>();
 const btnText = ref("获取验证码");
 const time = ref(120);
-
+const dialogFormVisible = ref(false);
+const codeUrl = ref("");
 // 登录表单数据
 const loginForm = reactive<EmailLoginForm>({
-    email: '',
-    code: ''
+  email: "",
+  emailCode: "",
+});
+
+/** 发送邮箱 */
+const form = reactive<SendEmailParams>({
+  type: "loginCode",
+  email: "",
+  codeKey: "",
+  code: "",
 });
 
 const timer = ref<number>();
+
+const dialogFormRef = ref<FormInstance>();
 // 获取验证码
-const getCode = () => {
-  if(!loginFormRef.value) return;
-  loginFormRef?.value.validateField("email", async (valid, fields) => {
+const getEmailCode = () => {
+  if (!dialogFormRef.value) return;
+  dialogFormRef?.value.validate(async (valid, fields) => {
     if (!valid) return;
-
     if (timer.value) return;
-
-    let res = await sendEmail("logonCode", loginForm.email);
-
+    let res = await sendEmail(form);
     ElMessage({
       message: res.message || "操作成功",
       type: "success",
       duration: 5 * 1000,
     });
+    // 关闭验证码界面，并初始化状态
+    dialogFormVisible.value = false;
+    form.codeKey = ''
+    form.code = ''
+    loginForm.emailCode = '';
 
     // 接口调用成功后执行
     timer.value = setInterval(() => {
@@ -98,13 +151,24 @@ const validateEmail = (rule: any, value: any, callback: any) => {
 };
 
 // 验证验证码
-const validateCode = (rule: any, value: any, callback: any) => {
+const validateEmailCode = (rule: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入验证码"));
   } else if (value.length == 6) {
     callback();
   } else {
-    callback(new Error("验证码长度为 6 个字符"));
+    callback(new Error("邮箱验证码长度为 6 个字符"));
+  }
+};
+
+// 验证验证码
+const validateCode = (rule: any, value: any, callback: any) => {
+  if (value === "") {
+    callback(new Error("请输入验证码"));
+  } else if (value.length == 4) {
+    callback();
+  } else {
+    callback(new Error("图形验证码长度为 4 个字符"));
   }
 };
 
@@ -114,11 +178,17 @@ const loginRules = {
     { required: true, message: "请输入邮箱", trigger: ["blur", "change"] },
     { validator: validateEmail, trigger: ["blur", "change"] },
   ],
-  code: [
-    { required: true, message: "请输入验证码", trigger: ["blur", "change"] },
-    { validator: validateCode, trigger: ["blur", "change"] },
+  emailCode: [
+    { required: true, message: "请输入邮箱验证码", trigger: ["blur", "change"] },
+    { validator: validateEmailCode, trigger: ["blur", "change"] },
   ],
+  code:[
+    { required: true, message: "请输入图形验证码", trigger: ["blur", "change"] },
+    { validator: validateCode, trigger: ["blur", "change"] },
+  ]
 };
+
+const loginFormRef = ref<FormInstance>();
 
 // 登录处理函数
 const handleLogin = async () => {
@@ -129,10 +199,7 @@ const handleLogin = async () => {
     try {
       loading.value = true;
 
-      const loginData: EmailLoginForm = {
-        email: loginForm.email,
-        code: loginForm.code,
-      };
+      const loginData: EmailLoginForm = loginForm;
       const response = await emailLogin(loginData);
 
       // 登录成功
@@ -159,6 +226,13 @@ const handleLogin = async () => {
       loading.value = false;
     }
   });
+};
+
+// 获取验证码
+const handleeGetCode = async () => {
+  const res = await getCode();
+  form.codeKey = res.data.codeKey;
+  codeUrl.value = res.data.url;
 };
 </script>
 
@@ -191,7 +265,7 @@ const handleLogin = async () => {
     align-items: center;
     gap: 20px;
 
-    .code {
+    .emailCode {
       flex: 0 0 140px;
       height: 100%;
     }

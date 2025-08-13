@@ -1,6 +1,7 @@
 /** 公共模块 */
 import type { Result } from "@/types/api";
 import type { GetDictionaryItemAllParams, GetDictionaryItemAllResult } from "@/types/dictionary";
+import type { SendEmailParams } from "@/types/email";
 import type { Captcha } from "@/types/public";
 import { http } from "@/utils/http";
 
@@ -12,8 +13,8 @@ export const getDictionaryItemAll = async (
 };
 
 /** 发送邮箱 */
-export const sendEmail = async (type: string, email: string): Promise<Result<null>> => {
-  return await http.post("/api/v1/admin/email/send/email", { type, email });
+export const sendEmail = async (data: SendEmailParams): Promise<Result<null>> => {
+  return await http.post("/api/v1/admin/email/send/email", data);
 };
 
 /** 获取验证码 */
