@@ -57,6 +57,7 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Loading: typeof import('./components/public/Loading.vue')['default']
+    MonacoEditor: typeof import('./components/public/MonacoEditor.vue')['default']
     Pagination: typeof import('./components/el/Pagination.vue')['default']
     PictureUpload: typeof import('./components/el/PictureUpload.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

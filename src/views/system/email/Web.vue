@@ -81,7 +81,9 @@
             </el-col>
             <el-col :span="24">
               <el-form-item label="内容：" prop="content">
-                <Wangeditor v-model="form.content" />
+                <div class="monaco_editor">
+                  <MonacoEditor v-model="form.content" language="html" />
+                </div>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -127,7 +129,7 @@
 
 <script setup lang="ts">
 import Pagination from "@/components/el/Pagination.vue";
-import Wangeditor from "@/components/public/Wangeditor.vue";
+import MonacoEditor from '@/components/public/MonacoEditor.vue'
 import { ElMessage, type FormInstance } from "element-plus";
 import type { HandleRowType } from "@/types/public";
 import type {
@@ -381,6 +383,10 @@ const handleeGetCode = async () => {
 
 <style lang="scss" scoped>
 .page {
+  .monaco_editor {
+    width: 100%;
+    height: 500px;
+  }
   .sendForm {
     .row {
       width: 100%;
