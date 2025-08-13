@@ -36,9 +36,14 @@
           </el-col>
         </el-row>
       </div>
-      <el-table :data="tableData">
+      <el-table :data="tableData" :preserve-expanded-content="false">
+        <el-table-column type="expand">
+          <template #default="props">
+            <iframe :srcdoc="props.row.content" width="100%" height="420" style="border: none"></iframe>
+          </template>
+        </el-table-column>
         <el-table-column prop="title" label="标题" align="center" />
-        <el-table-column prop="content" label="内容" align="center" />
+        <el-table-column prop="type" label="类型" align="center" />
         <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
