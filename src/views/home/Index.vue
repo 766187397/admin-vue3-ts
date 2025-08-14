@@ -225,7 +225,7 @@ const bar = {
 
   .echarts_box {
     width: 100%;
-    height: 600px;
+    height: 580px;
     background: var(--bg-color);
     border-radius: 12px;
     padding: 20px;
