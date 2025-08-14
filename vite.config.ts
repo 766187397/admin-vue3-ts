@@ -6,6 +6,7 @@ import vueDevTools from "vite-plugin-vue-devtools";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import monacoEditorPlugin from "vite-plugin-monaco-editor";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -27,6 +28,9 @@ export default defineConfig({
         }),
       ],
       dts: "src/components.d.ts",
+    }),
+    (monacoEditorPlugin as any).default({
+      languageWorkers: ["editorWorkerService", "typescript", "json", "html"],
     }),
   ],
   resolve: {
