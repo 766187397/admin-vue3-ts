@@ -33,7 +33,6 @@ export const downloadFile = async (fileUrl: string, filename?: string): Promise<
     // 从响应头或 url 里取文件名
     const name =
       filename || decodeURIComponent(res.headers["content-disposition"]?.split("filename=")[1] || "file");
-    console.log("name :>> ", name);
     // 创建临时 URL 并触发下载
     const blob = new Blob([res.data]);
     const link = document.createElement("a");
