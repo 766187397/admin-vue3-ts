@@ -32,8 +32,7 @@
                 value-format="YYYY-MM-DD HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
+                end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -73,8 +72,7 @@
               :preview-src-list="[scope.row.avatar]"
               show-progress
               preview-teleported
-              fit="cover"
-            />
+              fit="cover" />
           </template>
         </el-table-column>
         <el-table-column prop="createdAt" label="创建时间" align="center" />
@@ -92,8 +90,7 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)"
-    />
+      @current-change="getTableData(false)" />
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -106,7 +103,11 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="密码：" prop="password">
-                <el-input v-model="form.password" type="password" show-password placeholder="请输入密码"></el-input>
+                <el-input
+                  v-model="form.password"
+                  type="password"
+                  show-password
+                  placeholder="请输入密码"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -127,7 +128,11 @@
             <el-col :span="12">
               <el-form-item label="性别：">
                 <el-select v-model="form.sex" placeholder="请选择性别">
-                  <el-option v-for="item in sexOptions" :key="item.id" :label="item.label" :value="item.value" />
+                  <el-option
+                    v-for="item in sexOptions"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -164,11 +169,17 @@ import PictureUpload from "@/components/el/PictureUpload.vue";
 import Pagination from "@/components/el/Pagination.vue";
 import { ElMessage, type FormInstance } from "element-plus";
 import { getDictionaryItemAll } from "@/api/public";
-import { getUserInfo, updateUser, deleteUser, getUsersPageWeb, createUserWeb, getUsersExcelWeb } from "@/api/user";
+import {
+  getUserInfo,
+  updateUser,
+  deleteUser,
+  getUsersPageWeb,
+  createUserWeb,
+  getUsersExcelWeb,
+} from "@/api/user";
 import { displayValue } from "@/hooks/dictionary";
 import type { HandleRowType } from "@/types/public";
 import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";
-import { downloadByAxiosBlob } from "@/utils/tool";
 
 const now = new Date();
 const defaultTime: [Date, Date] = [
@@ -317,8 +328,7 @@ const handleRow = async (type: HandleRowType, id?: string) => {
 
 /** 导出为Excel */
 const handleExport = async () => {
-  let res = await getUsersExcelWeb(query.value as UsersQueryParams);
-  downloadByAxiosBlob(res);
+  await getUsersExcelWeb(query.value as UsersQueryParams);
 };
 
 /** 提交 */

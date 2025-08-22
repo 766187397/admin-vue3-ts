@@ -17,8 +17,7 @@
                 value-format="YYYY-MM-DD HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
+                end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -54,6 +53,7 @@
         <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
         <el-table-column label="操作" align="center" fixed="right" width="200">
           <template v-slot="scope">
+            <el-button type="primary" text plain @click="handleDownload(scope.row)">下载</el-button>
             <el-button type="danger" text plain @click="handleDlete(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -65,8 +65,7 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)"
-    />
+      @current-change="getTableData(false)" />
   </div>
 </template>
 
@@ -74,7 +73,7 @@
 import Pagination from "@/components/el/Pagination.vue";
 import Upload from "./components/Upload.vue";
 import type { FileDetail, FilePageParams } from "@/types/file";
-import { uploadFile, deleteFile, uploadPage } from "@/api/file";
+import { uploadFile, deleteFile, uploadPage, downloadFile } from "@/api/file";
 import { ElMessage } from "element-plus";
 import { useLargeFilesStore } from "@/store";
 
@@ -159,6 +158,11 @@ const handleDlete = async (id: string) => {
       message: res?.message || "操作成功",
     });
   });
+};
+
+/** 下载 */
+const handleDownload = async (row: FileDetail) => {
+  await downloadFile(row.completePath);
 };
 </script>
 
