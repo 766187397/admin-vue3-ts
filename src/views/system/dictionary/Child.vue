@@ -3,12 +3,12 @@
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="名称：">
               <el-input v-model="query.label" placeholder="请输入名称"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24">
             <el-form-item label="时间范围：">
               <el-date-picker
                 v-model="time"
@@ -17,11 +17,10 @@
                 value-format="YYYY-MM-DD HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
+                end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-button type="primary" plain @click="getTableData(true)">查询</el-button>
             <el-button plain @click="handleReset">重置</el-button>
           </el-col>
@@ -31,9 +30,7 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
-          </el-col>
+          <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
         </el-row>
       </div>
       <el-table :data="tableData">
@@ -49,7 +46,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="description" label="字典描述" align="center" />
-        <el-table-column prop="createdAt" label="创建时间" align="center" />
+        <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>
@@ -64,8 +61,7 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)"
-    />
+      @current-change="getTableData(false)" />
 
     <el-dialog v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -88,8 +84,7 @@
                   :rows="2"
                   type="textarea"
                   placeholder="请输入字典描述"
-                  clearable
-                ></el-input>
+                  clearable></el-input>
               </el-form-item>
             </el-col>
 

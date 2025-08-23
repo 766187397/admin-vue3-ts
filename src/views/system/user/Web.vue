@@ -3,27 +3,27 @@
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="账号：">
               <el-input v-model="query.account" placeholder="请输入账号"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="昵称：">
               <el-input v-model="query.nickName" placeholder="请输入昵称"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="邮箱：">
               <el-input v-model="query.email" placeholder="请输入邮箱"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="手机号：">
               <el-input v-model="query.phone" placeholder="请输入手机号"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24">
             <el-form-item label="时间范围：">
               <el-date-picker
                 v-model="query.time"
@@ -35,7 +35,7 @@
                 end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-button type="primary" plain @click="getTableData(true)">查询</el-button>
             <el-button plain @click="handleReset">重置</el-button>
           </el-col>
@@ -45,12 +45,8 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="2">
-            <el-button type="primary" plain @click="handleExport">导出为 Excel</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
-          </el-col>
+          <el-button type="primary" plain @click="handleExport">导出为 Excel</el-button>
+          <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
         </el-row>
       </div>
       <el-table :data="tableData">
@@ -61,10 +57,10 @@
         <el-table-column prop="sex" label="性别" align="center">
           <template v-slot="scope"> {{ displayValue(sexOptions, scope.row.sex) }} </template>
         </el-table-column>
-        <el-table-column prop="avatar" label="头像" align="center">
+        <el-table-column prop="avatar" label="头像" align="center" width="120">
           <template v-slot="scope">
             <el-image
-              style="width: 100px; height: 100px"
+              style="max-width: 100px; max-height: 100px"
               :src="scope.row.avatar"
               :zoom-rate="1.2"
               :max-scale="7"
@@ -75,7 +71,7 @@
               fit="cover" />
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="创建时间" align="center" />
+        <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
         <el-table-column label="操作" align="center" fixed="right" width="300">
           <template v-slot="scope">
             <el-button type="primary" text plain @click="handleRow('edit', scope.row.id)">编辑</el-button>

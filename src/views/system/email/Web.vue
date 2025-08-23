@@ -3,12 +3,12 @@
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="标题：">
               <el-input v-model="query.title" placeholder="请输入标题"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24">
             <el-form-item label="时间范围：">
               <el-date-picker
                 v-model="time"
@@ -17,11 +17,10 @@
                 value-format="YYYY-MM-DD HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
+                end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-button type="primary" plain @click="getTableData(true)">查询</el-button>
             <el-button plain @click="handleReset">重置</el-button>
           </el-col>
@@ -31,9 +30,7 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
-          </el-col>
+          <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
         </el-row>
       </div>
       <el-table :data="tableData" :preserve-expanded-content="false">
@@ -62,8 +59,7 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)"
-    />
+      @current-change="getTableData(false)" />
 
     <el-dialog top="10vh" v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -129,7 +125,7 @@
 
 <script setup lang="ts">
 import Pagination from "@/components/el/Pagination.vue";
-import MonacoEditor from '@/components/public/MonacoEditor.vue'
+import MonacoEditor from "@/components/public/MonacoEditor.vue";
 import { ElMessage, type FormInstance } from "element-plus";
 import type { HandleRowType } from "@/types/public";
 import type {
@@ -245,11 +241,12 @@ const sendForm = ref<SendEmailParams>({
 const sendRules = ref({
   email: [
     { required: true, message: "请输入邮箱", trigger: ["blur", "change"] },
-    { validator: validateEmail, trigger: ["blur", "change"] }],
-  code:[
+    { validator: validateEmail, trigger: ["blur", "change"] },
+  ],
+  code: [
     { required: true, message: "请输入图形验证码", trigger: ["blur", "change"] },
     { validator: validateCode, trigger: ["blur", "change"] },
-  ]
+  ],
 });
 
 /** 显示发送邮箱 */

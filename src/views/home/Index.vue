@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-row :gutter="20">
-      <el-col :span="6" v-for="(item, index) in CardList" :key="index">
+      <el-col :xl="6" :lg="6" :md="12" :sm="12" :xs="24" v-for="(item, index) in CardList" :key="index">
         <Card :info="item" />
       </el-col>
 

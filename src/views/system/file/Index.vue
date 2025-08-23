@@ -3,12 +3,12 @@
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="文件名称：">
               <el-input v-model="query.fileName" placeholder="请输入文件名称"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24">
             <el-form-item label="时间范围：">
               <el-date-picker
                 v-model="time"
@@ -20,7 +20,7 @@
                 end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-button type="primary" plain @click="getTableData(true)">查询</el-button>
             <el-button plain @click="handleReset">重置</el-button>
           </el-col>
@@ -31,12 +31,6 @@
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
           <Upload @uploadSuccess="getTableData(true)" />
-          <!-- <el-col :span="1.5">
-            <el-button class="upload" type="primary" plain>
-              添加
-              <input class="upload_input" type="file" name="file" @change="handleFileChange" />
-            </el-button>
-          </el-col> -->
         </el-row>
       </div>
       <el-table :data="tableData">

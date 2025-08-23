@@ -3,12 +3,12 @@
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-form-item label="标题：">
               <el-input v-model="query.title" placeholder="请输入标题"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24">
             <el-form-item label="时间范围：">
               <el-date-picker
                 v-model="time"
@@ -17,11 +17,10 @@
                 value-format="YYYY-MM-DD HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              />
+                end-placeholder="结束日期" />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-button type="primary" plain @click="getTableData(true)">查询</el-button>
             <el-button plain @click="handleReset">重置</el-button>
           </el-col>
@@ -31,9 +30,7 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
-          </el-col>
+          <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
         </el-row>
       </div>
       <el-table :data="tableData">
@@ -60,8 +57,7 @@
       v-model:page="query.page"
       v-model:total="total"
       @size-change="getTableData(true)"
-      @current-change="getTableData(false)"
-    />
+      @current-change="getTableData(false)" />
 
     <el-dialog top="10vh" v-model="dialogVisible" :title="title" width="980" :before-close="handleClose">
       <div class="dialog" v-if="form">
@@ -82,8 +78,7 @@
                     value: 'id',
                   }"
                   placeholder="请选择用户"
-                  multiple
-                />
+                  multiple />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -96,8 +91,7 @@
                     value: 'id',
                   }"
                   placeholder="请选择角色"
-                  multiple
-                />
+                  multiple />
               </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -113,8 +107,7 @@
                   type="datetime"
                   format="YYYY-MM-DD HH:mm:ss"
                   value-format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择日期时间"
-                />
+                  placeholder="请选择日期时间" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -236,11 +229,11 @@ const handleRow = async (type: HandleRowType, id?: string) => {
     const fns = {
       getDetail: async function () {
         let res = await getNoticeDetail(id as string);
-         form.value = {
+        form.value = {
           ...res.data,
-          roleKeys:(res.data.roleKeys as string)?.split(','),
-          userIds:(res.data.userIds as string)?.split(',')
-        }
+          roleKeys: (res.data.roleKeys as string)?.split(","),
+          userIds: (res.data.userIds as string)?.split(","),
+        };
       },
       edit: async function () {
         dialogVisible.value = true;
@@ -295,7 +288,7 @@ const submit = () => {
     try {
       buttonLoading.value = true;
       let res;
-      let data:any = { ...form.value };
+      let data: any = { ...form.value };
       data.userIds = data.userIds?.join(",");
       data.roleKeys = data.roleKeys?.join(",");
       // 调用接口

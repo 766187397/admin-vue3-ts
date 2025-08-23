@@ -3,9 +3,7 @@
     <div class="table">
       <div class="table_menu">
         <el-row :gutter="20" justify="end">
-          <el-col :span="1.5">
-            <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
-          </el-col>
+          <el-button type="primary" plain @click="handleRow('add')">添加</el-button>
         </el-row>
       </div>
       <el-table :data="tableData" row-key="id" default-expand-all>
@@ -25,7 +23,9 @@
         </el-table-column>
         <el-table-column prop="redirect" label="重定向" align="center" width="200">
           <template v-slot="scope">
-            <el-link type="primary" target="_blank" :href="scope.row.redirect">{{ scope.row.redirect }}</el-link>
+            <el-link type="primary" target="_blank" :href="scope.row.redirect">{{
+              scope.row.redirect
+            }}</el-link>
           </template>
         </el-table-column>
         <el-table-column prop="component" label="组件" align="center" width="200" />
@@ -52,8 +52,7 @@
                   :props="{ value: 'id', label: 'title', checkStrictly: true }"
                   filterable
                   clearable
-                  style="width: 100%"
-                />
+                  style="width: 100%" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -91,8 +90,7 @@
                   v-model="form.icon"
                   placeholder="请输入图标(element组件/进入的图标class)"
                   clearable
-                  filterable
-                >
+                  filterable>
                   <el-option-group v-for="group in componentAndIcons" :key="group.label" :label="group.label">
                     <el-option v-for="item in group.options" :key="item" :label="item" :value="item">
                       <div class="icon_list">
@@ -116,7 +114,10 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="重定向地址：">
-                <el-input v-model="form.redirect" placeholder="请输入重定向地址" :disabled="form.externalLinks" />
+                <el-input
+                  v-model="form.redirect"
+                  placeholder="请输入重定向地址"
+                  :disabled="form.externalLinks" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -130,8 +131,7 @@
                   v-model="form.meta"
                   :autosize="{ minRows: 3, maxRows: 9 }"
                   type="textarea"
-                  placeholder="需要按照JSON格式填写(不要和现有的固定值相同)"
-                />
+                  placeholder="需要按照JSON格式填写(不要和现有的固定值相同)" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -150,7 +150,7 @@
 <script setup lang="ts">
 import { createRouteWeb, delRoutes, getRoutesAllWeb, getRoutesDetail, updateRoutes } from "@/api/menu";
 import type { CreateRoutesParams, RouterInfoList } from "@/types/menu";
-import { ElMessage, ElMessageBox,type FormInstance, type FormRules } from "element-plus";
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
 import { getDictionaryItemAll } from "@/api/public";
 import { typeValue } from "@/utils/tool";
 import type { GetDictionaryItemAllResult } from "@/types/dictionary";
@@ -295,7 +295,7 @@ const formRef = useTemplateRef<FormInstance>("formRef");
 
 // 提交
 const submit = () => {
-if (!formRef.value) return;
+  if (!formRef.value) return;
   formRef.value?.validate(async (valid) => {
     if (!valid) return;
     try {

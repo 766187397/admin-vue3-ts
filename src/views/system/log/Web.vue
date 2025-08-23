@@ -3,7 +3,7 @@
     <div class="query_form">
       <el-form :model="query" label-width="auto">
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :xl="8" :lg="8" :md="12" :sm="24" :xs="24">
             <el-form-item label="时间范围：">
               <el-date-picker
                 v-model="time"
@@ -17,7 +17,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :xl="4" :lg="6" :md="8" :sm="12" :xs="24">
             <el-button type="primary" plain @click="getTableData(true)">查询</el-button>
             <el-button plain @click="handleReset">重置</el-button>
           </el-col>
@@ -33,7 +33,7 @@
         <!-- <el-table-column prop="referer" label="来源" align="center" /> -->
         <el-table-column prop="method" label="请求方式" align="center" />
         <el-table-column prop="url" label="请求接口" align="center" />
-        <el-table-column prop="createdAt" label="创建时间" align="center" />
+        <el-table-column prop="createdAt" label="创建时间" align="center" width="200" />
         <el-table-column label="操作" align="center" fixed="right" width="100">
           <template v-slot="scope">
             <el-button type="primary" text plain @click="handleShowDetails(scope.row)">详情</el-button>
