@@ -51,6 +51,7 @@ const emit = defineEmits(["uploadSuccess"]);
 
 /** 文件上传 */
 const handleFileChange = async (event: Event) => {
+  const input = event.target as HTMLInputElement;
   const file = (event.target as HTMLInputElement)?.files?.[0];
   if (!file) {
     ElMessage.success("请选择文件");
@@ -73,6 +74,7 @@ const handleFileChange = async (event: Event) => {
   }
 
   emit("uploadSuccess");
+  input.value = "";
 };
 </script>
 
