@@ -15,7 +15,7 @@ export const useLargeFilesStore = defineStore(
     const isUploading = ref(false);
 
     /** 上传文件 */
-    const upload = (file: File) => {
+    const upload = (file: File, hash: string = "") => {
       return new Promise((resolve, reject) => {
         progress.value = "0";
         isUploading.value = true;
@@ -28,6 +28,7 @@ export const useLargeFilesStore = defineStore(
           metadata: {
             filename: file.name,
             filetype: file.type,
+            hash,
           },
           retryDelays: [0, 1000, 3000, 5000],
           onError: function (error) {

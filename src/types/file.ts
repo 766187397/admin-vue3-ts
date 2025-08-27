@@ -24,3 +24,11 @@ export type FilePageParams = FileParams & PageQueryParams;
 
 /** 文件详情 */
 export type FileDetail = Required<File> & Static;
+
+/** 秒传参数 */
+export interface FileUploadSecondParams {
+  /** 文件hash值 */
+  hash: string;
+  /** 文件大小 */
+  size: number | string;
+}

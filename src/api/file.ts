@@ -1,6 +1,6 @@
 import { http } from "@/utils/http";
 import type { PageApiResult, Result } from "@/types/api";
-import type { FileDetail } from "@/types/file";
+import type { FileDetail, FileUploadSecondParams } from "@/types/file";
 
 /** 文件上传 */
 export const uploadFile = async (data: FormData): Promise<Result<FileDetail>> => {
@@ -38,7 +38,7 @@ export const downloadFile = async (fileUrl: string, filename?: string): Promise<
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     // 移除首尾"后端因为浏览器的标准协议的加上的引号，如果保留"那么下载会把首尾的双引号替换为_
-    link.download = name.trim().replace(/^["']|["']$/g, "")
+    link.download = name.trim().replace(/^["']|["']$/g, "");
     link.click();
 
     // 释放内存
@@ -61,4 +61,9 @@ export const deleteFile = async (id: string): Promise<Result<null>> => {
 /** 大文件取消上传删除临时文件 */
 export const deleteTempFile = async (id: string): Promise<Result<null>> => {
   return await http.delete(`/api/v1/large/tempFile/delete/${id}`);
+};
+
+/** 大文件秒传 */
+export const largeFileUploadSecond = async (data: FileUploadSecondParams): Promise<Result<FileDetail>> => {
+  return await http.get("/api/v1/large/upload/second", data);
 };

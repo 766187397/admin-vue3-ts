@@ -1,6 +1,11 @@
 <template>
   <div class="large" v-if="currentUpload">
-    <el-button class="upload" plain @click="pause" v-if="isUploading" @mouseenter="isHovered = true"
+    <el-button
+      class="upload"
+      plain
+      @click="pause"
+      v-if="isUploading"
+      @mouseenter="isHovered = true"
       @mouseleave="isHovered = false">
       {{ isHovered ? "暂停" : progress }}
     </el-button>
@@ -18,7 +23,8 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 import { useLargeFilesStore } from "@/store";
-import { uploadFile } from "@/api/file";
+import { largeFileUploadSecond, uploadFile } from "@/api/file";
+import { calcSHA256 } from "@/utils/largeFile/largeFileHash";
 
 const largeFilesStore = useLargeFilesStore();
 const { upload, cancel, pause, proceed } = largeFilesStore;
@@ -54,7 +60,13 @@ const handleFileChange = async (event: Event) => {
   const data = new FormData();
   data.append("file", file);
   if (size >= 20) {
-    await upload(file);
+    const hash = await calcSHA256(file);
+    const res = await largeFileUploadSecond({ hash, size: file?.size });
+    if (res.data) {
+      ElMessage.success(res.message);
+    } else {
+      await upload(file, hash);
+    }
   } else {
     const res = await uploadFile(data);
     ElMessage.success(res.message);
