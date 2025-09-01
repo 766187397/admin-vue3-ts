@@ -12,29 +12,6 @@ import { useMenuStore } from "./menu";
 export const useUserInfoStore = defineStore(
   "userInfo",
   () => {
-    /** token前缀 */
-    let token_type = ref<string>("Bearer ");
-    /** 设置token前缀 */
-    const setTokenType = (val: string) => {
-      token_type.value = val;
-    };
-
-    /** token */
-    let token = ref<string>("");
-
-    /** 设置token */
-    const setToken = (val: string) => {
-      token.value = val;
-    };
-
-    /** 刷新token */
-    let refresh_token = ref<string>("");
-
-    /** 设置刷新token */
-    const setRfreshToken = (val: string) => {
-      refresh_token.value = val;
-    };
-
     /** 用户信息 */
     let userInfo = ref<any>({});
 
@@ -69,8 +46,9 @@ export const useUserInfoStore = defineStore(
         const { restoreDefault, changeThemeColor } = elConfigStore;
         const { removeRouters, dynamicMenu } = menuStore;
         // 清除token
-        setToken("");
-        setRfreshToken("");
+        localStorage.removeItem("token_type");
+        localStorage.removeItem("token");
+        localStorage.removeItem("refresh_token");
         // 清除用户信息
         setUserInfo({});
         // 恢复默认配置
@@ -83,12 +61,6 @@ export const useUserInfoStore = defineStore(
       }
     };
     return {
-      token_type,
-      setTokenType,
-      token,
-      setToken,
-      refresh_token,
-      setRfreshToken,
       userInfo,
       setUserInfo,
       rememberMe,

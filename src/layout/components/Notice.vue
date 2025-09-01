@@ -10,10 +10,12 @@
       :infinite-scroll-disabled="isDisabled"
       :infinite-scroll-immediate="false"
       :infinite-scroll-delay="500"
-      infinite-scroll-distance="20"
-    >
+      infinite-scroll-distance="20">
       <div class="item" v-for="item in tableData" :key="item.id">
-        <i class="iconfont icon-biaoqian" :class="{ active: item.readStatus }" @click="handleReadNotice(item)"></i>
+        <i
+          class="iconfont icon-biaoqian"
+          :class="{ active: item.readStatus }"
+          @click="handleReadNotice(item)"></i>
         <div class="title">{{ item.title }}</div>
         <div class="content" v-html="item.content"></div>
         <div class="time">{{ item.createdAt }}</div>
@@ -27,11 +29,9 @@
 
 <script setup lang="ts">
 import { io } from "socket.io-client";
-import { useUserInfoStore } from "@/store";
 import { getNoticeByUserOrRoleAdmin, signReadNotice } from "@/api/notice.ts";
 import type { FindUserOrRole } from "@/types/notice";
-const userInfoStore = useUserInfoStore();
-const token = userInfoStore.token_type + userInfoStore.token;
+const token = localStorage.getItem("token_type") || "Bearer " + localStorage.getItem("token");
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const dot = ref(false);
 const noticeList = ref<FindUserOrRole[]>([]);

@@ -191,9 +191,9 @@ const handleLogin = async () => {
       const { token_type, access_token, refresh_token, userInfo } = response.data;
       // 存储token
       if (access_token) {
-        userInfoStore.setTokenType(token_type);
-        userInfoStore.setToken(access_token);
-        userInfoStore.setRfreshToken(refresh_token);
+        localStorage.setItem("token_type", token_type);
+        localStorage.setItem("token", access_token);
+        localStorage.setItem("refresh_token", refresh_token);
         userInfoStore.setUserInfo(userInfo);
       }
 

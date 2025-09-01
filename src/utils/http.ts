@@ -1,5 +1,4 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
-import { useUserInfoStore } from "@/store";
 import router from "@/router/index";
 import { ElMessage } from "element-plus";
 
@@ -19,6 +18,12 @@ type HttpConfig = AxiosRequestConfig & {
   };
 };
 
+interface InitHttp {
+  baseUrl?: string;
+  timeout?: number;
+  handleError?: (error: any) => void;
+}
+
 export class Http {
   private instance: AxiosInstance;
   private isRefreshing = false;
@@ -27,7 +32,13 @@ export class Http {
     resolve: (value: any) => void;
     reject: (reason: any) => void;
   }> = [];
-  constructor({ baseUrl = "", timeout = 10000 }: { baseUrl?: string; timeout?: number } = {}) {
+  private handleError: (error: any) => void = (error) => {
+    console.log("error :>> ", error);
+  };
+  constructor({ baseUrl = "", timeout = 10000, handleError }: InitHttp) {
+    if (handleError) {
+      this.handleError = handleError;
+    }
     this.instance = this.createHttp({ baseUrl, timeout });
     this.requestInterceptors();
     this.responseInterceptors();
@@ -37,21 +48,22 @@ export class Http {
   private requestInterceptors() {
     this.instance.interceptors.request.use(
       (config) => {
-        const userInfoStore = useUserInfoStore();
         // 在发送请求之前做些什么
         // 标识平台
         config.headers.platform = "web";
         // 添加token
-        const token = userInfoStore.token;
+        const token = localStorage.getItem("token");
         if (token) {
-          config.headers.Authorization = token.startsWith("Bearer ") ? token : "Bearer " + token;
+          config.headers.Authorization = token.startsWith("Bearer ")
+            ? token
+            : localStorage.getItem("token_type") || "Bearer " + token;
         }
         // 刷新token
-        const refresh_token = userInfoStore.refresh_token;
+        const refresh_token = localStorage.getItem("refresh_token");
         if (refresh_token) {
           config.headers.refresh_token = refresh_token.startsWith("Bearer ")
             ? refresh_token
-            : "Bearer " + refresh_token;
+            : localStorage.getItem("token_type") || "Bearer " + refresh_token;
         }
         // 默认使用全局的错误处理
         if (!config.headers.skipErrorHandler) {
@@ -76,7 +88,6 @@ export class Http {
       },
       async (error) => {
         console.log("error", error);
-        const userInfoStore = useUserInfoStore();
         const originalRequest = error.config;
         // 如果是401错误且不是刷新token的请求
         if (
@@ -104,10 +115,12 @@ export class Http {
             const newToken = response.data.access_token;
 
             // 更新token
-            userInfoStore.setToken(newToken);
+            localStorage.setItem("token", newToken);
 
             // 更新当前请求的token
-            originalRequest.headers.Authorization = newToken.startsWith("Bearer ") ? newToken : "Bearer " + newToken;
+            originalRequest.headers.Authorization = newToken.startsWith("Bearer ")
+              ? newToken
+              : "Bearer " + newToken;
 
             // 重试队列中的所有请求
             this.requestsQueue.forEach(({ config, resolve }) => {
@@ -122,7 +135,7 @@ export class Http {
             return this.instance(originalRequest);
           } catch (refreshError) {
             // 刷新token失败
-            userInfoStore.setToken("");
+            localStorage.removeItem("token");
 
             // 拒绝队列中的所有请求
             this.requestsQueue.forEach(({ reject }) => {
@@ -151,14 +164,6 @@ export class Http {
     );
   }
 
-  handleError(error: any) {
-    ElMessage({
-      message: error.response?.data?.message || error.message || "未知错误",
-      type: "error",
-      duration: 5 * 1000,
-    });
-  }
-
   private createHttp({ baseUrl, timeout }: { baseUrl: string; timeout: number }) {
     return axios.create({
       baseURL: baseUrl,
@@ -182,7 +187,13 @@ export class Http {
     return this.instance.patch(url, data, config);
   }
 }
-
+const handleError = (error: any) => {
+  ElMessage({
+    message: error.response?.data?.message || error.message || "未知错误",
+    type: "error",
+    duration: 5 * 1000,
+  });
+};
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const timeout = Number(import.meta.env.VITE_TIMEOUT);
-export const http = new Http({ baseUrl, timeout });
+export const http = new Http({ baseUrl, timeout, handleError });
