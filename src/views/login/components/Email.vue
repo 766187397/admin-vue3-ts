@@ -6,8 +6,7 @@
         v-model="loginForm.email"
         placeholder="请输入邮箱"
         :prefix-icon="Message"
-        @change="form.email = loginForm.email"
-      />
+        @change="form.email = loginForm.email" />
     </el-form-item>
     <el-form-item prop="emailCode">
       <div class="row">
@@ -17,16 +16,14 @@
           :prefix-icon="ChatLineSquare"
           show-password
           class="custom-input"
-          @keyup.enter="handleLogin"
-        />
+          @keyup.enter="handleLogin" />
 
         <el-button
           text
           type="primary"
           class="emailCode"
           @click="dialogFormVisible = true"
-          :disabled="timer ? true : false"
-        >
+          :disabled="timer ? true : false">
           {{ btnText }}
         </el-button>
       </div>
@@ -46,8 +43,7 @@
           v-model="form.email"
           autocomplete="off"
           :prefix-icon="Message"
-          @change="loginForm.email = form.email"
-        />
+          @change="loginForm.email = form.email" />
       </el-form-item>
       <el-form-item label="验证码：" prop="code">
         <el-form-item prop="code">
@@ -117,9 +113,9 @@ const getEmailCode = () => {
     });
     // 关闭验证码界面，并初始化状态
     dialogFormVisible.value = false;
-    form.codeKey = ''
-    form.code = ''
-    loginForm.emailCode = '';
+    form.codeKey = "";
+    form.code = "";
+    loginForm.emailCode = "";
 
     // 接口调用成功后执行
     timer.value = setInterval(() => {
@@ -161,17 +157,6 @@ const validateEmailCode = (rule: any, value: any, callback: any) => {
   }
 };
 
-// 验证验证码
-const validateCode = (rule: any, value: any, callback: any) => {
-  if (value === "") {
-    callback(new Error("请输入验证码"));
-  } else if (value.length == 4) {
-    callback();
-  } else {
-    callback(new Error("图形验证码长度为 4 个字符"));
-  }
-};
-
 // 表单验证规则
 const loginRules = {
   email: [
@@ -182,10 +167,10 @@ const loginRules = {
     { required: true, message: "请输入邮箱验证码", trigger: ["blur", "change"] },
     { validator: validateEmailCode, trigger: ["blur", "change"] },
   ],
-  code:[
-    { required: true, message: "请输入图形验证码", trigger: ["blur", "change"] },
-    { validator: validateCode, trigger: ["blur", "change"] },
-  ]
+  code: [
+    { required: true, message: "请输入图形验证码", trigger: "blur" },
+    { min: 4, max: 4, message: "验证码长度为 4 个字符", trigger: "blur" },
+  ],
 };
 
 const loginFormRef = ref<FormInstance>();
@@ -268,6 +253,11 @@ const handleeGetCode = async () => {
     .emailCode {
       flex: 0 0 140px;
       height: 100%;
+    }
+
+    img {
+      width: 150px;
+      height: 50px;
     }
   }
 

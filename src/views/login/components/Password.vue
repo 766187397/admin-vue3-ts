@@ -5,8 +5,7 @@
         class="custom-input"
         v-model="loginForm.account"
         placeholder="请输入账号"
-        :prefix-icon="User"
-      />
+        :prefix-icon="User" />
     </el-form-item>
     <el-form-item prop="password">
       <el-input
@@ -16,8 +15,7 @@
         placeholder="请输入密码"
         :prefix-icon="Lock"
         show-password
-        @keyup.enter="handleLogin"
-      />
+        @keyup.enter="handleLogin" />
     </el-form-item>
     <el-form-item prop="code">
       <div class="row">
@@ -25,14 +23,12 @@
           class="custom-input"
           v-model="loginForm.code"
           :prefix-icon="ChatSquare"
-          @keyup.enter="handleLogin"
-        />
+          @keyup.enter="handleLogin" />
         <img :src="codeUrl" alt="验证码" @click="handleeGetCode" />
       </div>
     </el-form-item>
     <div class="form-options">
       <el-checkbox v-model="rememberMe">记住我</el-checkbox>
-      <a href="#" class="forgot-password">忘记密码?</a>
     </div>
     <el-form-item>
       <el-button :loading="loading" type="primary" class="login-button" @click="handleLogin">
@@ -78,6 +74,10 @@ const loginRules = {
   password: [
     { required: true, message: "请输入密码", trigger: "blur" },
     { min: 6, max: 20, message: "密码长度应在 6 到 20 个字符之间", trigger: "blur" },
+  ],
+  code: [
+    { required: true, message: "请输入图形验证码", trigger: "blur" },
+    { min: 4, max: 4, message: "验证码长度为 4 个字符", trigger: "blur" },
   ],
 };
 
@@ -160,6 +160,11 @@ handleeGetCode();
     display: flex;
     align-items: center;
     gap: 20px;
+
+    img {
+      width: 150px;
+      height: 50px;
+    }
   }
 
   // 表单元素样式
