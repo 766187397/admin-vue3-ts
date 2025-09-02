@@ -19,9 +19,16 @@ type HttpConfig = AxiosRequestConfig & {
 };
 
 interface InitHttp {
+  /** 根地址 */
   baseUrl?: string;
+  /** 超时时间 */
   timeout?: number;
+  /** 通用错误处理 */
   handleError?: (error: any) => void;
+  /** 网络异常处理 */
+  handleErrorNetwork?: (error: any) => void;
+  /** 刷新token失效处理 */
+  handleTokenInvalidation?: () => void;
 }
 
 export class Http {
@@ -35,9 +42,28 @@ export class Http {
   private handleError: (error: any) => void = (error) => {
     console.log("error :>> ", error);
   };
-  constructor({ baseUrl = "", timeout = 10000, handleError }: InitHttp) {
+  private handleErrorNetwork: (error: any) => void = (error) => {
+    console.log("error", error);
+    window.location.href = "/error/500/网络异常！";
+  };
+  private handleTokenInvalidation: () => void = () => {
+    window.location.href = "/login";
+  };
+  constructor({
+    baseUrl = "",
+    timeout = 10000,
+    handleError,
+    handleErrorNetwork,
+    handleTokenInvalidation,
+  }: InitHttp) {
     if (handleError) {
       this.handleError = handleError;
+    }
+    if (handleErrorNetwork) {
+      this.handleErrorNetwork = handleErrorNetwork;
+    }
+    if (handleTokenInvalidation) {
+      this.handleTokenInvalidation = handleTokenInvalidation;
     }
     this.instance = this.createHttp({ baseUrl, timeout });
     this.requestInterceptors();
@@ -145,7 +171,8 @@ export class Http {
             // 清空队列
             this.requestsQueue = [];
 
-            router.push("/login");
+            // router.push("/login");
+            this.handleTokenInvalidation();
             return Promise.reject(refreshError);
           } finally {
             this.isRefreshing = false;
@@ -153,7 +180,8 @@ export class Http {
         }
         if (error.code === "ERR_NETWORK") {
           console.log("网络异常！");
-          router.push({ name: "error", params: { errorCode: 500, errorMessage: "服务器网络异常！" } });
+          // router.push({ name: "error", params: { errorCode: 500, errorMessage: "服务器网络异常！" } });
+          this.handleErrorNetwork(error);
         }
         // 全局的错误处理
         else if (!error.config.headers.skipErrorHandler) {
@@ -187,6 +215,8 @@ export class Http {
     return this.instance.patch(url, data, config);
   }
 }
+
+/** 通用错误处理 */
 const handleError = (error: any) => {
   ElMessage({
     message: error.response?.data?.message || error.message || "未知错误",
@@ -194,6 +224,17 @@ const handleError = (error: any) => {
     duration: 5 * 1000,
   });
 };
+
+/** 网络错误处理 */
+const handleErrorNetwork = (error: any) => {
+  router.push({ name: "error", params: { errorCode: 500, errorMessage: "服务器网络异常！" } });
+};
+
+/** 刷新token失效处理 */
+const handleTokenInvalidation = () => {
+  router.push("/login");
+};
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const timeout = Number(import.meta.env.VITE_TIMEOUT);
-export const http = new Http({ baseUrl, timeout, handleError });
+export const http = new Http({ baseUrl, timeout, handleError, handleErrorNetwork, handleTokenInvalidation });
