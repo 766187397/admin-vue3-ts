@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "./routes";
-import { useUserInfoStore, useMenuStore } from "@/store";
+import { useMenuStore } from "@/store";
 import initData from "./initData";
 
 const router = createRouter({
@@ -27,10 +27,9 @@ router.beforeEach(async (to, from, next) => {
   const isInFullMatchWhitelist = fullMatchWhitelist.includes(to.path);
   const isInPrefixWhitelist = prefixWhitelist.some((prefix) => to.path.startsWith(prefix));
 
-  const userInfoStore = useUserInfoStore();
   const menuStore = useMenuStore();
   // 检查用户是否已登录
-  const token = userInfoStore.token;
+  const token = localStorage.getItem("token");
   // 错误页面无需任何请求直接方向
   if (to.path.startsWith("/error")) {
     next();

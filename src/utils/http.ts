@@ -39,14 +39,14 @@ export class Http {
     resolve: (value: any) => void;
     reject: (reason: any) => void;
   }> = [];
-  private handleError: (error: any) => void = (error) => {
+  public handleError: (error: any) => void = (error) => {
     console.log("error :>> ", error);
   };
-  private handleErrorNetwork: (error: any) => void = (error) => {
+  public handleErrorNetwork: (error: any) => void = (error) => {
     console.log("error", error);
     window.location.href = "/error/500/网络异常！";
   };
-  private handleTokenInvalidation: () => void = () => {
+  public handleTokenInvalidation: () => void = () => {
     window.location.href = "/login";
   };
   constructor({
