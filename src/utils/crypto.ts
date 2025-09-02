@@ -13,7 +13,7 @@ interface CryptoConfig {
  * @constant
  * @type {string}
  */
-const secretKey: string = "666666Hzx.666666";
+const secretKey: string = "s3ZmgIRtMnpLQlPK";
 
 /**
  * AES加密配置选项
