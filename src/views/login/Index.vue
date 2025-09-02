@@ -106,7 +106,6 @@
       align-items: center;
       position: relative;
       z-index: 1;
-      padding: 20px;
 
       // 登录框
       .login-box {
