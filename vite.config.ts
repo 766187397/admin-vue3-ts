@@ -8,6 +8,8 @@ import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import monacoEditorPlugin from "vite-plugin-monaco-editor";
 import terser from "@rollup/plugin-terser";
+import viteCompression from "vite-plugin-compression";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -32,6 +34,11 @@ export default defineConfig({
     }),
     (monacoEditorPlugin as any).default({
       languageWorkers: ["editorWorkerService", "typescript", "json", "html"],
+    }),
+    viteCompression({
+      algorithm: "gzip",
+      ext: ".gz",
+      threshold: 10240, // 对大于 10k 的资源才压缩，可按需调整
     }),
   ],
   resolve: {
