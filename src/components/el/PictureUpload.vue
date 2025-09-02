@@ -28,7 +28,9 @@ const { maxSize = 5 } = defineProps<{
 const action = import.meta.env.VITE_BASE_URL + "/api/v1/upload/file";
 const token = localStorage.getItem("token");
 const headers = {
-  Authorization: token?.startsWith("Bearer ") ? token : "Bearer " + token,
+  Authorization: token?.startsWith("Bearer ")
+    ? token
+    : (localStorage.getItem("token_type") || "Bearer ") + localStorage.getItem("token"),
 };
 
 /** 上传前 */

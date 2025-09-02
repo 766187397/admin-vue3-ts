@@ -31,7 +31,7 @@
 import { io } from "socket.io-client";
 import { getNoticeByUserOrRoleAdmin, signReadNotice } from "@/api/notice.ts";
 import type { FindUserOrRole } from "@/types/notice";
-const token = localStorage.getItem("token_type") || "Bearer " + localStorage.getItem("token");
+const token = (localStorage.getItem("token_type") || "Bearer ") + localStorage.getItem("token");
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const dot = ref(false);
 const noticeList = ref<FindUserOrRole[]>([]);
