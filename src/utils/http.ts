@@ -171,7 +171,6 @@ export class Http {
             // 清空队列
             this.requestsQueue = [];
 
-            // router.push("/login");
             this.handleTokenInvalidation();
             return Promise.reject(refreshError);
           } finally {
@@ -180,7 +179,6 @@ export class Http {
         }
         if (error.code === "ERR_NETWORK") {
           console.log("网络异常！");
-          // router.push({ name: "error", params: { errorCode: 500, errorMessage: "服务器网络异常！" } });
           this.handleErrorNetwork(error);
         }
         // 全局的错误处理
