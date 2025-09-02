@@ -82,14 +82,14 @@ export class Http {
         if (token) {
           config.headers.Authorization = token.startsWith("Bearer ")
             ? token
-            : localStorage.getItem("token_type") || "Bearer " + token;
+            : (localStorage.getItem("token_type") || "Bearer ") + token;
         }
         // 刷新token
         const refresh_token = localStorage.getItem("refresh_token");
         if (refresh_token) {
           config.headers.refresh_token = refresh_token.startsWith("Bearer ")
             ? refresh_token
-            : localStorage.getItem("token_type") || "Bearer " + refresh_token;
+            : (localStorage.getItem("token_type") || "Bearer ") + refresh_token;
         }
         // 默认使用全局的错误处理
         if (!config.headers.skipErrorHandler) {
