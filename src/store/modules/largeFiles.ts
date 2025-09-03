@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import * as tus from "tus-js-client";
-import { deleteTempFile } from "@/api/file";
 import { ElMessage } from "element-plus";
 
 export const useLargeFilesStore = defineStore(
@@ -16,7 +15,7 @@ export const useLargeFilesStore = defineStore(
 
     /** 上传文件 */
     const upload = (file: File, hash: string = "") => {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         progress.value = "0";
         isUploading.value = true;
         currentUpload.value = null;
@@ -46,7 +45,7 @@ export const useLargeFilesStore = defineStore(
           onProgress: function (bytesUploaded, bytesTotal) {
             progress.value = ((bytesUploaded / bytesTotal) * 100).toFixed(0);
           },
-          onSuccess: function (e) {
+          onSuccess: async function (e) {
             if (currentUpload.value) {
               const segments = (currentUpload.value.url as string).split("/");
               const fileId = segments[segments.length - 1];
@@ -56,6 +55,10 @@ export const useLargeFilesStore = defineStore(
                 message: "上传成功，请在文件管理中查看。",
                 type: "success",
               });
+
+              // 删除当前上传记录
+
+              await deleteCurrentUploadCache();
               progress.value = "0";
               isUploading.value = false;
               currentUpload.value = null;
@@ -65,6 +68,13 @@ export const useLargeFilesStore = defineStore(
             }
           },
         });
+
+        // 判断上一个缓存记录是否存在
+        const records = await currentUpload.value.findPreviousUploads();
+        if (records.length) {
+          // tus自己判断是否需要继续上传
+          currentUpload.value.resumeFromPreviousUpload(records[0]);
+        }
 
         // 启动上传
         currentUpload.value.start();
@@ -93,9 +103,7 @@ export const useLargeFilesStore = defineStore(
         destroyUnloadPrompt();
         try {
           currentUpload.value.abort(true);
-          const segments = (currentUpload.value.url as string).split("/");
-          const fileId = segments[segments.length - 1];
-          await deleteTempFile(fileId);
+          await deleteCurrentUploadCache();
           progress.value = "0";
           isUploading.value = false;
           currentUpload.value = null;
@@ -122,6 +130,18 @@ export const useLargeFilesStore = defineStore(
     /** 销毁拦截函数 */
     const destroyUnloadPrompt = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+
+    /** 删除当前文件上传的缓存 */
+    const deleteCurrentUploadCache = async () => {
+      if (currentUpload.value) {
+        const previousUploads = await currentUpload.value.findPreviousUploads();
+        previousUploads.forEach((item: tus.PreviousUpload) => {
+          if (item.uploadUrl == currentUpload.value?.url) {
+            localStorage.removeItem(item.urlStorageKey);
+          }
+        });
+      }
     };
 
     return {
