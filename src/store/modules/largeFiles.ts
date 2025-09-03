@@ -92,7 +92,7 @@ export const useLargeFilesStore = defineStore(
       if (currentUpload.value) {
         destroyUnloadPrompt();
         try {
-          currentUpload.value.abort();
+          currentUpload.value.abort(true);
           const segments = (currentUpload.value.url as string).split("/");
           const fileId = segments[segments.length - 1];
           await deleteTempFile(fileId);
@@ -135,6 +135,6 @@ export const useLargeFilesStore = defineStore(
     };
   },
   {
-    persist: true,
+    persist: false,
   }
 );
