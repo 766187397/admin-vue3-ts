@@ -71,9 +71,24 @@ export const useLargeFilesStore = defineStore(
 
         // 判断上一个缓存记录是否存在
         const records = await currentUpload.value.findPreviousUploads();
-        if (records.length) {
+        let recordFile;
+        records.forEach((item, index) => {
+          if (
+            item.metadata.hash == hash &&
+            item.metadata.filetype == file.type &&
+            item.metadata.filename == file.name &&
+            item.size == file.size
+          ) {
+            recordFile = item;
+          }
+          if (index > 10) {
+            localStorage.removeItem(item.urlStorageKey);
+          }
+        });
+
+        if (recordFile) {
           // tus自己判断是否需要继续上传
-          currentUpload.value.resumeFromPreviousUpload(records[0]);
+          currentUpload.value.resumeFromPreviousUpload(recordFile);
         }
 
         // 启动上传
