@@ -6,6 +6,14 @@
 
 
 
+## 项目介绍
+
+> 使用zread.ai生成的项目介绍
+
+地址：https://zread.ai/766187397/admin-vue3-ts
+
+
+
 ## 技术栈
 
 - Vue3
