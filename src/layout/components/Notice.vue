@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { io } from "socket.io-client";
-import { getNoticeByUserOrRoleAdmin, signReadNotice } from "@/api/notice.ts";
+import { getNoticeByUserOrRoleAdmin, signReadNotice } from "@/api/modules/notice";
 import type { FindUserOrRole } from "@/types/notice";
 const token = (localStorage.getItem("token_type") || "Bearer ") + localStorage.getItem("token");
 const baseUrl = import.meta.env.VITE_BASE_URL;

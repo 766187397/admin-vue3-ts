@@ -1,4 +1,4 @@
-import { getRoutesByRole } from "@/api/menu";
+import { getRoutesByRole } from "@/api/modules/menu";
 import { defineStore } from "pinia";
 import { ref, type AsyncComponentLoader } from "vue";
 import type { GetRoutesByRoleParams, RoleRoutes } from "@/types/menu";

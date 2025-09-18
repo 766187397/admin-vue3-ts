@@ -138,11 +138,11 @@ import Pagination from "@/components/el/Pagination.vue";
 import Wangeditor from "@/components/public/Wangeditor.vue";
 import { ElMessage, type FormInstance } from "element-plus";
 import type { HandleRowType } from "@/types/public";
-import { createNoticeWeb, getNoticePageWeb, deleteNotice, getNoticeDetail, updateNotice } from "@/api/notice";
+import { createNoticeWeb, getNoticePageWeb, deleteNotice, getNoticeDetail, updateNotice } from "@/api/modules/notice";
 import type { CreateNoticeParams, NoticeDetail, UpdateNoticeParams, GetNoticeParams } from "@/types/notice";
-import { getRolesAllAdmin } from "@/api/role";
+import { getRolesAllAdmin } from "@/api/modules/role";
 import type { RoleDetail } from "@/types/role";
-import { getUsersAdmin } from "@/api/user";
+import { getUsersAdmin } from "@/api/modules/user";
 import type { UserResponseData } from "@/types/user";
 
 const now = new Date();

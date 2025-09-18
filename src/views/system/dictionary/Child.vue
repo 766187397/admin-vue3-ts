@@ -121,7 +121,7 @@ import {
   getDictionaryItemDetail,
   getDictionaryItemPage,
   updateDictionaryItem,
-} from "@/api/dictionary";
+} from "@/api/modules/dictionary";
 import type {
   DictionaryDetailItem,
   DictionaryItemCreate,

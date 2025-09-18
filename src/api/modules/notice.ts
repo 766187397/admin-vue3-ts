@@ -8,7 +8,7 @@ import type {
   NoticeDetail,
   UpdateNoticeParams,
 } from "@/types/notice";
-import { http } from "@/utils/http";
+import { http } from "../index";
 
 //#region public 不区分平台
 /** 获取公告详情 */

@@ -1,5 +1,5 @@
 import { usePublicStore } from "@/store";
-import { getDictionaryItemAll } from "@/api/public";
+import { getDictionaryItemAll } from "@/api/modules/public";
 
 /** 获取初始化的公共数据 */
 export default async function initData() {

@@ -67,7 +67,7 @@
 import Pagination from "@/components/el/Pagination.vue";
 import Upload from "./components/Upload.vue";
 import type { FileDetail, FilePageParams } from "@/types/file";
-import { uploadFile, deleteFile, uploadPage, downloadFile } from "@/api/file";
+import { uploadFile, deleteFile, uploadPage, downloadFile } from "@/api/modules/file";
 import { ElMessage } from "element-plus";
 import { useLargeFilesStore } from "@/store";
 

@@ -124,10 +124,10 @@
 <script setup lang="ts">
 import Pagination from "@/components/el/Pagination.vue";
 import { ElMessage, type FormInstance } from "element-plus";
-import { createRoleAdmin, deleteRole, getRoleDetail, getRolesByRoleAdmin, updateRole } from "@/api/role";
+import { createRoleAdmin, deleteRole, getRoleDetail, getRolesByRoleAdmin, updateRole } from "@/api/modules/role";
 import type { HandleRowType } from "@/types/public";
 import type { RoleCreateParams, RoleDetail, RoleQueryParams, RoleUpdateParams } from "@/types/role";
-import { getRoutesAllAdmin } from "@/api/menu";
+import { getRoutesAllAdmin } from "@/api/modules/menu";
 
 const now = new Date();
 const defaultTime: [Date, Date] = [

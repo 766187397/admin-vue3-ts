@@ -67,8 +67,8 @@
 import { ElMessage, ElNotification, type FormInstance } from "element-plus";
 import { Message, ChatLineSquare, ChatSquare } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from "vue-router";
-import { emailLogin } from "@/api/login";
-import { getCode, sendEmail } from "@/api/public.ts";
+import { emailLogin } from "@/api/modules/login";
+import { getCode, sendEmail } from "@/api/modules/public";
 import type { EmailLoginForm } from "@/types/login";
 import { useUserInfoStore } from "@/store";
 import type { SendEmailParams } from "@/types/email";

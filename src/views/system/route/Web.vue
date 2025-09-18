@@ -148,10 +148,10 @@
 </template>
 
 <script setup lang="ts">
-import { createRouteWeb, delRoutes, getRoutesAllWeb, getRoutesDetail, updateRoutes } from "@/api/menu";
+import { createRouteWeb, delRoutes, getRoutesAllWeb, getRoutesDetail, updateRoutes } from "@/api/modules/menu";
 import type { CreateRoutesParams, RouterInfoList } from "@/types/menu";
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from "element-plus";
-import { getDictionaryItemAll } from "@/api/public";
+import { getDictionaryItemAll } from "@/api/modules/public";
 import { typeValue } from "@/utils/tool";
 import type { GetDictionaryItemAllResult } from "@/types/dictionary";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";

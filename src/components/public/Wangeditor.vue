@@ -16,7 +16,7 @@
   import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
   import type { IEditorConfig } from "@wangeditor/editor";
   import { ElMessage } from "element-plus";
-  import { uploadFile } from "@/api/file";
+  import { uploadFile } from "@/api/modules/file";
 
   type UploadImageFnType = (url: string, alt: string, href: string) => void;
   type UploadVideoFnType = (url: string, poster: string) => void;

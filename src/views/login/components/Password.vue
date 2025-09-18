@@ -42,10 +42,10 @@
 import { ElNotification, type FormInstance } from "element-plus";
 import { User, Lock, ChatSquare } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from "vue-router";
-import { login } from "@/api/login";
+import { login } from "@/api/modules/login";
 import type { LoginForm } from "@/types/login";
 import { useUserInfoStore } from "@/store";
-import { getCode } from "@/api/public";
+import { getCode } from "@/api/modules/public";
 
 const userInfoStore = useUserInfoStore();
 

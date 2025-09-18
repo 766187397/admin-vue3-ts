@@ -7,7 +7,7 @@ import type {
   RoleRoutes,
   RouterInfoList,
 } from "@/types/menu";
-import { http } from "@/utils/http";
+import { http } from "../index";
 
 //#region public 不区分平台
 /** 查询路由详情 */

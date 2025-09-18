@@ -135,8 +135,8 @@ import type {
   SendEmailParams,
   UpdateEmailParams,
 } from "@/types/email";
-import { createEmailAdmin, deleteEmail, getEmailDetail, getEmailPageAdmin, updateEmail } from "@/api/email";
-import { getCode, sendEmail } from "@/api/public";
+import { createEmailAdmin, deleteEmail, getEmailDetail, getEmailPageAdmin, updateEmail } from "@/api/modules/email";
+import { getCode, sendEmail } from "@/api/modules/public";
 import { ChatSquare } from "@element-plus/icons-vue";
 
 const now = new Date();

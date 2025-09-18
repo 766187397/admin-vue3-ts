@@ -103,7 +103,7 @@
 <script setup lang="ts">
 import Pagination from "@/components/el/Pagination.vue";
 import { type FormInstance } from "element-plus";
-import {getLogPageWeb} from '@/api/log'
+import {getLogPageWeb} from '@/api/modules/log'
 import type { LogDetail, LogPageParams } from "@/types/log";
 
 const now = new Date();

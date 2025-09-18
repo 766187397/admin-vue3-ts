@@ -1,4 +1,4 @@
-import { http } from "@/utils/http";
+import { http } from "../index";
 import type { PageApiResult, Result } from "@/types/api";
 import type { FileDetail, FileUploadSecondParams } from "@/types/file";
 

@@ -1,4 +1,4 @@
-import { http } from "@/utils/http"; /** 菜单路由相关接口 */
+import { http } from "../index"; /** 菜单路由相关接口 */
 import type { PageApiResult, Result } from "@/types/api";
 import {
   type AllQueryEmailParams,

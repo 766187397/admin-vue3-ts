@@ -2,7 +2,7 @@
 
 import type { PageApiResult, Result } from "@/types/api";
 import type { RoleUpdateParams, RoleDetail, RoleQuery, RoleQueryParams, RoleCreateParams } from "@/types/role";
-import { http } from "@/utils/http";
+import { http } from "../index";
 
 //#region public 不区分平台
 /** 查询角色详情 */

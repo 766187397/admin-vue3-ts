@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 import { useLargeFilesStore } from "@/store";
-import { largeFileUploadSecond, uploadFile } from "@/api/file";
+import { largeFileUploadSecond, uploadFile } from "@/api/modules/file";
 import { calcSHA256 } from "@/utils/largeFile/largeFileHash";
 
 const largeFilesStore = useLargeFilesStore();

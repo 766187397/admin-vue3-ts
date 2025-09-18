@@ -1,6 +1,6 @@
 /** 角色模块接口 */
 
-import { http } from "@/utils/http";
+import { http } from "../index";
 import type {
   UsersCreateParams,
   UserResponseData,

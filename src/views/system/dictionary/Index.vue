@@ -122,7 +122,7 @@ import {
   getDictionaryDetail,
   getDictionaryPage,
   updateDictionary,
-} from "@/api/dictionary";
+} from "@/api/modules/dictionary";
 import type {
   DictionaryCreateParams,
   DictionaryDetail,

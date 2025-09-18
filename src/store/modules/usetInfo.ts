@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { encrypt, decrypt } from "@/utils/crypto";
 import type { LoginForm } from "@/types/login";
-import { logout } from "@/api/login";
+import { logout } from "@/api/modules/login";
 import router from "@/router";
 
 import { useElConfigStore } from "./elConfig";

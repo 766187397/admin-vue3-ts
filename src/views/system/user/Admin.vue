@@ -164,7 +164,7 @@
 import PictureUpload from "@/components/el/PictureUpload.vue";
 import Pagination from "@/components/el/Pagination.vue";
 import { ElMessage, type FormInstance } from "element-plus";
-import { getDictionaryItemAll } from "@/api/public";
+import { getDictionaryItemAll } from "@/api/modules/public";
 import {
   getUserInfo,
   updateUser,
@@ -172,7 +172,7 @@ import {
   getUsersPageAdmin,
   createUserAdmin,
   getUsersExcelAdmin,
-} from "@/api/user";
+} from "@/api/modules/user";
 import { displayValue } from "@/hooks/dictionary";
 import type { HandleRowType } from "@/types/public";
 import type { UserResponseData, UsersCreateParams, UsersQueryParams, UsersUpdateParams } from "@/types/user";

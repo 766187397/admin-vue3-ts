@@ -3,7 +3,7 @@ import type { Result } from "@/types/api";
 import type { GetDictionaryItemAllParams, GetDictionaryItemAllResult } from "@/types/dictionary";
 import type { SendEmailParams } from "@/types/email";
 import type { Captcha } from "@/types/public";
-import { http } from "@/utils/http";
+import { http } from "../index";
 
 /** 查询字典项 */
 export const getDictionaryItemAll = async (
