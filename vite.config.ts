@@ -59,8 +59,7 @@ export default defineConfig({
       svg: {
         multipass: true, // 多次优化
         plugins: [
-          { name: "removeViewBox", active: false }, // 保留 viewBox
-          { name: "removeEmptyAttrs", active: true }, // 移除空属性
+          "removeEmptyAttrs", // 移除空属性
         ],
       },
       include: /\.(png|jpg|jpeg|gif|svg|webp|avif)$/i, // 匹配的文件

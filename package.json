@@ -49,6 +49,8 @@
     "jiti": "^2.4.2",
     "npm-run-all2": "^7.0.2",
     "sass": "^1.89.0",
+    "sharp": "^0.34.4",
+    "svgo": "^4.0.0",
     "typescript": "~5.8.0",
     "unplugin-auto-import": "^19.2.0",
     "unplugin-vue-components": "^28.5.0",
