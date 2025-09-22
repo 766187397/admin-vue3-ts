@@ -6,79 +6,191 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "39015843",
+      "name": "路由导航",
+      "font_class": "route",
+      "unicode": "e865",
+      "unicode_decimal": 59493
+    },
+    {
+      "icon_id": "435944",
+      "name": "日志",
+      "font_class": "log",
+      "unicode": "e7c3",
+      "unicode_decimal": 59331
+    },
+    {
+      "icon_id": "700603",
+      "name": "首页",
+      "font_class": "head",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "1167181",
+      "name": "设置",
+      "font_class": "settings",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "1221892",
+      "name": "个人",
+      "font_class": "personal",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "2380645",
+      "name": "链接",
+      "font_class": "link",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "3161597",
+      "name": "角色管理",
+      "font_class": "role",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "5388009",
+      "name": "云上传",
+      "font_class": "upload",
+      "unicode": "ebb3",
+      "unicode_decimal": 60339
+    },
+    {
+      "icon_id": "8605754",
+      "name": "字典管理",
+      "font_class": "dict",
+      "unicode": "e668",
+      "unicode_decimal": 58984
+    },
+    {
+      "icon_id": "28954094",
+      "name": "通知公告",
+      "font_class": "notice",
+      "unicode": "e7ab",
+      "unicode_decimal": 59307
+    },
+    {
+      "icon_id": "37005213",
+      "name": "附件",
+      "font_class": "annex",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "4552970",
+      "name": "邮箱",
+      "font_class": "email",
+      "unicode": "e908",
+      "unicode_decimal": 59656
+    },
+    {
+      "icon_id": "9234826",
+      "name": "验证码",
+      "font_class": "captcha",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "8288855",
+      "name": "密码",
+      "font_class": "password",
+      "unicode": "e850",
+      "unicode_decimal": 59472
+    },
+    {
+      "icon_id": "12732498",
+      "name": "用户",
+      "font_class": "user",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "2932822",
+      "name": "电脑",
+      "font_class": "diannao",
+      "unicode": "e7fc",
+      "unicode_decimal": 59388
+    },
+    {
       "icon_id": "4937000",
       "name": "github",
-      "font_class": "github",
+      "font_class": "github-flat",
       "unicode": "e885",
       "unicode_decimal": 59525
     },
     {
       "icon_id": "43217855",
       "name": "gitee",
-      "font_class": "gitee",
+      "font_class": "gitee-flat",
       "unicode": "e600",
       "unicode_decimal": 58880
     },
     {
       "icon_id": "1340337",
       "name": "下载",
-      "font_class": "xiazai",
+      "font_class": "xiazai-flat",
       "unicode": "e608",
       "unicode_decimal": 58888
     },
     {
       "icon_id": "7584380",
       "name": "使用频次",
-      "font_class": "shiyongpinci",
+      "font_class": "shiyongpinci-flat",
       "unicode": "e643",
       "unicode_decimal": 58947
     },
     {
       "icon_id": "12110987",
       "name": "用户",
-      "font_class": "yonghu",
+      "font_class": "yonghu-flat",
       "unicode": "e615",
       "unicode_decimal": 58901
     },
     {
       "icon_id": "20253302",
       "name": "数量",
-      "font_class": "shuliang",
+      "font_class": "shuliang-flat",
       "unicode": "e6b7",
       "unicode_decimal": 59063
     },
     {
       "icon_id": "908579",
       "name": "标签",
-      "font_class": "biaoqian",
+      "font_class": "biaoqian-flat",
       "unicode": "e69f",
       "unicode_decimal": 59039
     },
     {
       "icon_id": "9560534",
       "name": "账号",
-      "font_class": "account",
+      "font_class": "account-flat",
       "unicode": "e616",
       "unicode_decimal": 58902
     },
     {
       "icon_id": "32301527",
       "name": "邮箱",
-      "font_class": "email",
+      "font_class": "email-flat",
       "unicode": "e665",
       "unicode_decimal": 58981
     },
     {
       "icon_id": "28941586",
       "name": "关闭",
-      "font_class": "guanbi",
+      "font_class": "close",
       "unicode": "e791",
       "unicode_decimal": 59281
     },
     {
       "icon_id": "6260310",
       "name": "刷新",
-      "font_class": "shuaxin",
+      "font_class": "refresh",
       "unicode": "e618",
       "unicode_decimal": 58904
     }

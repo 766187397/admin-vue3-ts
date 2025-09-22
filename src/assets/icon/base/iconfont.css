@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4935064 */
-  src: url('iconfont.woff2?t=1754876288886') format('woff2'),
-       url('iconfont.woff?t=1754876288886') format('woff'),
-       url('iconfont.ttf?t=1754876288886') format('truetype');
+  src: url('iconfont.woff2?t=1758510333694') format('woff2'),
+       url('iconfont.woff?t=1758510333694') format('woff'),
+       url('iconfont.ttf?t=1758510333694') format('truetype');
 }
 
 .iconfont {
@@ -13,47 +13,111 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-github:before {
-  content: "\e885";
+.icon-route:before {
+  content: "\e865";
 }
 
-.icon-gitee:before {
-  content: "\e600";
+.icon-log:before {
+  content: "\e7c3";
 }
 
-.icon-xiazai:before {
-  content: "\e608";
+.icon-head:before {
+  content: "\e635";
 }
 
-.icon-shiyongpinci:before {
-  content: "\e643";
+.icon-settings:before {
+  content: "\e644";
 }
 
-.icon-yonghu:before {
-  content: "\e615";
+.icon-personal:before {
+  content: "\e63f";
 }
 
-.icon-shuliang:before {
-  content: "\e6b7";
+.icon-link:before {
+  content: "\e612";
 }
 
-.icon-biaoqian:before {
-  content: "\e69f";
+.icon-role:before {
+  content: "\e613";
 }
 
-.icon-account:before {
-  content: "\e616";
+.icon-upload:before {
+  content: "\ebb3";
+}
+
+.icon-dict:before {
+  content: "\e668";
+}
+
+.icon-notice:before {
+  content: "\e7ab";
+}
+
+.icon-annex:before {
+  content: "\e65a";
 }
 
 .icon-email:before {
+  content: "\e908";
+}
+
+.icon-captcha:before {
+  content: "\e62b";
+}
+
+.icon-password:before {
+  content: "\e850";
+}
+
+.icon-user:before {
+  content: "\e619";
+}
+
+.icon-diannao:before {
+  content: "\e7fc";
+}
+
+.icon-github-flat:before {
+  content: "\e885";
+}
+
+.icon-gitee-flat:before {
+  content: "\e600";
+}
+
+.icon-xiazai-flat:before {
+  content: "\e608";
+}
+
+.icon-shiyongpinci-flat:before {
+  content: "\e643";
+}
+
+.icon-yonghu-flat:before {
+  content: "\e615";
+}
+
+.icon-shuliang-flat:before {
+  content: "\e6b7";
+}
+
+.icon-biaoqian-flat:before {
+  content: "\e69f";
+}
+
+.icon-account-flat:before {
+  content: "\e616";
+}
+
+.icon-email-flat:before {
   content: "\e665";
 }
 
-.icon-guanbi:before {
+.icon-close:before {
   content: "\e791";
 }
 
-.icon-shuaxin:before {
+.icon-refresh:before {
   content: "\e618";
 }
 
