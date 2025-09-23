@@ -54,7 +54,7 @@
             <Setting />
           </el-icon>
         </div>
-        <div class="r_item">
+        <div class="r_item" ref="switch">
           <el-switch
             v-model="config.darkTheme"
             style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
@@ -114,7 +114,7 @@ const menuStore = useMenuStore();
 const userInfoStore = useUserInfoStore();
 const elConfigStore = useElConfigStore();
 
-const { handleAnimation } = elConfigStore;
+const { handleAnimation, changeThemeColor } = elConfigStore;
 
 // 获取用户信息
 const userInfo = computed(() => userInfoStore.userInfo);
@@ -145,6 +145,20 @@ const fullScreenState = computed(() => publicStore.fullScreen);
 
 // 主题
 const config = computed(() => elConfigStore.config);
+const switchDom = useTemplateRef<Element>("switch");
+// 加载默认值
+const LoadDefaultConfig = () => {
+  if (config.value.darkTheme) {
+    let { left, top } = switchDom.value?.getBoundingClientRect() as DOMRect;
+    handleAnimation({ clientX: left, clientY: top });
+  } else {
+    changeThemeColor(config.value.themeColor);
+  }
+};
+
+onMounted(() => {
+  LoadDefaultConfig();
+});
 </script>
 
 <style lang="scss" scoped>

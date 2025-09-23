@@ -96,14 +96,20 @@ export const useElConfigStore = defineStore(
       // 计算主题颜色变化
       document.documentElement.style.setProperty("--el-color-primary", val);
       for (let i = 1; i < 10; i++) {
-        document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getLightColor(val, i / 10)}`);
-        document.documentElement.style.setProperty(`--el-color-dark-light-${i}`, `${getDarkColor(val, i / 10)}`);
+        document.documentElement.style.setProperty(
+          `--el-color-primary-light-${i}`,
+          `${getLightColor(val, i / 10)}`
+        );
+        document.documentElement.style.setProperty(
+          `--el-color-dark-light-${i}`,
+          `${getDarkColor(val, i / 10)}`
+        );
       }
       config.value.themeColor = val;
     };
 
     /** 切换主题动画 */
-    const handleAnimation = (e: MouseEvent) => {
+    const handleAnimation = (e?: MouseEvent | { clientX: number; clientY: number }) => {
       // 执行切换主题的操作
       const transition = document.startViewTransition(() => {
         // 动画过渡切换主题色
@@ -114,10 +120,13 @@ export const useElConfigStore = defineStore(
 
       transition.ready.then(() => {
         // 获取鼠标的坐标
-        const { clientX, clientY } = e;
+        const { clientX = 0, clientY = 0 } = e || {};
 
         // 计算最大半径
-        const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY));
+        const radius = Math.hypot(
+          Math.max(clientX, innerWidth - clientX),
+          Math.max(clientY, innerHeight - clientY)
+        );
 
         // 设置动画的clipPath属性
         const clipPath = [
@@ -127,6 +136,9 @@ export const useElConfigStore = defineStore(
 
         // 暗色主题
         const isDarkTheme = config.value.darkTheme;
+        if (isDarkTheme) {
+          document.documentElement.style = "";
+        }
 
         // 圆形动画扩散开始
         const animation = document.documentElement.animate(
