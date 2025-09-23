@@ -12,7 +12,9 @@
         </div>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item v-for="item in matched" :key="item.path">{{ item.meta.title }}</el-breadcrumb-item>
+          <el-breadcrumb-item v-for="item in matched" :key="item.path">{{
+            item.meta.title
+          }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <div class="right">
@@ -24,16 +26,24 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
-                  <el-link href="https://github.com/766187397/nest-serve" target="_blank">后端：Github</el-link>
+                  <el-link href="https://github.com/766187397/nest-serve" target="_blank"
+                    >后端：Github</el-link
+                  >
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <el-link href="https://gitee.com/sk20020228/nest-serve" target="_blank">后端：Gitee</el-link>
+                  <el-link href="https://gitee.com/sk20020228/nest-serve" target="_blank"
+                    >后端：Gitee</el-link
+                  >
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <el-link href="https://github.com/766187397/admin-vue3-ts" target="_blank">前端：Github</el-link>
+                  <el-link href="https://github.com/766187397/admin-vue3-ts" target="_blank"
+                    >前端：Github</el-link
+                  >
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <el-link href="https://gitee.com/sk20020228/admin-vue3-ts" target="_blank">前端：Gitee</el-link>
+                  <el-link href="https://gitee.com/sk20020228/admin-vue3-ts" target="_blank"
+                    >前端：Gitee</el-link
+                  >
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -50,8 +60,7 @@
             style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2"
             active-action-icon="Moon"
             inactive-action-icon="Sunny"
-            @click="handleAnimation($event)"
-          />
+            @click="handleAnimation($event)" />
         </div>
         <div class="r_item">
           <el-icon size="20" @click="enterFullScreen" v-if="!fullScreenState">
@@ -72,8 +81,7 @@
                 shape="square"
                 size="default"
                 :src="userInfo.avatar"
-                :title="userInfo.nickName"
-              />
+                :title="userInfo.nickName" />
               <span v-else>{{ userInfo.nickName }}</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
@@ -119,6 +127,12 @@ const isCollapse = computed(() => {
 });
 const matched = ref();
 matched.value = rouet.matched.filter((item) => item.name !== "layout" && item.name !== "home");
+watch(
+  () => rouet.matched,
+  (newValue, oldValue) => {
+    matched.value = newValue.filter((item) => item.name !== "layout" && item.name !== "home");
+  }
+);
 // 控制折叠
 const handleCollapse = () => {
   menuStore.setIsCollapse(!isCollapse.value);

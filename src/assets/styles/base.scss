@@ -71,7 +71,7 @@ html.dark::view-transition-new(root) {
       flex-direction: column;
       padding: 20px;
       box-sizing: border-box;
-      background-color: #fff;
+      background-color: var(--bg-color);
       .table {
         flex: auto;
         overflow: auto;
@@ -119,9 +119,9 @@ html.dark::view-transition-new(root) {
 // 暗主题样式
 .dark {
   .el-main {
-    background-color: #141414;
+    background-color: var(--bg-color);
     .main {
-      background-color: #141414;
+      background-color: var(--bg-color);
     }
   }
 }
