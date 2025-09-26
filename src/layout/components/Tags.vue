@@ -56,7 +56,7 @@ interface EventList {
 const defaultEventList: EventList[] = [
   {
     content: "关闭当前",
-    icon: "iconfont icon-shuaxin",
+    icon: "iconfont icon-close",
     click() {
       if (this.tag) {
         handleCloseTag(this.tag);
@@ -65,7 +65,7 @@ const defaultEventList: EventList[] = [
   },
   {
     content: "关闭其他",
-    icon: "iconfont icon-shuaxin",
+    icon: "iconfont icon-close",
     click() {
       if (this.tag) {
         tags.value = tags.value.filter((item) => item.path === this.tag?.path || item.path === "/home");
@@ -75,7 +75,7 @@ const defaultEventList: EventList[] = [
   },
   {
     content: "关闭所有",
-    icon: "iconfont icon-shuaxin",
+    icon: "iconfont icon-close",
     click() {
       tags.value = tags.value.filter((item) => item.path === "/home");
       router.push("/home");
@@ -83,7 +83,7 @@ const defaultEventList: EventList[] = [
   },
   {
     content: "刷新页面",
-    icon: "iconfont icon-guanbi",
+    icon: "iconfont icon-refresh",
     click() {
       router.go(0);
     },
