@@ -140,7 +140,7 @@ const handleCollapse = () => {
 // 退出登录
 const { handleLogout } = userInfoStore;
 const { enterFullScreen, exitFullscreen, getFullScreenState } = publicStore;
-getFullScreenState();
+
 const fullScreenState = computed(() => publicStore.fullScreen);
 
 // 主题
@@ -158,6 +158,7 @@ const LoadDefaultConfig = () => {
 
 onMounted(() => {
   LoadDefaultConfig();
+  document.addEventListener("fullscreenchange", getFullScreenState);
 });
 </script>
 

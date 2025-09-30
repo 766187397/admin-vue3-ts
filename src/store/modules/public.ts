@@ -18,26 +18,11 @@ export const usePublicStore = defineStore("public", () => {
 
   /** 进入 */
   const enterFullScreen = () => {
-    document
-      .querySelector("html")
-      ?.requestFullscreen()
-      .then(() => {
-        fullScreen.value = true;
-      })
-      .catch((error) => {
-        fullScreen.value = false;
-      });
+    document.querySelector("html")?.requestFullscreen();
   };
   /** 退出 */
   const exitFullscreen = () => {
-    document
-      .exitFullscreen()
-      .then(() => {
-        fullScreen.value = false;
-      })
-      .catch((error) => {
-        fullScreen.value = true;
-      });
+    document.exitFullscreen();
   };
 
   /** 平台类型列表 */
