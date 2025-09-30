@@ -160,6 +160,10 @@ onMounted(() => {
   LoadDefaultConfig();
   document.addEventListener("fullscreenchange", getFullScreenState);
 });
+
+onUnmounted(() => {
+  document.removeEventListener("fullscreenchange", getFullScreenState);
+});
 </script>
 
 <style lang="scss" scoped>
